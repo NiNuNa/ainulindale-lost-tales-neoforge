@@ -1,5 +1,17 @@
 {
   "itemGroup.losttales": "Example Mod Tab",
-  "block.losttales.example_block": "Example Block",
-  "item.losttales.example_item": "Example Item"
+
+  "item.losttales.example_item": "Example Item",
+
+  "#": "Plushies",
+  "block.losttales.plushie_bear": "Bear Plushie",
+  "block.losttales.plushie_fox": "Fox Plushie",
+
+  "#": "Keybinds",
+  "key.categories.losttales.mappings": "Ainulindalë: Lost Tales",
+  "key.losttales.questjournal": "Open Quest Journal",
+  "key.losttales.togglehud": "Toggle HUD",
+
+  "#": "Quest Journal",
+  "questjournal.title": "Quest Journal"
 }
