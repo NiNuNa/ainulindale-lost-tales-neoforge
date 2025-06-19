@@ -1,13 +1,9 @@
 package ninuna.losttales;
 
-import net.minecraft.world.item.CreativeModeTabs;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 import ninuna.losttales.block.LostTalesBlocks;
-import ninuna.losttales.client.gui.screen.LostTalesQuestJournalScreen;
 import ninuna.losttales.config.LostTalesConfig;
 import ninuna.losttales.item.LostTalesCreativeModeTabs;
 import ninuna.losttales.item.LostTalesItems;
-import ninuna.losttales.util.LostTalesKeyMappings;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -25,7 +21,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 @Mod(LostTales.MOD_ID)
@@ -39,17 +34,14 @@ public class LostTales {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        LostTalesCreativeModeTabs.register(modEventBus);
         LostTalesItems.register(modEventBus);
         LostTalesBlocks.register(modEventBus);
+        LostTalesCreativeModeTabs.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (LostTales) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, LostTalesConfig.SPEC);
@@ -67,33 +59,11 @@ public class LostTales {
         LostTalesConfig.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
-            event.accept(LostTalesItems.TEST_ITEM);
-        }
-    }
-
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
-    }
-
-    @SubscribeEvent
-    public void onClientTick(ClientTickEvent.Post event) {
-        if (LostTalesKeyMappings.QUEST_JOURNAL_MAPPING.get().consumeClick()) {
-            // Open and display quest journal screen
-            LOGGER.info(MOD_ID + ": " + Minecraft.getInstance().getUser().getName() + " opened the quest journal");
-            Minecraft.getInstance().setScreen(new LostTalesQuestJournalScreen(Minecraft.getInstance().screen));
-        }
-        else if (LostTalesKeyMappings.TOGGLE_HUD_MAPPING.get().consumeClick()) {
-            // Toggle lost tales hud
-            LOGGER.info("LOL!");
-            //Todo: Pop Up "Hud: Enabled/Disabled"
-            //Todo: Toggle Hud
-        }
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

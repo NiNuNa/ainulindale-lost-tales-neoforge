@@ -1,0 +1,6 @@
+{
+  "parent": "losttales:item/big_item",
+  "textures": {
+    "layer0": "losttales:item/arnorian_dagger"
+  }
+}

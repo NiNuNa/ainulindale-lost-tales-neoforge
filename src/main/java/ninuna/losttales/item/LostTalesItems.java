@@ -26,6 +26,29 @@ public class LostTalesItems {
     );
 
     // Lost Tales Weapons and Tools.
+    public static final DeferredItem<Item> ARNORIAN_SWORD = ITEMS.registerItem(
+            "arnorian_sword",
+            props -> new Item(props.sword(
+                    // The material to use.
+                    LostTalesToolMaterials.ARNORIAN_MATERIAL,
+                    // The type-specific attack damage bonus. 3 for swords, 1.5 for shovels, 1 for pickaxes, varying for axes and hoes.
+                    3,
+                    // The type-specific attack speed modifier. The player has a default attack speed of 4, so to get to the desired
+                    // value of 1.6f, we use -2.4f. -2.4f for swords, -3f for shovels, -2.8f for pickaxes, varying for axes and hoes.
+                    -2.4f
+            )));
+
+    public static final DeferredItem<Item> ARNORIAN_DAGGER = ITEMS.registerItem(
+            "arnorian_dagger",
+            props -> new Item(props.sword(
+                    // The material to use.
+                    LostTalesToolMaterials.ARNORIAN_MATERIAL,
+                    // The type-specific attack damage bonus. 3 for swords, 1.5 for shovels, 1 for pickaxes, varying for axes and hoes.
+                    3,
+                    // The type-specific attack speed modifier. The player has a default attack speed of 4, so to get to the desired
+                    // value of 1.6f, we use -2.4f. -2.4f for swords, -3f for shovels, -2.8f for pickaxes, varying for axes and hoes.
+                    -2.4f
+            )));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
