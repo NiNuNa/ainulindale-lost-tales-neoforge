@@ -53,6 +53,48 @@ public class LostTalesCreativeModeTabs {
             .build()
     );
 
+    // Lost Tales Plushies Creative Mode Tab.
+    public static final Supplier<CreativeModeTab> PLUSHIES_TAB = CREATIVE_MODE_TABS.register("plushies", () -> CreativeModeTab.builder()
+            //Set the title of the tab. Don't forget to add a translation!
+            .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".plushies"))
+            //Set the icon of the tab.
+            .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
+            //Add your items to the tab.
+            .displayItems((params, output) -> {
+                output.accept(LostTalesItems.ARNORIAN_SWORD);
+            })
+            .build()
+    );
+
+    // Lost Tales Community Creative Mode Tab.
+    public static final Supplier<CreativeModeTab> COMMUNITY_TAB = CREATIVE_MODE_TABS.register("community", () -> CreativeModeTab.builder()
+            //Set the title of the tab. Don't forget to add a translation!
+            .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".community"))
+            //Set the icon of the tab.
+            .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
+            //Add your items to the tab.
+            .displayItems((params, output) -> {
+                output.accept(LostTalesItems.ARNORIAN_SWORD);
+            })
+            .build()
+    );
+
+    // Lost Tales Community Creative Mode Tab.
+    public static final Supplier<CreativeModeTab> FOODANDDRINKS_TAB = CREATIVE_MODE_TABS.register("foodanddrinks", () -> CreativeModeTab.builder()
+            //Set the title of the tab. Don't forget to add a translation!
+            .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".foodanddrinks"))
+            //Set the icon of the tab.
+            .icon(() -> new ItemStack(LostTalesItems.PEAR.get()))
+            //Add your items to the tab.
+            .displayItems((params, output) -> {
+                output.accept(LostTalesItems.PEAR);
+                output.accept(LostTalesItems.PEAR_BAKED);
+                output.accept(LostTalesItems.PEAR_JUICE);
+                output.accept(LostTalesItems.PLUM);
+            })
+            .build()
+    );
+
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
     }

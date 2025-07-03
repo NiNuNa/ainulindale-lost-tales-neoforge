@@ -3,10 +3,17 @@
   "itemGroup.losttales.tools": "Lost Tales - Tools",
   "itemGroup.losttales.weapons": "Lost Tales - Weapons",
   "itemGroup.losttales.equipment": "Lost Tales - Equipment",
+  "itemGroup.losttales.plushies": "Lost Tales - Plushies",
+  "itemGroup.losttales.community": "Lost Tales - Community",
+  "itemGroup.losttales.foodanddrinks": "Lost Tales - Food & Drinks",
 
   "#": "Items",
   "item.losttales.arnorian_sword": "Arnorian Sword",
   "item.losttales.arnorian_dagger": "Arnorian Dagger",
+  "item.losttales.plum": "Plum",
+  "item.losttales.pear": "Pear",
+  "item.losttales.pear_baked": "Baked Pear",
+  "item.losttales.pear_juice": "Pear Juice",
 
   "#": "Plushies",
   "block.losttales.plushie_bear": "Bear Plushie",
