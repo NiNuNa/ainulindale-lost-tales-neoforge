@@ -11,9 +11,13 @@
   "item.losttales.arnorian_sword": "Arnorian Sword",
   "item.losttales.arnorian_dagger": "Arnorian Dagger",
   "item.losttales.plum": "Plum",
+  "item.losttales.plum_juice": "Plum Juice",
   "item.losttales.pear": "Pear",
   "item.losttales.pear_baked": "Baked Pear",
   "item.losttales.pear_juice": "Pear Juice",
+
+  "#": "Blocks",
+  "block.losttales.cheese_wheel": "Cheese Wheel",
 
   "#": "Plushies",
   "block.losttales.plushie_bear": "Bear Plushie",

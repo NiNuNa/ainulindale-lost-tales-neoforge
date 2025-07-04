@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import ninuna.losttales.util.LostTalesKeyMappings;
+import ninuna.losttales.client.LostTalesKeyMappings;
 
 @OnlyIn(Dist.CLIENT)
 public class LostTalesQuestJournalScreen extends Screen {

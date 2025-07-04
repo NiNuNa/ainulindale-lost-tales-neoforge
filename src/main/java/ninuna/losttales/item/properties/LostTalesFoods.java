@@ -7,4 +7,5 @@ public class LostTalesFoods {
     public static final FoodProperties PEAR = (new FoodProperties.Builder()).nutrition(3).saturationModifier(0.3f).alwaysEdible().build();
     public static final FoodProperties PEAR_BAKED = (new FoodProperties.Builder()).nutrition(6).saturationModifier(0.6F).alwaysEdible().build();
     public static final FoodProperties PEAR_JUICE = (new FoodProperties.Builder()).nutrition(2).saturationModifier(0.1F).alwaysEdible().build();
+    public static final FoodProperties CHEESE_WHEEL = (new FoodProperties.Builder()).nutrition(8).saturationModifier(0.6f).alwaysEdible().build();
 }

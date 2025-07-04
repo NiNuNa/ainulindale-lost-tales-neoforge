@@ -1,6 +1,7 @@
 package ninuna.losttales;
 
 import ninuna.losttales.block.LostTalesBlocks;
+import ninuna.losttales.block.entity.LostTalesBlockEntities;
 import ninuna.losttales.config.LostTalesConfig;
 import ninuna.losttales.item.LostTalesCreativeModeTabs;
 import ninuna.losttales.item.LostTalesItems;
@@ -36,6 +37,7 @@ public class LostTales {
 
         LostTalesItems.register(modEventBus);
         LostTalesBlocks.register(modEventBus);
+        LostTalesBlockEntities.register(modEventBus);
         LostTalesCreativeModeTabs.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.

@@ -1,4 +1,4 @@
-package ninuna.losttales.util;
+package ninuna.losttales.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;

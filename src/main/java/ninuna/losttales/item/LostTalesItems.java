@@ -10,31 +10,43 @@ import ninuna.losttales.LostTales;
 import ninuna.losttales.block.LostTalesBlocks;
 import ninuna.losttales.item.properties.LostTalesConsumables;
 import ninuna.losttales.item.properties.LostTalesFoods;
+import ninuna.losttales.item.properties.LostTalesToolMaterials;
 
 public class LostTalesItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(LostTales.MOD_ID);
 
     // Lost Tales Items.
-    public static final DeferredItem<Item> TEST_ITEM = ITEMS.registerItem(
+    public static final DeferredItem<Item> TEST_ITEM = ITEMS.registerSimpleItem(
             "example_item",
-            Item::new,
             new Item.Properties()
     );
 
     // Lost Tales Food & Drinks.
     public static final DeferredItem<Item> PLUM = ITEMS.registerSimpleItem(
             "plum",
-            new Item.Properties().food(LostTalesFoods.PLUM)
+            new Item.Properties()
+                    .food(LostTalesFoods.PLUM)
+    );
+
+    public static final DeferredItem<Item> PLUM_JUICE = ITEMS.registerSimpleItem(
+            "plum_juice",
+            new Item.Properties()
+                    .craftRemainder(Items.GLASS_BOTTLE)
+                    .food(LostTalesFoods.PEAR_JUICE, LostTalesConsumables.PEAR_JUICE)
+                    .usingConvertsTo(Items.GLASS_BOTTLE)
+                    .stacksTo(16)
     );
 
     public static final DeferredItem<Item> PEAR = ITEMS.registerSimpleItem(
             "pear",
-            new Item.Properties().food(LostTalesFoods.PEAR)
+            new Item.Properties()
+                    .food(LostTalesFoods.PEAR)
     );
 
     public static final DeferredItem<Item> PEAR_BAKED = ITEMS.registerSimpleItem(
             "pear_baked",
-            new Item.Properties().food(LostTalesFoods.PEAR_BAKED)
+            new Item.Properties()
+                    .food(LostTalesFoods.PEAR_BAKED)
     );
 
     public static final DeferredItem<Item> PEAR_JUICE = ITEMS.registerSimpleItem(
@@ -46,14 +58,31 @@ public class LostTalesItems {
                     .stacksTo(16)
     );
 
-    // Lost Tales BlockItems.
-    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
-            "example_block",
-            LostTalesBlocks.TEST_BLOCK,
+    // Lost Tales Food & Drinks BlockItems.
+    public static final DeferredItem<BlockItem> CHEESE_WHEEL = ITEMS.registerSimpleBlockItem(
+            "cheese_wheel",
+            LostTalesBlocks.CHEESE_WHEEL,
             new Item.Properties()
+                    .food(LostTalesFoods.CHEESE_WHEEL)
+                    .stacksTo(1)
     );
 
-    // Lost Tales Weapons and Tools.
+    // Lost Tales Plushie BlockItems.
+    public static final DeferredItem<BlockItem> PLUSHIE_BEAR = ITEMS.registerSimpleBlockItem(
+            "plushie_bear",
+            LostTalesBlocks.PLUSHIE_BEAR,
+            new Item.Properties()
+                    .stacksTo(1)
+    );
+
+    public static final DeferredItem<BlockItem> PLUSHIE_FOX = ITEMS.registerSimpleBlockItem(
+            "plushie_fox",
+            LostTalesBlocks.PLUSHIE_FOX,
+            new Item.Properties()
+                    .stacksTo(1)
+    );
+
+    // Lost Tales Weapons & Tools.
     public static final DeferredItem<Item> ARNORIAN_SWORD = ITEMS.registerItem(
             "arnorian_sword",
             props -> new Item(props.sword(

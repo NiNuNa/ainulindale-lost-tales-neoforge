@@ -58,10 +58,11 @@ public class LostTalesCreativeModeTabs {
             //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".plushies"))
             //Set the icon of the tab.
-            .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
+            .icon(() -> new ItemStack(LostTalesItems.PLUSHIE_BEAR.get()))
             //Add your items to the tab.
             .displayItems((params, output) -> {
-                output.accept(LostTalesItems.ARNORIAN_SWORD);
+                output.accept(LostTalesItems.PLUSHIE_BEAR);
+                output.accept(LostTalesItems.PLUSHIE_FOX);
             })
             .build()
     );
@@ -91,6 +92,8 @@ public class LostTalesCreativeModeTabs {
                 output.accept(LostTalesItems.PEAR_BAKED);
                 output.accept(LostTalesItems.PEAR_JUICE);
                 output.accept(LostTalesItems.PLUM);
+                output.accept(LostTalesItems.PLUM_JUICE);
+                output.accept(LostTalesItems.CHEESE_WHEEL);
             })
             .build()
     );

@@ -1,4 +1,4 @@
-package ninuna.losttales.item;
+package ninuna.losttales.item.properties;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ToolMaterial;

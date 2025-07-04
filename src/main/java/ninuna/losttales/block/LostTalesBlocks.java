@@ -22,6 +22,29 @@ public class LostTalesBlocks {
                     .lightLevel(state -> 7)
             ));
 
+    public static final DeferredBlock<Block> CHEESE_WHEEL = BLOCKS.register("cheese_wheel",
+            registryName -> new LostTalesCheeseWheelBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                    .destroyTime(2.0f)
+                    .explosionResistance(10.0f)
+                    .sound(SoundType.WOOL)
+            ));
+
+    // Lost Tales Plushies.
+    public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_BEAR = BLOCKS.register("plushie_bear",
+            registryName -> new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()
+            ));
+
+    public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_FOX = BLOCKS.register("plushie_fox",
+            registryName -> new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()
+            ));
+
     public static void register (IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

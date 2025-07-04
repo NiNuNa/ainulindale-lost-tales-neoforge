@@ -1,4 +1,4 @@
-package ninuna.losttales.client;
+package ninuna.losttales.client.event;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -7,12 +7,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import ninuna.losttales.LostTales;
+import ninuna.losttales.client.LostTalesKeyMappings;
 import ninuna.losttales.client.gui.screen.LostTalesQuestJournalScreen;
-import ninuna.losttales.util.LostTalesKeyMappings;
 import org.slf4j.Logger;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
-public class LostTalesClientEvents {
+public class LostTalesClientTickEvent {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
