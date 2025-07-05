@@ -12,10 +12,8 @@ import ninuna.losttales.LostTales;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 
-@EventBusSubscriber(modid = LostTales.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
 public class LostTalesKeyMappings {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     // Key mapping translation keys
     public static final String LOSTTALES_MAPPING_CATEGORY_LANG_KEY = "key.categories.losttales.mappings";
     public static final String QUEST_JOURNAL_MAPPING_LANG_KEY = "key.losttales.questjournal";
@@ -27,7 +25,7 @@ public class LostTalesKeyMappings {
 
     @SubscribeEvent
     public static void registerBindings(RegisterKeyMappingsEvent event) {
-        LOGGER.info(LostTales.MOD_ID + ": registering keybinds");
+        LostTales.LOGGER.info(LostTales.MOD_ID + ": REGISTERING KEYBINDS");
         event.register(QUEST_JOURNAL_MAPPING.get());
         event.register(TOGGLE_HUD_MAPPING.get());
     }

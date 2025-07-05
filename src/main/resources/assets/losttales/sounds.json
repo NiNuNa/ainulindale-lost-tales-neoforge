@@ -1,0 +1,18 @@
+{
+  "plushie_squeak": {
+    "sounds": [
+      {
+        "name": "losttales:block/plushie_squeak"
+      },
+      {
+        "name": "losttales:block/plushie_squeak2"
+      },
+      {
+        "name": "losttales:block/plushie_squeak3"
+      },
+      {
+        "name": "losttales:block/plushie_squeak4"
+      }
+    ]
+  }
+}

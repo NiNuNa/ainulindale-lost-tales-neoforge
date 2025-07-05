@@ -3,6 +3,7 @@ package ninuna.losttales.item;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -15,21 +16,17 @@ import ninuna.losttales.item.properties.LostTalesToolMaterials;
 public class LostTalesItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(LostTales.MOD_ID);
 
-    // Lost Tales Items.
-    public static final DeferredItem<Item> TEST_ITEM = ITEMS.registerSimpleItem(
-            "example_item",
-            new Item.Properties()
-    );
-
     // Lost Tales Food & Drinks.
-    public static final DeferredItem<Item> PLUM = ITEMS.registerSimpleItem(
+    public static final DeferredItem<Item> PLUM = ITEMS.registerItem(
             "plum",
+            LostTalesTooltipItem::new,
             new Item.Properties()
                     .food(LostTalesFoods.PLUM)
     );
 
-    public static final DeferredItem<Item> PLUM_JUICE = ITEMS.registerSimpleItem(
+    public static final DeferredItem<Item> PLUM_JUICE = ITEMS.registerItem(
             "plum_juice",
+            LostTalesTooltipItem::new,
             new Item.Properties()
                     .craftRemainder(Items.GLASS_BOTTLE)
                     .food(LostTalesFoods.PEAR_JUICE, LostTalesConsumables.PEAR_JUICE)
@@ -37,20 +34,23 @@ public class LostTalesItems {
                     .stacksTo(16)
     );
 
-    public static final DeferredItem<Item> PEAR = ITEMS.registerSimpleItem(
+    public static final DeferredItem<Item> PEAR = ITEMS.registerItem(
             "pear",
+            LostTalesTooltipItem::new,
             new Item.Properties()
                     .food(LostTalesFoods.PEAR)
     );
 
-    public static final DeferredItem<Item> PEAR_BAKED = ITEMS.registerSimpleItem(
+    public static final DeferredItem<Item> PEAR_BAKED = ITEMS.registerItem(
             "pear_baked",
+            LostTalesTooltipItem::new,
             new Item.Properties()
                     .food(LostTalesFoods.PEAR_BAKED)
     );
 
-    public static final DeferredItem<Item> PEAR_JUICE = ITEMS.registerSimpleItem(
+    public static final DeferredItem<Item> PEAR_JUICE = ITEMS.registerItem(
             "pear_juice",
+            LostTalesTooltipItem::new,
             new Item.Properties()
                     .craftRemainder(Items.GLASS_BOTTLE)
                     .food(LostTalesFoods.PEAR_JUICE, LostTalesConsumables.PEAR_JUICE)
@@ -73,6 +73,7 @@ public class LostTalesItems {
             LostTalesBlocks.PLUSHIE_BEAR,
             new Item.Properties()
                     .stacksTo(1)
+                    .rarity(Rarity.UNCOMMON)
     );
 
     public static final DeferredItem<BlockItem> PLUSHIE_FOX = ITEMS.registerSimpleBlockItem(
@@ -80,6 +81,7 @@ public class LostTalesItems {
             LostTalesBlocks.PLUSHIE_FOX,
             new Item.Properties()
                     .stacksTo(1)
+                    .rarity(Rarity.UNCOMMON)
     );
 
     // Lost Tales Weapons & Tools.

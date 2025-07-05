@@ -11,7 +11,7 @@ import ninuna.losttales.client.LostTalesKeyMappings;
 import ninuna.losttales.client.gui.screen.LostTalesQuestJournalScreen;
 import org.slf4j.Logger;
 
-@EventBusSubscriber(modid = LostTales.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
 public class LostTalesClientTickEvent {
     private static final Logger LOGGER = LogUtils.getLogger();
 

@@ -35,7 +35,7 @@ public class LostTalesCreativeModeTabs {
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
             //Add your items to the tab.
             .displayItems((params, output) -> {
-                output.accept(LostTalesItems.ARNORIAN_SWORD);
+                //Todo...
             })
             .build()
     );
@@ -48,7 +48,7 @@ public class LostTalesCreativeModeTabs {
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
             //Add your items to the tab.
             .displayItems((params, output) -> {
-                output.accept(LostTalesItems.ARNORIAN_SWORD);
+                //Todo...
             })
             .build()
     );
@@ -75,7 +75,7 @@ public class LostTalesCreativeModeTabs {
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
             //Add your items to the tab.
             .displayItems((params, output) -> {
-                output.accept(LostTalesItems.ARNORIAN_SWORD);
+                //Todo...
             })
             .build()
     );

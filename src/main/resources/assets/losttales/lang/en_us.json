@@ -29,5 +29,14 @@
   "key.losttales.togglehud": "Toggle HUD",
 
   "#": "Quest Journal",
-  "questjournal.title": "Quest Journal"
+  "questjournal.title": "Quest Journal",
+
+  "#": "Tooltips",
+  "tooltip.losttales.open": "§7Hold §9[SHIFT] §r§7to reveal more item details.",
+  "tooltip.losttales.pear.1": "TODO : PEAR TEXT",
+  "tooltip.losttales.pear.2": "TODO : PEAR TEXT",
+  "tooltip.losttales.pear_baked.1": "TODO : BAKED PEAR TEXT",
+  "tooltip.losttales.pear_baked.2": "TODO : BAKED PEAR TEXT",
+  "tooltip.losttales.pear_juice.1": "TODO: PEAR JUICE TEXT",
+  "tooltip.losttales.pear_juice.2": "TODO: PEAR JUICE TEXT"
 }
