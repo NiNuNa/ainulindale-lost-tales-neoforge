@@ -16,8 +16,8 @@ import org.slf4j.Logger;
 public class LostTalesKeyMappings {
     // Key mapping translation keys
     public static final String LOSTTALES_MAPPING_CATEGORY_LANG_KEY = "key.categories.losttales.mappings";
-    public static final String QUEST_JOURNAL_MAPPING_LANG_KEY = "key.losttales.questjournal";
-    public static final String TOGGLE_HUD_MAPPING_LANG_KEY = "key.losttales.togglehud";
+    public static final String QUEST_JOURNAL_MAPPING_LANG_KEY = "key.losttales.questJournal";
+    public static final String TOGGLE_HUD_MAPPING_LANG_KEY = "key.losttales.toggleHud";
 
     // Key mappings
     public static final Lazy<KeyMapping> QUEST_JOURNAL_MAPPING = Lazy.of(new KeyMapping(QUEST_JOURNAL_MAPPING_LANG_KEY, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_J, LOSTTALES_MAPPING_CATEGORY_LANG_KEY));

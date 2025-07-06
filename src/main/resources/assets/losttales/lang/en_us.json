@@ -5,7 +5,8 @@
   "itemGroup.losttales.equipment": "Lost Tales - Equipment",
   "itemGroup.losttales.plushies": "Lost Tales - Plushies",
   "itemGroup.losttales.community": "Lost Tales - Community",
-  "itemGroup.losttales.foodanddrinks": "Lost Tales - Food & Drinks",
+  "itemGroup.losttales.foodAndDrinks": "Lost Tales - Food & Drinks",
+  "itemGroup.losttales.decorativeBlocks": "Lost Tales - Decorative Blocks",
 
   "#": "Items",
   "item.losttales.arnorian_sword": "Arnorian Sword",
@@ -25,8 +26,8 @@
 
   "#": "Keybinds",
   "key.categories.losttales.mappings": "Ainulindalë: Lost Tales",
-  "key.losttales.questjournal": "Open Quest Journal",
-  "key.losttales.togglehud": "Toggle HUD",
+  "key.losttales.questJournal": "Open Quest Journal",
+  "key.losttales.toggleHud": "Toggle HUD",
 
   "#": "Quest Journal",
   "questjournal.title": "Quest Journal",

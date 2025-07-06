@@ -16,7 +16,10 @@ import ninuna.losttales.item.properties.LostTalesToolMaterials;
 public class LostTalesItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(LostTales.MOD_ID);
 
-    // Lost Tales Food & Drinks.
+    // Lost Tales Urns & Pots
+
+
+    // Lost Tales Food & Drinks
     public static final DeferredItem<Item> PLUM = ITEMS.registerItem(
             "plum",
             LostTalesTooltipItem::new,
@@ -58,7 +61,7 @@ public class LostTalesItems {
                     .stacksTo(16)
     );
 
-    // Lost Tales Food & Drinks BlockItems.
+    // Lost Tales Food & Drinks BlockItems
     public static final DeferredItem<BlockItem> CHEESE_WHEEL = ITEMS.registerSimpleBlockItem(
             "cheese_wheel",
             LostTalesBlocks.CHEESE_WHEEL,
@@ -67,7 +70,7 @@ public class LostTalesItems {
                     .stacksTo(1)
     );
 
-    // Lost Tales Plushie BlockItems.
+    // Lost Tales Plushie BlockItems
     public static final DeferredItem<BlockItem> PLUSHIE_BEAR = ITEMS.registerSimpleBlockItem(
             "plushie_bear",
             LostTalesBlocks.PLUSHIE_BEAR,
@@ -84,7 +87,7 @@ public class LostTalesItems {
                     .rarity(Rarity.UNCOMMON)
     );
 
-    // Lost Tales Weapons & Tools.
+    // Lost Tales Weapons & Tools
     public static final DeferredItem<Item> ARNORIAN_SWORD = ITEMS.registerItem(
             "arnorian_sword",
             props -> new Item(props.sword(

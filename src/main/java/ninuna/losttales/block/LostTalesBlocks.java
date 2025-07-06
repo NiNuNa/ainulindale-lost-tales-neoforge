@@ -13,35 +13,35 @@ import ninuna.losttales.LostTales;
 public class LostTalesBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(LostTales.MOD_ID);
 
-    public static final DeferredBlock<Block> TEST_BLOCK = BLOCKS.register("test_block",
-            registryName -> new Block(BlockBehaviour.Properties.of()
-                    .setId(ResourceKey.create(Registries.BLOCK, registryName))
-                    .destroyTime(2.0f)
-                    .explosionResistance(10.0f)
-                    .sound(SoundType.GRAVEL)
-                    .lightLevel(state -> 7)
-            ));
-
     public static final DeferredBlock<Block> CHEESE_WHEEL = BLOCKS.register("cheese_wheel",
             registryName -> new LostTalesCheeseWheelBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, registryName))
                     .destroyTime(2.0f)
-                    .explosionResistance(10.0f)
                     .sound(SoundType.WOOL)
             ));
 
-    // Lost Tales Plushies.
+    // Lost Tales Plushies
     public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_BEAR = BLOCKS.register("plushie_bear",
             registryName -> new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, registryName))
                     .sound(SoundType.WOOL)
                     .noOcclusion()
+                    .destroyTime(0.5F)
             ));
 
     public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_FOX = BLOCKS.register("plushie_fox",
             registryName -> new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, registryName))
                     .sound(SoundType.WOOL)
+                    .noOcclusion()
+                    .destroyTime(0.5F)
+            ));
+
+    // Lost Tales Urns and Pots
+    public static final DeferredBlock<LostTalesUrnBlock> TEST_URN = BLOCKS.register("test_urn",
+            registryName -> new LostTalesUrnBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                    .sound(SoundType.COPPER)
                     .noOcclusion()
             ));
 

@@ -5,21 +5,21 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import ninuna.losttales.LostTales;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animatable.processing.AnimationTest;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlockEntity {
-    private boolean squeaked = false;
     private float rotation = 0.0f;
     private final String path;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    protected static final RawAnimation SQUEAK_ANIM = RawAnimation.begin().thenPlay("squeak");
 
     public LostTalesPlushieBlockEntity(BlockPos pos, BlockState blockState) {
         super(LostTalesBlockEntities.PLUSHIE.get(), pos, blockState);
@@ -28,22 +28,20 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this::squeakAnimationController));
-    }
-
-    protected PlayState squeakAnimationController(AnimationTest<LostTalesPlushieBlockEntity> state) {
-        if (this.isSqueaked()) {
-            state.resetCurrentAnimation();
-            this.setSqueaked(false);
-            return state.setAndContinue(RawAnimation.begin().thenPlay("squeak"));
-        } else {
-            return PlayState.CONTINUE;
-        }
+        controllers.add(new AnimationController<>("squeakAnimationController", animationTest -> PlayState.STOP).triggerableAnim("squeak", SQUEAK_ANIM));
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    public void playSqueakAnimation() {
+        if (!this.level.isClientSide) {
+            LostTales.LOGGER.info("SQUEAK!");
+            this.stopTriggeredAnim("squeakAnimationController", "squeak");
+            this.triggerAnim("squeakAnimationController", "squeak");
+        }
     }
 
     @Override
@@ -72,14 +70,6 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
 
     public float getRotation() {
         return this.rotation;
-    }
-
-    public boolean isSqueaked() {
-        return squeaked;
-    }
-
-    public void setSqueaked(boolean squeaked) {
-        this.squeaked = squeaked;
     }
 
     public String getPath() {

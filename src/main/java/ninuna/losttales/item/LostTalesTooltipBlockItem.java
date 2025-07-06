@@ -1,18 +1,19 @@
 package ninuna.losttales.item;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.block.Block;
 import ninuna.losttales.util.LostTalesItemUtil;
 
 import java.util.function.Consumer;
 
-public class LostTalesTooltipItem extends Item {
+public class LostTalesTooltipBlockItem extends BlockItem {
 
-    public LostTalesTooltipItem(Properties properties) {
-        super(properties);
+    public LostTalesTooltipBlockItem(Block block, Properties properties) {
+        super(block, properties);
     }
 
     @Override

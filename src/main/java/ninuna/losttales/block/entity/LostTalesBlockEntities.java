@@ -20,6 +20,14 @@ public class LostTalesBlockEntities {
             )
     );
 
+    public static final Supplier<BlockEntityType<LostTalesUrnBlockEntity>> URN = BLOCK_ENTITY_TYPES.register(
+            "urn", () -> new BlockEntityType<>(
+                    LostTalesUrnBlockEntity::new,
+                    false,
+                    LostTalesBlocks.TEST_URN.get()
+            )
+    );
+
     public static void register (IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
     }

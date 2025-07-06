@@ -4,22 +4,28 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import ninuna.losttales.LostTales;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import ninuna.losttales.block.entity.LostTalesPlushieBlockEntity;
 import ninuna.losttales.sound.LostTalesSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
 public class LostTalesPlushieBlock extends BaseEntityBlock {
     public static final MapCodec<LostTalesPlushieBlock> CODEC = simpleCodec(LostTalesPlushieBlock::new);
+    private static final VoxelShape SHAPE = Block.column(8.5, 0.0F, 12.0F);
 
     public LostTalesPlushieBlock(Properties properties) {
         super(properties);
@@ -28,6 +34,11 @@ public class LostTalesPlushieBlock extends BaseEntityBlock {
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -43,22 +54,49 @@ public class LostTalesPlushieBlock extends BaseEntityBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity && placer != null) {
+            // Get and set plushie rotation
             int rotationIndex = this.getSnappedRotationIndex(placer);
             blockEntity.setRotation(rotationIndex * 22.5f);
+            // Play squeak animation
+            blockEntity.playSqueakAnimation();
         }
     }
 
-    // Todo: Make plushies a little bit bouncy
+    @Override
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
+        if (fallDistance > 0.4 && !entity.isSteppingCarefully() && level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity) {
+            blockEntity.playSqueakAnimation();
+            level.playSound(entity, pos, LostTalesSoundEvents.PLUSHIE_SQUEAK.value(), SoundSource.BLOCKS, 0.5f, 1.0f);
+            entity.causeFallDamage(fallDistance, 0.8F, entity.damageSources().fall());
+        } else {
+            super.fallOn(level, state, pos, entity, fallDistance);
+        }
+    }
+
+    @Override
+    public void updateEntityMovementAfterFallOn(BlockGetter level, Entity entity) {
+        if (entity.isSuppressingBounce()) {
+            super.updateEntityMovementAfterFallOn(level, entity);
+        } else {
+            this.bounceUp(entity);
+        }
+    }
+
+    private void bounceUp(Entity entity) {
+        Vec3 vec3 = entity.getDeltaMovement();
+        if (vec3.y < 0.0F) {
+            double d = entity instanceof LivingEntity ? 1.0F : 0.8F;
+            entity.setDeltaMovement(vec3.x, -vec3.y * 0.6F * d, vec3.z);
+        }
+    }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity) {
-            //Todo: Remove this logger.
-            LostTales.LOGGER.info("This: " + blockEntity.getRotation());
-            // Play squeak sound effect
-            level.playLocalSound(player, LostTalesSoundEvents.PLUSHIE_SQUEAK.value(), SoundSource.BLOCKS, 0.5f, 1.0f);
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity) {
             // Play squeak animation
-            blockEntity.setSqueaked(true);
+            blockEntity.playSqueakAnimation();
+            // Play squeak sound effect
+            level.playSound(null, pos, LostTalesSoundEvents.PLUSHIE_SQUEAK.value(), SoundSource.BLOCKS, 0.5f, 1.0f);
         }
         return InteractionResult.PASS;
     }
