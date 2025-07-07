@@ -1,4 +1,4 @@
-package ninuna.losttales.item;
+package ninuna.losttales.item.custom;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;

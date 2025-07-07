@@ -21,9 +21,9 @@
   "block.losttales.cheese_wheel": "Cheese Wheel",
 
   "#": "Plushies",
-  "block.losttales.plushie_bear": "Bear Plushie",
-  "block.losttales.plushie_fox": "Fox Plushie",
-  "block.losttales.plushie_gandalf": "Gandalf Plushie",
+  "item.losttales.plushie_bear": "Bear Plushie",
+  "item.losttales.plushie_fox": "Fox Plushie",
+  "item.losttales.plushie_gandalf": "Gandalf Plushie",
 
   "#": "Keybinds",
   "key.categories.losttales.mappings": "Ainulindalë: Lost Tales",
@@ -35,10 +35,10 @@
 
   "#": "Tooltips",
   "tooltip.losttales.open": "§7Hold §9[SHIFT] §r§7to reveal more item details.",
-  "tooltip.losttales.pear.1": "TODO : PEAR TEXT",
-  "tooltip.losttales.pear.2": "TODO : PEAR TEXT",
-  "tooltip.losttales.pear_baked.1": "TODO : BAKED PEAR TEXT",
-  "tooltip.losttales.pear_baked.2": "TODO : BAKED PEAR TEXT",
-  "tooltip.losttales.pear_juice.1": "TODO: PEAR JUICE TEXT",
-  "tooltip.losttales.pear_juice.2": "TODO: PEAR JUICE TEXT"
+  "tooltip.losttales.pear": "TODO : PEAR TEXT",
+  "tooltip.losttales.pear_baked": "TODO : BAKED PEAR TEXT",
+  "tooltip.losttales.pear_juice": "TODO: PEAR JUICE TEXT",
+  "tooltip.losttales.plushie_bear": "Carefully hand-stitched in hearth-lit cottages, this loyal companion provides warmth and comfort through the coldest nights",
+  "tooltip.losttales.plushie_fox": "TODO: PLUSHIE FOX TEXT",
+  "tooltip.losttales.plushie_gandalf": "TODO: PLUSHIE GANDALF TEXT"
 }

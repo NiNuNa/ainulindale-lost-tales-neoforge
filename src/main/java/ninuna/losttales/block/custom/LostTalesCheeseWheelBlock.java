@@ -1,4 +1,4 @@
-package ninuna.losttales.block;
+package ninuna.losttales.block.custom;
 
 import net.minecraft.world.level.block.CakeBlock;
 

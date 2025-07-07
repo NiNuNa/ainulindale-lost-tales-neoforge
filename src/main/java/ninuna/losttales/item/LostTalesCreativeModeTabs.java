@@ -15,11 +15,8 @@ public class LostTalesCreativeModeTabs {
 
     // Lost Tales Weapons Creative Mode Tab
     public static final Supplier<CreativeModeTab> WEAPONS_TAB = CREATIVE_MODE_TABS.register("weapons", () -> CreativeModeTab.builder()
-            //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".weapons"))
-            //Set the icon of the tab.
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
-            //Add your items to the tab.
             .displayItems((params, output) -> {
                 output.accept(LostTalesItems.ARNORIAN_SWORD);
                 output.accept(LostTalesItems.ARNORIAN_DAGGER);
@@ -29,11 +26,8 @@ public class LostTalesCreativeModeTabs {
 
     // Lost Tales Equipment Creative Mode Tab
     public static final Supplier<CreativeModeTab> EQUIPMENT_TAB = CREATIVE_MODE_TABS.register("equipment", () -> CreativeModeTab.builder()
-            //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".equipment"))
-            //Set the icon of the tab.
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
-            //Add your items to the tab.
             .displayItems((params, output) -> {
                 //Todo...
             })
@@ -42,11 +36,8 @@ public class LostTalesCreativeModeTabs {
 
     // Lost Tales Tools Creative Mode Tab
     public static final Supplier<CreativeModeTab> TOOLS_TAB = CREATIVE_MODE_TABS.register("tools", () -> CreativeModeTab.builder()
-            //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".tools"))
-            //Set the icon of the tab.
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
-            //Add your items to the tab.
             .displayItems((params, output) -> {
                 //Todo...
             })
@@ -55,11 +46,8 @@ public class LostTalesCreativeModeTabs {
 
     // Lost Tales Plushies Creative Mode Tab
     public static final Supplier<CreativeModeTab> PLUSHIES_TAB = CREATIVE_MODE_TABS.register("plushies", () -> CreativeModeTab.builder()
-            //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".plushies"))
-            //Set the icon of the tab.
             .icon(() -> new ItemStack(LostTalesItems.PLUSHIE_BEAR.get()))
-            //Add your items to the tab.
             .displayItems((params, output) -> {
                 output.accept(LostTalesItems.PLUSHIE_BEAR);
                 output.accept(LostTalesItems.PLUSHIE_FOX);
@@ -70,11 +58,8 @@ public class LostTalesCreativeModeTabs {
 
     // Lost Tales Community Creative Mode Tab
     public static final Supplier<CreativeModeTab> COMMUNITY_TAB = CREATIVE_MODE_TABS.register("community", () -> CreativeModeTab.builder()
-            //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".community"))
-            //Set the icon of the tab.
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
-            //Add your items to the tab.
             .displayItems((params, output) -> {
                 //Todo...
             })
@@ -83,11 +68,8 @@ public class LostTalesCreativeModeTabs {
 
     // Lost Tales Food & Drinks Creative Mode Tab
     public static final Supplier<CreativeModeTab> FOODANDDRINKS_TAB = CREATIVE_MODE_TABS.register("food_and_drinks", () -> CreativeModeTab.builder()
-            //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".foodAndDrinks"))
-            //Set the icon of the tab.
             .icon(() -> new ItemStack(LostTalesItems.PEAR.get()))
-            //Add your items to the tab.
             .displayItems((params, output) -> {
                 output.accept(LostTalesItems.PEAR);
                 output.accept(LostTalesItems.PEAR_BAKED);
@@ -101,12 +83,10 @@ public class LostTalesCreativeModeTabs {
 
     // Lost Tales Decorative Blocks Creative Mode Tab
     public static final Supplier<CreativeModeTab> DECORATIVEBLOCKS_TAB = CREATIVE_MODE_TABS.register("decorative_blocks", () -> CreativeModeTab.builder()
-            //Set the title of the tab. Don't forget to add a translation!
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".decorativeBlocks"))
-            //Set the icon of the tab.
             .icon(() -> new ItemStack(LostTalesItems.PEAR.get()))
-            //Add your items to the tab.
             .displayItems((params, output) -> {
+                output.accept(LostTalesItems.TEST_URN);
             })
             .build()
     );

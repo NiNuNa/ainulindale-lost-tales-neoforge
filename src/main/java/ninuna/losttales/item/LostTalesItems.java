@@ -1,5 +1,7 @@
 package ninuna.losttales.item;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -9,6 +11,9 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import ninuna.losttales.LostTales;
 import ninuna.losttales.block.LostTalesBlocks;
+import ninuna.losttales.item.custom.LostTalesPlushieItem;
+import ninuna.losttales.item.custom.LostTalesTooltipBlockItem;
+import ninuna.losttales.item.custom.LostTalesTooltipItem;
 import ninuna.losttales.item.properties.LostTalesConsumables;
 import ninuna.losttales.item.properties.LostTalesFoods;
 import ninuna.losttales.item.properties.LostTalesToolMaterials;
@@ -17,7 +22,15 @@ public class LostTalesItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(LostTales.MOD_ID);
 
     // Lost Tales Urns & Pots
-
+    public static final DeferredItem<BlockItem> TEST_URN = ITEMS.register(
+            "test_urn",
+            registryName ->
+                    new LostTalesPlushieItem(LostTalesBlocks.TEST_URN.get(),
+                            new Item.Properties()
+                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
+                                    .stacksTo(16)
+                    )
+    );
 
     // Lost Tales Food & Drinks
     public static final DeferredItem<Item> PLUM = ITEMS.registerItem(
@@ -62,37 +75,49 @@ public class LostTalesItems {
     );
 
     // Lost Tales Food & Drinks BlockItems
-    public static final DeferredItem<BlockItem> CHEESE_WHEEL = ITEMS.registerSimpleBlockItem(
+    public static final DeferredItem<BlockItem> CHEESE_WHEEL = ITEMS.register(
             "cheese_wheel",
-            LostTalesBlocks.CHEESE_WHEEL,
-            new Item.Properties()
-                    .food(LostTalesFoods.CHEESE_WHEEL)
-                    .stacksTo(1)
+            registryName ->
+                    new LostTalesTooltipBlockItem(LostTalesBlocks.CHEESE_WHEEL.get(),
+                            new Item.Properties()
+                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
+                                    .food(LostTalesFoods.CHEESE_WHEEL)
+                                    .stacksTo(1)
+                    )
     );
 
     // Lost Tales Plushie BlockItems
-    public static final DeferredItem<BlockItem> PLUSHIE_BEAR = ITEMS.registerSimpleBlockItem(
+    public static final DeferredItem<BlockItem> PLUSHIE_BEAR = ITEMS.register(
             "plushie_bear",
-            LostTalesBlocks.PLUSHIE_BEAR,
-            new Item.Properties()
-                    .stacksTo(1)
-                    .rarity(Rarity.UNCOMMON)
+            registryName ->
+                    new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_BEAR.get(),
+                            new Item.Properties()
+                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
+                                    .stacksTo(1)
+                                    .rarity(Rarity.UNCOMMON)
+                    )
     );
 
-    public static final DeferredItem<BlockItem> PLUSHIE_FOX = ITEMS.registerSimpleBlockItem(
+    public static final DeferredItem<BlockItem> PLUSHIE_FOX = ITEMS.register(
             "plushie_fox",
-            LostTalesBlocks.PLUSHIE_FOX,
-            new Item.Properties()
-                    .stacksTo(1)
-                    .rarity(Rarity.UNCOMMON)
+            registryName ->
+                    new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_FOX.get(),
+                            new Item.Properties()
+                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
+                                    .stacksTo(1)
+                                    .rarity(Rarity.UNCOMMON)
+                    )
     );
 
-    public static final DeferredItem<BlockItem> PLUSHIE_GANDALF = ITEMS.registerSimpleBlockItem(
+    public static final DeferredItem<BlockItem> PLUSHIE_GANDALF = ITEMS.register(
             "plushie_gandalf",
-            LostTalesBlocks.PLUSHIE_GANDALF,
-            new Item.Properties()
-                    .stacksTo(1)
-                    .rarity(Rarity.RARE)
+            registryName ->
+                    new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_GANDALF.get(),
+                            new Item.Properties()
+                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
+                                    .stacksTo(1)
+                                    .rarity(Rarity.RARE)
+            )
     );
 
     // Lost Tales Weapons & Tools
@@ -106,7 +131,8 @@ public class LostTalesItems {
                     // The type-specific attack speed modifier. The player has a default attack speed of 4, so to get to the desired
                     // value of 1.6f, we use -2.4f. -2.4f for swords, -3f for shovels, -2.8f for pickaxes, varying for axes and hoes.
                     -2.4f
-            )));
+            ))
+    );
 
     public static final DeferredItem<Item> ARNORIAN_DAGGER = ITEMS.registerItem(
             "arnorian_dagger",
@@ -118,7 +144,8 @@ public class LostTalesItems {
                     // The type-specific attack speed modifier. The player has a default attack speed of 4, so to get to the desired
                     // value of 1.6f, we use -2.4f. -2.4f for swords, -3f for shovels, -2.8f for pickaxes, varying for axes and hoes.
                     -2.4f
-            )));
+            ))
+    );
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -11,11 +11,8 @@ import java.util.function.Consumer;
 public class LostTalesItemUtil {
 
     public static void addHoverText(ItemStack stack, Consumer<Component> tooltipAdder) {
-        tooltipAdder.accept(Component.empty());
-
         if (Screen.hasShiftDown()) {
-            tooltipAdder.accept(Component.translatable("tooltip." + LostTales.MOD_ID + "." + stack.getItemName().toString().substring(32, stack.getItemName().toString().length() - 11) + ".1").withStyle(ChatFormatting.GRAY));
-            tooltipAdder.accept(Component.translatable("tooltip." + LostTales.MOD_ID + "." + stack.getItemName().toString().substring(32, stack.getItemName().toString().length() - 11) + ".2").withStyle(ChatFormatting.GRAY));
+            tooltipAdder.accept(Component.translatable("tooltip." + LostTales.MOD_ID + "." + stack.getItemName().toString().substring(32, stack.getItemName().toString().length() - 11)).withStyle(ChatFormatting.GRAY));
         } else {
             tooltipAdder.accept(Component.translatable("tooltip." + LostTales.MOD_ID + ".open"));
         }

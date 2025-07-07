@@ -33,9 +33,9 @@ public class LostTales {
         modEventBus.addListener(this::commonSetup);
 
         LostTalesSoundEvents.register(modEventBus);
-        LostTalesItems.register(modEventBus);
         LostTalesBlocks.register(modEventBus);
         LostTalesBlockEntities.register(modEventBus);
+        LostTalesItems.register(modEventBus);
         LostTalesCreativeModeTabs.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.

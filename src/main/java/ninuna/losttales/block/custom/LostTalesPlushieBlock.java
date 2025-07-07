@@ -1,4 +1,4 @@
-package ninuna.losttales.block;
+package ninuna.losttales.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -24,8 +24,9 @@ import ninuna.losttales.sound.LostTalesSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
 public class LostTalesPlushieBlock extends BaseEntityBlock {
-    public static final MapCodec<LostTalesPlushieBlock> CODEC = simpleCodec(LostTalesPlushieBlock::new);
     private static final VoxelShape SHAPE = Block.column(8.5, 0.0F, 12.0F);
+
+    public static final MapCodec<LostTalesPlushieBlock> CODEC = simpleCodec(LostTalesPlushieBlock::new);
 
     public LostTalesPlushieBlock(Properties properties) {
         super(properties);
@@ -57,17 +58,18 @@ public class LostTalesPlushieBlock extends BaseEntityBlock {
             // Get and set plushie rotation
             int rotationIndex = this.getSnappedRotationIndex(placer);
             blockEntity.setRotation(rotationIndex * 22.5f);
-            // Play squeak animation
-            blockEntity.playSqueakAnimation();
+            if (!level.isClientSide()) {
+                // Play squeak animation
+                blockEntity.playSqueakAnimation();
+            }
         }
     }
 
     @Override
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
-        if (fallDistance > 0.4 && !entity.isSteppingCarefully() && level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity) {
-            blockEntity.playSqueakAnimation();
-            level.playSound(entity, pos, LostTalesSoundEvents.PLUSHIE_SQUEAK.value(), SoundSource.BLOCKS, 0.5f, 1.0f);
-            entity.causeFallDamage(fallDistance, 0.8F, entity.damageSources().fall());
+        if (!level.isClientSide() && fallDistance > 0.4 && !entity.isSteppingCarefully() && level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity) {
+            this.squeak(blockEntity, level, pos);
+            super.fallOn(level, state, pos, entity, fallDistance * (double) 0.8F);
         } else {
             super.fallOn(level, state, pos, entity, fallDistance);
         }
@@ -84,21 +86,27 @@ public class LostTalesPlushieBlock extends BaseEntityBlock {
 
     private void bounceUp(Entity entity) {
         Vec3 vec3 = entity.getDeltaMovement();
-        if (vec3.y < 0.0F) {
-            double d = entity instanceof LivingEntity ? 1.0F : 0.8F;
-            entity.setDeltaMovement(vec3.x, -vec3.y * 0.6F * d, vec3.z);
+        if (vec3.y <(double) 0.0F) {
+            double d = entity instanceof LivingEntity ? (double) 1.0F : 0.8F;
+            entity.setDeltaMovement(vec3.x, -vec3.y * (double) 0.6F * d, vec3.z);
         }
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity) {
+            this.squeak(blockEntity, level, pos);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    private void squeak(LostTalesPlushieBlockEntity blockEntity, Level level, BlockPos pos) {
+        if (!level.isClientSide()) {
             // Play squeak animation
             blockEntity.playSqueakAnimation();
             // Play squeak sound effect
-            level.playSound(null, pos, LostTalesSoundEvents.PLUSHIE_SQUEAK.value(), SoundSource.BLOCKS, 0.5f, 1.0f);
+            level.playSound(null, pos, LostTalesSoundEvents.PLUSHIE_SQUEAK.value(), SoundSource.BLOCKS, 0.2f, 1.0f);
         }
-        return InteractionResult.PASS;
     }
 
     private int getSnappedRotationIndex(LivingEntity placer) {

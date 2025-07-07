@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "losttales:block/plushie_bear" }
+    "": {
+      "model": "losttales:block/plushie_bear" }
   }
 }
