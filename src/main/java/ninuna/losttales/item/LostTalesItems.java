@@ -87,6 +87,14 @@ public class LostTalesItems {
                     .rarity(Rarity.UNCOMMON)
     );
 
+    public static final DeferredItem<BlockItem> PLUSHIE_GANDALF = ITEMS.registerSimpleBlockItem(
+            "plushie_gandalf",
+            LostTalesBlocks.PLUSHIE_GANDALF,
+            new Item.Properties()
+                    .stacksTo(1)
+                    .rarity(Rarity.RARE)
+    );
+
     // Lost Tales Weapons & Tools
     public static final DeferredItem<Item> ARNORIAN_SWORD = ITEMS.registerItem(
             "arnorian_sword",

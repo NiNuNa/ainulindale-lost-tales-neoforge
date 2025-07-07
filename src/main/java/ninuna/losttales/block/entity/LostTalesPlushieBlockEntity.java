@@ -3,6 +3,8 @@ package ninuna.losttales.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import ninuna.losttales.LostTales;
@@ -37,10 +39,11 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
     }
 
     public void playSqueakAnimation() {
-        if (!this.level.isClientSide) {
-            LostTales.LOGGER.info("SQUEAK!");
+        if (level instanceof ServerLevel) {
+            LostTales.LOGGER.info("Squeaked!");
             this.stopTriggeredAnim("squeakAnimationController", "squeak");
             this.triggerAnim("squeakAnimationController", "squeak");
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
         }
     }
 

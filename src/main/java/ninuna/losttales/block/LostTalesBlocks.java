@@ -37,6 +37,14 @@ public class LostTalesBlocks {
                     .destroyTime(0.5F)
             ));
 
+    public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_GANDALF = BLOCKS.register("plushie_gandalf",
+            registryName -> new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()
+                    .destroyTime(0.5F)
+            ));
+
     // Lost Tales Urns and Pots
     public static final DeferredBlock<LostTalesUrnBlock> TEST_URN = BLOCKS.register("test_urn",
             registryName -> new LostTalesUrnBlock(BlockBehaviour.Properties.of()

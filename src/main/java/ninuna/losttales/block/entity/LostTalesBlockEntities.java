@@ -16,7 +16,7 @@ public class LostTalesBlockEntities {
             "plushie", () -> new BlockEntityType<>(
                     LostTalesPlushieBlockEntity::new,
                     false,
-                    LostTalesBlocks.PLUSHIE_BEAR.get(), LostTalesBlocks.PLUSHIE_FOX.get()
+                    LostTalesBlocks.PLUSHIE_BEAR.get(), LostTalesBlocks.PLUSHIE_FOX.get(), LostTalesBlocks.PLUSHIE_GANDALF.get()
             )
     );
 

@@ -63,6 +63,7 @@ public class LostTalesCreativeModeTabs {
             .displayItems((params, output) -> {
                 output.accept(LostTalesItems.PLUSHIE_BEAR);
                 output.accept(LostTalesItems.PLUSHIE_FOX);
+                output.accept(LostTalesItems.PLUSHIE_GANDALF);
             })
             .build()
     );
