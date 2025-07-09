@@ -25,13 +25,19 @@
   "item.losttales.plushie_fox": "Fox Plushie",
   "item.losttales.plushie_gandalf": "Gandalf Plushie",
 
+  "#": "Urns",
+  "item.losttales.urn_amphora": "Amphora",
+
+  "#": "Containers",
+  "container.losttales.urn": "Urn Container?",
+
   "#": "Keybinds",
   "key.categories.losttales.mappings": "Ainulindalë: Lost Tales",
   "key.losttales.questJournal": "Open Quest Journal",
   "key.losttales.toggleHud": "Toggle HUD",
 
   "#": "Quest Journal",
-  "questjournal.title": "Quest Journal",
+  "questJournal.title": "Quest Journal",
 
   "#": "Tooltips",
   "tooltip.losttales.open": "§7Hold §9[SHIFT] §r§7to reveal more item details.",

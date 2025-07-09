@@ -24,7 +24,7 @@ public class LostTalesBlockEntities {
             "urn", () -> new BlockEntityType<>(
                     LostTalesUrnBlockEntity::new,
                     false,
-                    LostTalesBlocks.TEST_URN.get()
+                    LostTalesBlocks.URN_AMPHORA.get()
             )
     );
 

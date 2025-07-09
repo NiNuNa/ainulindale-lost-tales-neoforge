@@ -86,7 +86,7 @@ public class LostTalesCreativeModeTabs {
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".decorativeBlocks"))
             .icon(() -> new ItemStack(LostTalesItems.PEAR.get()))
             .displayItems((params, output) -> {
-                output.accept(LostTalesItems.TEST_URN);
+                output.accept(LostTalesItems.URN_AMPHORA);
             })
             .build()
     );

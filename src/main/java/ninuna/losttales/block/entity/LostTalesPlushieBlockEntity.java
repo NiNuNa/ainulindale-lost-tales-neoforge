@@ -3,10 +3,15 @@ package ninuna.losttales.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import ninuna.losttales.LostTales;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -16,11 +21,11 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlockEntity {
-    private float rotation = 0.0f;
+    private float rotation;
     private final String path;
+    protected static final RawAnimation SQUEAK_ANIM = RawAnimation.begin().thenPlay("squeak");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    protected static final RawAnimation SQUEAK_ANIM = RawAnimation.begin().thenPlay("squeak");
 
     public LostTalesPlushieBlockEntity(BlockPos pos, BlockState blockState) {
         super(LostTalesBlockEntities.PLUSHIE.get(), pos, blockState);
@@ -42,14 +47,15 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
             LostTales.LOGGER.info("Squeaked!");
             this.stopTriggeredAnim("squeakAnimationController", "squeak");
             this.triggerAnim("squeakAnimationController", "squeak");
-            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+            this.setChanged();
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
         }
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.rotation = tag.getFloat("rotation").orElse(0.0f);
+        this.rotation = tag.getFloatOr("rotation", 0.0f);
     }
 
     @Override
@@ -65,6 +71,11 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
         return tag;
     }
 
+    @Override
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
     public void setRotation(float rotation) {
         this.rotation = rotation;
         this.setChanged();
@@ -75,6 +86,6 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
     }
 
     public String getPath() {
-        return path;
+        return this.path;
     }
 }

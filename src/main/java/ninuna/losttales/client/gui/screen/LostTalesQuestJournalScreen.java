@@ -10,7 +10,7 @@ import ninuna.losttales.client.LostTalesKeyMappings;
 @OnlyIn(Dist.CLIENT)
 public class LostTalesQuestJournalScreen extends Screen {
 
-    private static final Component QUEST_JOURNAL_TITLE = Component.translatable("questjournal.title");
+    private static final Component QUEST_JOURNAL_TITLE = Component.translatable("questJournal.title");
 
     private final Screen parentScreen;
 

@@ -16,33 +16,21 @@ import ninuna.losttales.item.custom.LostTalesTooltipBlockItem;
 import ninuna.losttales.item.custom.LostTalesTooltipItem;
 import ninuna.losttales.item.properties.LostTalesConsumables;
 import ninuna.losttales.item.properties.LostTalesFoods;
+import ninuna.losttales.item.properties.LostTalesItemProperties;
 import ninuna.losttales.item.properties.LostTalesToolMaterials;
 
 public class LostTalesItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(LostTales.MOD_ID);
 
-    // Lost Tales Urns & Pots
-    public static final DeferredItem<BlockItem> TEST_URN = ITEMS.register(
-            "test_urn",
-            registryName ->
-                    new LostTalesPlushieItem(LostTalesBlocks.TEST_URN.get(),
-                            new Item.Properties()
-                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
-                                    .stacksTo(16)
-                    )
-    );
-
     // Lost Tales Food & Drinks
     public static final DeferredItem<Item> PLUM = ITEMS.registerItem(
-            "plum",
-            LostTalesTooltipItem::new,
+            "plum", LostTalesTooltipItem::new,
             new Item.Properties()
                     .food(LostTalesFoods.PLUM)
     );
 
     public static final DeferredItem<Item> PLUM_JUICE = ITEMS.registerItem(
-            "plum_juice",
-            LostTalesTooltipItem::new,
+            "plum_juice", LostTalesTooltipItem::new,
             new Item.Properties()
                     .craftRemainder(Items.GLASS_BOTTLE)
                     .food(LostTalesFoods.PEAR_JUICE, LostTalesConsumables.PEAR_JUICE)
@@ -51,22 +39,19 @@ public class LostTalesItems {
     );
 
     public static final DeferredItem<Item> PEAR = ITEMS.registerItem(
-            "pear",
-            LostTalesTooltipItem::new,
+            "pear", LostTalesTooltipItem::new,
             new Item.Properties()
                     .food(LostTalesFoods.PEAR)
     );
 
     public static final DeferredItem<Item> PEAR_BAKED = ITEMS.registerItem(
-            "pear_baked",
-            LostTalesTooltipItem::new,
+            "pear_baked", LostTalesTooltipItem::new,
             new Item.Properties()
                     .food(LostTalesFoods.PEAR_BAKED)
     );
 
     public static final DeferredItem<Item> PEAR_JUICE = ITEMS.registerItem(
-            "pear_juice",
-            LostTalesTooltipItem::new,
+            "pear_juice", LostTalesTooltipItem::new,
             new Item.Properties()
                     .craftRemainder(Items.GLASS_BOTTLE)
                     .food(LostTalesFoods.PEAR_JUICE, LostTalesConsumables.PEAR_JUICE)
@@ -86,38 +71,26 @@ public class LostTalesItems {
                     )
     );
 
-    // Lost Tales Plushie BlockItems
+    // Lost Tales Plushies
     public static final DeferredItem<BlockItem> PLUSHIE_BEAR = ITEMS.register(
             "plushie_bear",
-            registryName ->
-                    new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_BEAR.get(),
-                            new Item.Properties()
-                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
-                                    .stacksTo(1)
-                                    .rarity(Rarity.UNCOMMON)
-                    )
+            registryName -> new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_BEAR.get(), LostTalesItemProperties.plushieItemProperties(registryName, Rarity.UNCOMMON))
     );
 
     public static final DeferredItem<BlockItem> PLUSHIE_FOX = ITEMS.register(
             "plushie_fox",
-            registryName ->
-                    new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_FOX.get(),
-                            new Item.Properties()
-                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
-                                    .stacksTo(1)
-                                    .rarity(Rarity.UNCOMMON)
-                    )
+            registryName -> new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_FOX.get(), LostTalesItemProperties.plushieItemProperties(registryName, Rarity.UNCOMMON))
     );
 
     public static final DeferredItem<BlockItem> PLUSHIE_GANDALF = ITEMS.register(
             "plushie_gandalf",
-            registryName ->
-                    new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_GANDALF.get(),
-                            new Item.Properties()
-                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
-                                    .stacksTo(1)
-                                    .rarity(Rarity.RARE)
-            )
+            registryName -> new LostTalesPlushieItem(LostTalesBlocks.PLUSHIE_GANDALF.get(), LostTalesItemProperties.plushieItemProperties(registryName, Rarity.RARE))
+    );
+
+    // Lost Tales Urns
+    public static final DeferredItem<BlockItem> URN_AMPHORA = ITEMS.register(
+            "urn_amphora",
+            registryName -> new LostTalesPlushieItem(LostTalesBlocks.URN_AMPHORA.get(), LostTalesItemProperties.urnItemProperties(registryName))
     );
 
     // Lost Tales Weapons & Tools

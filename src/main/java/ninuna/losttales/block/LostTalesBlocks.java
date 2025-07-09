@@ -12,6 +12,7 @@ import ninuna.losttales.LostTales;
 import ninuna.losttales.block.custom.LostTalesCheeseWheelBlock;
 import ninuna.losttales.block.custom.LostTalesPlushieBlock;
 import ninuna.losttales.block.custom.LostTalesUrnBlock;
+import ninuna.losttales.block.properties.LostTalesBlockProperties;
 
 public class LostTalesBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(LostTales.MOD_ID);
@@ -28,44 +29,24 @@ public class LostTalesBlocks {
     // Lost Tales Plushies
     public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_BEAR = BLOCKS.register(
             "plushie_bear",
-            registryName ->
-                    new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
-                            .setId(ResourceKey.create(Registries.BLOCK, registryName))
-                            .sound(SoundType.WOOL)
-                            .noOcclusion()
-                            .destroyTime(0.4F)
-            ));
+            registryName -> new LostTalesPlushieBlock(LostTalesBlockProperties.plushieBlockProperties(registryName))
+    );
 
     public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_FOX = BLOCKS.register(
             "plushie_fox",
-            registryName ->
-                    new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
-                            .setId(ResourceKey.create(Registries.BLOCK, registryName))
-                            .sound(SoundType.WOOL)
-                            .noOcclusion()
-                            .destroyTime(0.4F)
-            ));
+            registryName -> new LostTalesPlushieBlock(LostTalesBlockProperties.plushieBlockProperties(registryName))
+    );
 
     public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_GANDALF = BLOCKS.register(
             "plushie_gandalf",
-            registryName ->
-                    new LostTalesPlushieBlock(BlockBehaviour.Properties.of()
-                            .setId(ResourceKey.create(Registries.BLOCK, registryName))
-                            .sound(SoundType.WOOL)
-                            .noOcclusion()
-                            .destroyTime(0.4F)
-            ));
+            registryName -> new LostTalesPlushieBlock(LostTalesBlockProperties.plushieBlockProperties(registryName))
+    );
 
-    // Lost Tales Urns and Pots
-    public static final DeferredBlock<LostTalesUrnBlock> TEST_URN = BLOCKS.register(
-            "test_urn",
-            registryName ->
-                    new LostTalesUrnBlock(BlockBehaviour.Properties.of()
-                            .setId(ResourceKey.create(Registries.BLOCK, registryName))
-                            .sound(SoundType.DECORATED_POT)
-                            .noOcclusion()
-                            .destroyTime(0.2F)
-                    ));
+    // Lost Tales Urns
+    public static final DeferredBlock<LostTalesUrnBlock> URN_AMPHORA = BLOCKS.register(
+            "urn_amphora",
+            registryName -> new LostTalesUrnBlock(LostTalesBlockProperties.urnBlockProperties(registryName))
+    );
 
     public static void register (IEventBus eventBus) {
         BLOCKS.register(eventBus);

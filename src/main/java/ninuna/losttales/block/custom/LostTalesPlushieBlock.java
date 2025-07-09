@@ -21,6 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import ninuna.losttales.block.entity.LostTalesPlushieBlockEntity;
 import ninuna.losttales.sound.LostTalesSoundEvents;
+import ninuna.losttales.util.LostTalesBlockUtil;
 import org.jetbrains.annotations.Nullable;
 
 public class LostTalesPlushieBlock extends BaseEntityBlock {
@@ -55,10 +56,11 @@ public class LostTalesPlushieBlock extends BaseEntityBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity && placer != null) {
-            // Get and set plushie rotation
-            int rotationIndex = this.getSnappedRotationIndex(placer);
-            blockEntity.setRotation(rotationIndex * 22.5f);
+            //Set block entity rotation
+            blockEntity.setRotation(LostTalesBlockUtil.getRotationFromSnappedRotationIndex(placer));
             if (!level.isClientSide()) {
+                blockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);
                 // Play squeak animation
                 blockEntity.playSqueakAnimation();
             }
@@ -107,11 +109,5 @@ public class LostTalesPlushieBlock extends BaseEntityBlock {
             // Play squeak sound effect
             level.playSound(null, pos, LostTalesSoundEvents.PLUSHIE_SQUEAK.value(), SoundSource.BLOCKS, 0.2f, 1.0f);
         }
-    }
-
-    private int getSnappedRotationIndex(LivingEntity placer) {
-        float yaw = -placer.getYRot() % 360;
-        if (yaw < 0) yaw += 360;
-        return Math.round(yaw / 22.5f) & 15;
     }
 }
