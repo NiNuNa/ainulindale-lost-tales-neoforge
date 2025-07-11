@@ -5,7 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.Vec3;
-import ninuna.losttales.block.entity.LostTalesPlushieBlockEntity;
+import ninuna.losttales.block.entity.custom.LostTalesPlushieBlockEntity;
 import ninuna.losttales.block.entity.model.LostTalesPlushieBlockEntityModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 

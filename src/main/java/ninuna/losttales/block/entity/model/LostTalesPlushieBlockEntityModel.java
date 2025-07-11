@@ -2,7 +2,7 @@ package ninuna.losttales.block.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import ninuna.losttales.LostTales;
-import ninuna.losttales.block.entity.LostTalesPlushieBlockEntity;
+import ninuna.losttales.block.entity.custom.LostTalesPlushieBlockEntity;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;

@@ -2,7 +2,7 @@ package ninuna.losttales.block.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import ninuna.losttales.LostTales;
-import ninuna.losttales.block.entity.LostTalesUrnBlockEntity;
+import ninuna.losttales.block.entity.custom.LostTalesUrnBlockEntity;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
@@ -28,6 +28,11 @@ public class LostTalesUrnBlockEntityModel extends GeoModel<LostTalesUrnBlockEnti
     @Override
     public void addAdditionalStateData(LostTalesUrnBlockEntity animatable, GeoRenderState renderState) {
         super.addAdditionalStateData(animatable, renderState);
-        renderState.addGeckolibData(PATH, animatable.getPath());
+        // Replace model, texture and animations once the urn is sealed
+        if (animatable.isSealed()) {
+            renderState.addGeckolibData(PATH, animatable.getPath() + "_sealed");
+        } else {
+            renderState.addGeckolibData(PATH, animatable.getPath());
+        }
     }
 }

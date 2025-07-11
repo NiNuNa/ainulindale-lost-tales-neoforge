@@ -1,4 +1,4 @@
-package ninuna.losttales.block.entity;
+package ninuna.losttales.block.entity.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import ninuna.losttales.LostTales;
+import ninuna.losttales.block.entity.LostTalesBlockEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -21,11 +22,10 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlockEntity {
+    protected static final RawAnimation SQUEAK_ANIM = RawAnimation.begin().thenPlay("squeak");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float rotation;
     private final String path;
-    protected static final RawAnimation SQUEAK_ANIM = RawAnimation.begin().thenPlay("squeak");
-
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public LostTalesPlushieBlockEntity(BlockPos pos, BlockState blockState) {
         super(LostTalesBlockEntities.PLUSHIE.get(), pos, blockState);
@@ -34,22 +34,12 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("squeakAnimationController", animationTest -> PlayState.STOP).triggerableAnim("squeak", SQUEAK_ANIM));
+        controllers.add(new AnimationController<>("plushieAnimationController", animationTest -> PlayState.STOP).triggerableAnim("squeak", SQUEAK_ANIM));
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
-    }
-
-    public void playSqueakAnimation() {
-        if (level instanceof ServerLevel) {
-            LostTales.LOGGER.info("Squeaked!");
-            this.stopTriggeredAnim("squeakAnimationController", "squeak");
-            this.triggerAnim("squeakAnimationController", "squeak");
-            this.setChanged();
-            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
-        }
     }
 
     @Override
@@ -74,6 +64,16 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public void playSqueakAnimation() {
+        if (level instanceof ServerLevel) {
+            LostTales.LOGGER.info("Squeaked!");
+            this.stopTriggeredAnim("plushieAnimationController", "squeak");
+            this.triggerAnim("plushieAnimationController", "squeak");
+            this.setChanged();
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
+        }
     }
 
     public void setRotation(float rotation) {

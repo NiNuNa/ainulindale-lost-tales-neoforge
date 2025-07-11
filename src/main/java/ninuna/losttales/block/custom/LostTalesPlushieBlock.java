@@ -19,7 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import ninuna.losttales.block.entity.LostTalesPlushieBlockEntity;
+import ninuna.losttales.block.entity.custom.LostTalesPlushieBlockEntity;
 import ninuna.losttales.sound.LostTalesSoundEvents;
 import ninuna.losttales.util.LostTalesBlockUtil;
 import org.jetbrains.annotations.Nullable;
