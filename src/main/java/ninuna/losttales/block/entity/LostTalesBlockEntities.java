@@ -22,7 +22,7 @@ public class LostTalesBlockEntities {
 
     public static final Supplier<BlockEntityType<LostTalesUrnBlockEntity>> URN = BLOCK_ENTITY_TYPES.register(
             "urn", () -> new BlockEntityType<>(LostTalesUrnBlockEntity::new, false,
-                    LostTalesBlocks.URN_AMPHORA.get()
+                    LostTalesBlocks.URN_AMPHORA.get(), LostTalesBlocks.URN.get(), LostTalesBlocks.URN_LOUTROPHOROS.get()
             )
     );
 

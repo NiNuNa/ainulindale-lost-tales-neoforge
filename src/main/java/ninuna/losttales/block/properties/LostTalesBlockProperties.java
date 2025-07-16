@@ -26,4 +26,12 @@ public class LostTalesBlockProperties {
                 .strength(0.1f, 0.0f)
                 .pushReaction(PushReaction.DESTROY);
     }
+
+    public static BlockBehaviour.Properties cheeseWheelBlockProperties(ResourceLocation registryName) {
+        return BlockBehaviour.Properties.of()
+                .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                .sound(SoundType.WOOL)
+                .strength(0.6f, 0.0f)
+                .pushReaction(PushReaction.NORMAL);
+    }
 }

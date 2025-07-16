@@ -4,7 +4,7 @@
 		"full": {
 			"animation_length": 0.4583,
 			"bones": {
-				"amphora": {
+				"root": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -26,7 +26,7 @@
 		"fill": {
 			"animation_length": 0.4583,
 			"bones": {
-				"amphora": {
+				"root": {
 					"scale": {
 						"0.0": {
 							"vector": [1, 1, 1]

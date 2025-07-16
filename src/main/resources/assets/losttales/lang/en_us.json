@@ -25,6 +25,8 @@
 
   "#": "Urn Items",
   "item.losttales.urn_amphora": "Amphora",
+  "item.losttales.urn": "Urn",
+  "item.losttales.urn_loutrophoros": "Loutrophoros",
 
   "#": "Blocks",
   "block.losttales.cheese_wheel": "Cheese Wheel",

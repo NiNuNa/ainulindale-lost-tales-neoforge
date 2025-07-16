@@ -1,16 +1,14 @@
 package ninuna.losttales.item;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import ninuna.losttales.LostTales;
 import ninuna.losttales.block.LostTalesBlocks;
+import ninuna.losttales.item.custom.instrument.LostTalesHornInstrumentItem;
 import ninuna.losttales.item.custom.LostTalesPlushieItem;
 import ninuna.losttales.item.custom.LostTalesTooltipBlockItem;
 import ninuna.losttales.item.custom.LostTalesTooltipItem;
@@ -22,53 +20,47 @@ import ninuna.losttales.item.properties.LostTalesToolMaterials;
 public class LostTalesItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(LostTales.MOD_ID);
 
+    // Lost Tales Creation Tools
+    public static final DeferredItem<Item> CREATION_TOOL_LOOT_RESPAWNER = ITEMS.register(
+            "creation_tool_loot_respawner",
+            registryName -> new LostTalesTooltipItem(LostTalesItemProperties.toolItemProperties(registryName))
+    );
+
+    // Lost Tales Instruments
+    public static final DeferredItem<Item> HORN_TEST = ITEMS.register(
+            "horn_test",
+            registryName -> new LostTalesHornInstrumentItem(LostTalesItemProperties.instrumentItemProperties(registryName, Rarity.UNCOMMON))
+    );
+
     // Lost Tales Food & Drinks
-    public static final DeferredItem<Item> PLUM = ITEMS.registerItem(
-            "plum", LostTalesTooltipItem::new,
-            new Item.Properties()
-                    .food(LostTalesFoods.PLUM)
+    public static final DeferredItem<Item> PLUM = ITEMS.register(
+            "plum",
+            registryName -> new LostTalesTooltipItem(LostTalesItemProperties.foodItemProperties(registryName, LostTalesFoods.PLUM))
     );
 
-    public static final DeferredItem<Item> PLUM_JUICE = ITEMS.registerItem(
-            "plum_juice", LostTalesTooltipItem::new,
-            new Item.Properties()
-                    .craftRemainder(Items.GLASS_BOTTLE)
-                    .food(LostTalesFoods.PEAR_JUICE, LostTalesConsumables.PEAR_JUICE)
-                    .usingConvertsTo(Items.GLASS_BOTTLE)
-                    .stacksTo(16)
+    public static final DeferredItem<Item> PLUM_JUICE = ITEMS.register(
+            "plum_juice",
+            registryName -> new LostTalesTooltipItem(LostTalesItemProperties.drinkItemProperties(registryName, LostTalesFoods.PEAR_JUICE, LostTalesConsumables.BASE_JUICE))
     );
 
-    public static final DeferredItem<Item> PEAR = ITEMS.registerItem(
-            "pear", LostTalesTooltipItem::new,
-            new Item.Properties()
-                    .food(LostTalesFoods.PEAR)
+    public static final DeferredItem<Item> PEAR = ITEMS.register(
+            "pear",
+            registryName -> new LostTalesTooltipItem(LostTalesItemProperties.foodItemProperties(registryName, LostTalesFoods.PEAR))
     );
 
-    public static final DeferredItem<Item> PEAR_BAKED = ITEMS.registerItem(
-            "pear_baked", LostTalesTooltipItem::new,
-            new Item.Properties()
-                    .food(LostTalesFoods.PEAR_BAKED)
+    public static final DeferredItem<Item> PEAR_BAKED = ITEMS.register(
+            "pear_baked",
+            registryName -> new LostTalesTooltipItem(LostTalesItemProperties.foodItemProperties(registryName, LostTalesFoods.PEAR_BAKED))
     );
 
-    public static final DeferredItem<Item> PEAR_JUICE = ITEMS.registerItem(
-            "pear_juice", LostTalesTooltipItem::new,
-            new Item.Properties()
-                    .craftRemainder(Items.GLASS_BOTTLE)
-                    .food(LostTalesFoods.PEAR_JUICE, LostTalesConsumables.PEAR_JUICE)
-                    .usingConvertsTo(Items.GLASS_BOTTLE)
-                    .stacksTo(16)
+    public static final DeferredItem<Item> PEAR_JUICE = ITEMS.register(
+            "pear_juice",
+            registryName -> new LostTalesTooltipItem(LostTalesItemProperties.drinkItemProperties(registryName, LostTalesFoods.PEAR_JUICE, LostTalesConsumables.BASE_JUICE))
     );
 
-    // Lost Tales Food & Drinks BlockItems
     public static final DeferredItem<BlockItem> CHEESE_WHEEL = ITEMS.register(
             "cheese_wheel",
-            registryName ->
-                    new LostTalesTooltipBlockItem(LostTalesBlocks.CHEESE_WHEEL.get(),
-                            new Item.Properties()
-                                    .setId(ResourceKey.create(Registries.ITEM, registryName))
-                                    .food(LostTalesFoods.CHEESE_WHEEL)
-                                    .stacksTo(1)
-                    )
+            registryName -> new LostTalesTooltipBlockItem(LostTalesBlocks.CHEESE_WHEEL.get(), LostTalesItemProperties.foodItemProperties(registryName, LostTalesFoods.CHEESE_WHEEL))
     );
 
     // Lost Tales Plushies
@@ -90,10 +82,20 @@ public class LostTalesItems {
     // Lost Tales Urns
     public static final DeferredItem<BlockItem> URN_AMPHORA = ITEMS.register(
             "urn_amphora",
-            registryName -> new LostTalesPlushieItem(LostTalesBlocks.URN_AMPHORA.get(), LostTalesItemProperties.urnItemProperties(registryName))
+            registryName -> new LostTalesTooltipBlockItem(LostTalesBlocks.URN_AMPHORA.get(), LostTalesItemProperties.urnItemProperties(registryName))
     );
 
-    // Lost Tales Weapons & Tools
+    public static final DeferredItem<BlockItem> URN = ITEMS.register(
+            "urn",
+            registryName -> new LostTalesTooltipBlockItem(LostTalesBlocks.URN.get(), LostTalesItemProperties.urnItemProperties(registryName))
+    );
+
+    public static final DeferredItem<BlockItem> URN_LOUTROPHOROS = ITEMS.register(
+            "urn_loutrophoros",
+            registryName -> new LostTalesTooltipBlockItem(LostTalesBlocks.URN_LOUTROPHOROS.get(), LostTalesItemProperties.urnItemProperties(registryName))
+    );
+
+    // Todo: Lost Tales Weapons & Tools
     public static final DeferredItem<Item> ARNORIAN_SWORD = ITEMS.registerItem(
             "arnorian_sword",
             props -> new Item(props.sword(

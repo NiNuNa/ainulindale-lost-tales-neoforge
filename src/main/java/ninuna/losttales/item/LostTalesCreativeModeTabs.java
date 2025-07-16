@@ -39,7 +39,7 @@ public class LostTalesCreativeModeTabs {
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".tools"))
             .icon(() -> new ItemStack(LostTalesItems.ARNORIAN_SWORD.get()))
             .displayItems((params, output) -> {
-                //Todo...
+                output.accept(LostTalesItems.HORN_TEST);
             })
             .build()
     );
@@ -86,7 +86,18 @@ public class LostTalesCreativeModeTabs {
             .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".decorativeBlocks"))
             .icon(() -> new ItemStack(LostTalesItems.PEAR.get()))
             .displayItems((params, output) -> {
+            })
+            .build()
+    );
+
+    // Lost Tales Decorative Blocks Creative Mode Tab
+    public static final Supplier<CreativeModeTab> FUNCTIONALBLOCKS_TAB = CREATIVE_MODE_TABS.register("functional_blocks", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup." + LostTales.MOD_ID + ".functionalBlocks"))
+            .icon(() -> new ItemStack(LostTalesItems.URN_AMPHORA.get()))
+            .displayItems((params, output) -> {
+                output.accept(LostTalesItems.URN);
                 output.accept(LostTalesItems.URN_AMPHORA);
+                output.accept(LostTalesItems.URN_LOUTROPHOROS);
             })
             .build()
     );

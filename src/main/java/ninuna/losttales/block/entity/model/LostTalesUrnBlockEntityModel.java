@@ -2,6 +2,7 @@ package ninuna.losttales.block.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import ninuna.losttales.LostTales;
+import ninuna.losttales.block.custom.LostTalesUrnDoubleBlock;
 import ninuna.losttales.block.entity.custom.LostTalesUrnBlockEntity;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.GeoModel;
@@ -22,7 +23,11 @@ public class LostTalesUrnBlockEntityModel extends GeoModel<LostTalesUrnBlockEnti
 
     @Override
     public ResourceLocation getAnimationResource(LostTalesUrnBlockEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "block/" + animatable.getPath());
+        if (animatable.getBlockState().getBlock() instanceof LostTalesUrnDoubleBlock) {
+            return ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "block/urn_tall");
+        } else {
+            return ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "block/urn");
+        }
     }
 
     @Override

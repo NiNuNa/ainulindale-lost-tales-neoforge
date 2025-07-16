@@ -12,7 +12,7 @@
 			},
 			"bones": [
 				{
-					"name": "amphora",
+					"name": "root",
 					"pivot": [0, 0, 0],
 					"cubes": [
 						{

@@ -1,17 +1,11 @@
 package ninuna.losttales.block;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import ninuna.losttales.LostTales;
-import ninuna.losttales.block.custom.LostTalesCheeseWheelBlock;
-import ninuna.losttales.block.custom.LostTalesPlushieBlock;
-import ninuna.losttales.block.custom.LostTalesUrnBlock;
+import ninuna.losttales.block.custom.*;
 import ninuna.losttales.block.properties.LostTalesBlockProperties;
 
 public class LostTalesBlocks {
@@ -19,12 +13,8 @@ public class LostTalesBlocks {
 
     public static final DeferredBlock<Block> CHEESE_WHEEL = BLOCKS.register(
             "cheese_wheel",
-            registryName ->
-                    new LostTalesCheeseWheelBlock(BlockBehaviour.Properties.of()
-                            .setId(ResourceKey.create(Registries.BLOCK, registryName))
-                            .destroyTime(2.0f)
-                            .sound(SoundType.WOOL)
-            ));
+            registryName -> new LostTalesCheeseWheelBlock(LostTalesBlockProperties.cheeseWheelBlockProperties(registryName))
+    );
 
     // Lost Tales Plushies
     public static final DeferredBlock<LostTalesPlushieBlock> PLUSHIE_BEAR = BLOCKS.register(
@@ -46,6 +36,16 @@ public class LostTalesBlocks {
     public static final DeferredBlock<LostTalesUrnBlock> URN_AMPHORA = BLOCKS.register(
             "urn_amphora",
             registryName -> new LostTalesUrnBlock(LostTalesBlockProperties.urnBlockProperties(registryName))
+    );
+
+    public static final DeferredBlock<LostTalesUrnBlock> URN = BLOCKS.register(
+            "urn",
+            registryName -> new LostTalesUrnBlock(LostTalesBlockProperties.urnBlockProperties(registryName), 0.8f)
+    );
+
+    public static final DeferredBlock<LostTalesUrnDoubleBlock> URN_LOUTROPHOROS = BLOCKS.register(
+            "urn_loutrophoros",
+            registryName -> new LostTalesUrnDoubleBlock(LostTalesBlockProperties.urnBlockProperties(registryName), 1.6f)
     );
 
     public static void register (IEventBus eventBus) {
