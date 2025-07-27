@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import ninuna.losttales.client.LostTalesKeyMappings;
+import ninuna.losttales.client.event.LostTalesRegisterKeyMappingsEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class LostTalesQuestJournalScreen extends Screen {
@@ -27,7 +27,7 @@ public class LostTalesQuestJournalScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (LostTalesKeyMappings.QUEST_JOURNAL_MAPPING.get().matches(keyCode, scanCode)) {
+        if (LostTalesRegisterKeyMappingsEvent.QUEST_JOURNAL_MAPPING.get().matches(keyCode, scanCode)) {
             this.minecraft.setScreen(null);
             return true;
         } else {

@@ -24,13 +24,11 @@ public class LostTalesUrnBlockEntity extends LostTalesRespawnableBlockEntity imp
     protected static final RawAnimation FULL_ANIM = RawAnimation.begin().thenPlay("full");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final String path;
     private float rotation;
     private boolean sealed;
 
     public LostTalesUrnBlockEntity(BlockPos pos, BlockState blockState) {
         super(LostTalesBlockEntities.URN.get(), pos, blockState);
-        this.path = blockState.getBlock().getName().toString().substring(33, blockState.getBlock().getName().toString().length() - 11);
         // Set the inventory size for tall and small urns
         if (blockState.getBlock() instanceof LostTalesUrnDoubleBlock) {
             this.setInventory(NonNullList.withSize(4, ItemStack.EMPTY));
@@ -101,10 +99,6 @@ public class LostTalesUrnBlockEntity extends LostTalesRespawnableBlockEntity imp
     public void setRotation(float rotation) {
         this.rotation = rotation;
         this.setChanged();
-    }
-
-    public String getPath() {
-        return this.path;
     }
 
     public boolean isSealed() {

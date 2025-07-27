@@ -9,16 +9,16 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class LostTalesUrnBlockEntityModel extends GeoModel<LostTalesUrnBlockEntity> {
-    public static final DataTicket<String> PATH = DataTicket.create("path", String.class);
+    public static final DataTicket<String> NAME = DataTicket.create("name", String.class);
 
     @Override
     public ResourceLocation getModelResource(GeoRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "block/" + renderState.getGeckolibData(PATH));
+        return ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "block/" + renderState.getGeckolibData(NAME));
     }
 
     @Override
     public ResourceLocation getTextureResource(GeoRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/block/" + renderState.getGeckolibData(PATH) + ".png");
+        return ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/block/" + renderState.getGeckolibData(NAME) + ".png");
     }
 
     @Override
@@ -35,9 +35,9 @@ public class LostTalesUrnBlockEntityModel extends GeoModel<LostTalesUrnBlockEnti
         super.addAdditionalStateData(animatable, renderState);
         // Replace model, texture and animations once the urn is sealed
         if (animatable.isSealed()) {
-            renderState.addGeckolibData(PATH, animatable.getPath() + "_sealed");
+            renderState.addGeckolibData(NAME, animatable.getBlockState().getBlock().getName().getString().substring(16) + "_sealed");
         } else {
-            renderState.addGeckolibData(PATH, animatable.getPath());
+            renderState.addGeckolibData(NAME, animatable.getBlockState().getBlock().getName().getString().substring(16));
         }
     }
 }

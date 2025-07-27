@@ -2,7 +2,7 @@ package ninuna.losttales;
 
 import ninuna.losttales.block.LostTalesBlocks;
 import ninuna.losttales.block.entity.LostTalesBlockEntities;
-import ninuna.losttales.config.LostTalesConfig;
+import ninuna.losttales.config.LostTalesConfigs;
 import ninuna.losttales.item.LostTalesCreativeModeTabs;
 import ninuna.losttales.item.LostTalesItems;
 import ninuna.losttales.sound.LostTalesSoundEvents;
@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -27,7 +25,6 @@ public class LostTales {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public LostTales(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
         LostTalesSoundEvents.register(modEventBus);
@@ -42,20 +39,14 @@ public class LostTales {
         NeoForge.EVENT_BUS.register(this);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, LostTalesConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, LostTalesConfigs.CLIENT_SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, LostTalesConfigs.COMMON_SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER, LostTalesConfigs.SERVER_SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
-
-        if (LostTalesConfig.LOG_DIRT_BLOCK.getAsBoolean()) {
-            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-        }
-
-        LOGGER.info("{}{}", LostTalesConfig.MAGIC_NUMBER_INTRODUCTION.get(), LostTalesConfig.MAGIC_NUMBER.getAsInt());
-
-        LostTalesConfig.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

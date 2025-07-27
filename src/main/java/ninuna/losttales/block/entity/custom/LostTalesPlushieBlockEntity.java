@@ -25,11 +25,9 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
     protected static final RawAnimation SQUEAK_ANIM = RawAnimation.begin().thenPlay("squeak");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float rotation;
-    private final String path;
 
     public LostTalesPlushieBlockEntity(BlockPos pos, BlockState blockState) {
         super(LostTalesBlockEntities.PLUSHIE.get(), pos, blockState);
-        this.path = blockState.getBlock().getName().toString().substring(33, blockState.getBlock().getName().toString().length() - 11);
     }
 
     @Override
@@ -83,9 +81,5 @@ public class LostTalesPlushieBlockEntity extends BlockEntity implements GeoBlock
 
     public float getRotation() {
         return this.rotation;
-    }
-
-    public String getPath() {
-        return this.path;
     }
 }

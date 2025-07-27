@@ -57,7 +57,7 @@ public class LostTalesPlushieBlock extends BaseEntityBlock {
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (level.getBlockEntity(pos) instanceof LostTalesPlushieBlockEntity blockEntity && placer != null) {
             //Set block entity rotation
-            blockEntity.setRotation(LostTalesBlockUtil.getRotationFromSnappedRotationIndex(placer));
+            blockEntity.setRotation(LostTalesBlockUtil.getRotationFromSnappedRotationIndex(placer, 16));
             if (!level.isClientSide()) {
                 blockEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);

@@ -25,8 +25,11 @@
 
   "#": "Urn Items",
   "item.losttales.urn_amphora": "Amphora",
+  "item.losttales.urn_amphora_sealed": "Sealed Amphora",
   "item.losttales.urn": "Urn",
+  "item.losttales.urn_sealed": "Sealed Urn",
   "item.losttales.urn_loutrophoros": "Loutrophoros",
+  "item.losttales.urn_loutrophoros_sealed": "Sealed Loutrophoros",
 
   "#": "Blocks",
   "block.losttales.cheese_wheel": "Cheese Wheel",
@@ -44,6 +47,20 @@
   "key.categories.losttales.mappings": "Ainulindalë: Lost Tales",
   "key.losttales.questJournal": "Open Quest Journal",
   "key.losttales.toggleHud": "Toggle HUD",
+  "key.losttales.use": "Activate / Use",
+  "key.losttales.modifier": "Modifier Key",
+
+  "#": "Config",
+  "losttales.configuration.showLostTalesHud": "Show Lost Tales HUD",
+  "losttales.configuration.showLostTalesHud.tooltip": "TODO",
+  "losttales.configuration.quickLoot": "Quick Loot Options",
+  "losttales.configuration.quickLoot.tooltip": "TODO",
+  "losttales.configuration.showQuickLootHud": "Show Quick Loot HUD",
+  "losttales.configuration.showQuickLootHud.tooltip": "TODO",
+  "losttales.configuration.toggleLostTalesHudAffectsQuickLootHud": "Toggling Lost Tales HUD Affects Quick Loot HUD",
+  "losttales.configuration.toggleLostTalesHudAffectsQuickLootHud.tooltip": "TEST7",
+
+  "#": "Toasts",
 
   "#": "Quest Journal",
   "questJournal.title": "Quest Journal"

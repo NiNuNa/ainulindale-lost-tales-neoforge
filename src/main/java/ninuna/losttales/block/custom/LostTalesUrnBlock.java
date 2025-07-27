@@ -132,7 +132,7 @@ public class LostTalesUrnBlock extends LostTalesRespawnableBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (level.getBlockEntity(pos) instanceof LostTalesUrnBlockEntity urnBlockEntity && placer != null) {
-            urnBlockEntity.setRotation(LostTalesBlockUtil.getRotationFromSnappedRotationIndex(placer));
+            urnBlockEntity.setRotation(LostTalesBlockUtil.getRotationFromSnappedRotationIndex(placer, 16));
             if (!level.isClientSide()) {
                 // Todo: Not sure which one of these is really needed.
                 urnBlockEntity.setChanged();
