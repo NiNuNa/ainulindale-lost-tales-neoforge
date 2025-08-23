@@ -36,12 +36,12 @@
 
   "#": "Tooltips",
   "tooltip.losttales.open": "§7Hold §9[SHIFT] §r§7to reveal more item details.",
+  "tooltip.losttales.item.plushie_bear": "Carefully hand-stitched in a hearth-lit cottage, this loyal companion provides warmth and comfort through the coldest nights.",
+  "tooltip.losttales.item.plushie_fox": "TODO: PLUSHIE FOX TEXT",
+  "tooltip.losttales.item.plushie_gandalf": "TODO: PLUSHIE GANDALF TEXT",
   "tooltip.losttales.item.pear": "TODO : PEAR TEXT",
   "tooltip.losttales.item.pear_baked": "TODO : BAKED PEAR TEXT",
   "tooltip.losttales.item.pear_juice": "TODO: PEAR JUICE TEXT",
-  "tooltip.losttales.item.plushie_bear": "Carefully hand-stitched in hearth-lit cottages, this loyal companion provides warmth and comfort through the coldest nights",
-  "tooltip.losttales.item.plushie_fox": "TODO: PLUSHIE FOX TEXT",
-  "tooltip.losttales.item.plushie_gandalf": "TODO: PLUSHIE GANDALF TEXT",
 
   "#": "Keybinds",
   "key.categories.losttales.mappings": "Ainulindalë: Lost Tales",
@@ -52,16 +52,23 @@
 
   "#": "Config",
   "losttales.configuration.showLostTalesHud": "Show Lost Tales HUD",
-  "losttales.configuration.showLostTalesHud.tooltip": "TODO",
-  "losttales.configuration.quickLoot": "Quick Loot Options",
-  "losttales.configuration.quickLoot.tooltip": "TODO",
+  "losttales.configuration.showLostTalesHud.tooltip": "Toggle the Lost Tales HUD. This can be customised further in the following configuration screens.",
+  "losttales.configuration.quickLootHud": "Quick Loot HUD Options",
+  "losttales.configuration.quickLootHud.tooltip": "All options and settings regarding the Quick Loot HUD can be found here.",
   "losttales.configuration.showQuickLootHud": "Show Quick Loot HUD",
-  "losttales.configuration.showQuickLootHud.tooltip": "TODO",
-  "losttales.configuration.toggleLostTalesHudAffectsQuickLootHud": "Toggling Lost Tales HUD Affects Quick Loot HUD",
-  "losttales.configuration.toggleLostTalesHudAffectsQuickLootHud.tooltip": "TEST7",
+  "losttales.configuration.showQuickLootHud.tooltip": "Toggle the Quick Loot HUD",
+  "losttales.configuration.linkShowQuickLootHud": "Toggling Lost Tales HUD Toggles Quick Loot HUD",
+  "losttales.configuration.linkShowQuickLootHud.tooltip": "If set to TRUE, toggling the Lost Tales HUD will also toggle the Quick Loot HUD. If set to FALSE, the two HUDs will behave separately.",
 
   "#": "Toasts",
+  "todo.todo": "Todo",
+
+  "#": "Character Menu",
+  "characterMenu.title": "Character Menu",
 
   "#": "Quest Journal",
-  "questJournal.title": "Quest Journal"
+  "questJournal.title": "Quest Journal",
+
+  "#": "Quick Loot HUD",
+  "quickLootHud.losttales.empty": "Empty"
 }

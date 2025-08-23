@@ -11,12 +11,12 @@ import ninuna.losttales.client.gui.LostTalesQuickLootHud;
 import ninuna.losttales.util.LostTalesClientUtil;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
-public class LostTalesInputEvent {
+public class LostTalesQuickLootHudScrollEvent {
     public static long LAST_SCROLL_TIME = 0;
     public static final long SCROLL_COOLDOWN_MS = 40;
 
     @SubscribeEvent
-    public static void quickLootScrollEvent(InputEvent.MouseScrollingEvent event) {
+    public static void quickLootHudScrollEvent(InputEvent.MouseScrollingEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
         long currentTime = System.currentTimeMillis();
 

@@ -25,7 +25,7 @@ public class LostTalesModConfigEvent {
     }
 
     public static void syncDependentConfigOptions() {
-        if (LostTalesConfigs.CLIENT.toggleLostTalesHudAffectsQuickLootHud.get()) {
+        if (LostTalesConfigs.CLIENT.linkShowQuickLootHud.get()) {
             LostTalesConfigs.CLIENT.showQuickLootHud.set(LostTalesConfigs.CLIENT.showLostTalesHud.get());
         }
     }

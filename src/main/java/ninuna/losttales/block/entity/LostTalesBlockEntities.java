@@ -26,7 +26,7 @@ public class LostTalesBlockEntities {
             )
     );
 
-    public static void register (IEventBus eventBus) {
+    public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
     }
 }

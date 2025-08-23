@@ -15,11 +15,11 @@ import ninuna.losttales.client.gui.LostTalesQuickLootHud;
 import ninuna.losttales.config.LostTalesConfigs;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
-public class LostTalesRenderGuiLayerEvent {
+public class LostTalesMouseHoveringOverContainerEvent {
     private static boolean WAS_LOOKING_AT_CONTAINER = false;
 
     @SubscribeEvent
-    public static void onHoveringOverContainer(RenderGuiLayerEvent.Pre event) {
+    public static void onMouseHoveringOverContainer(RenderGuiLayerEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         boolean isCurrentlyLookingAtContainer = false;
 
@@ -38,7 +38,6 @@ public class LostTalesRenderGuiLayerEvent {
         if (!isCurrentlyLookingAtContainer && WAS_LOOKING_AT_CONTAINER) {
             LostTalesQuickLootHud.resetHud();
         }
-
         WAS_LOOKING_AT_CONTAINER = isCurrentlyLookingAtContainer;
     }
 }

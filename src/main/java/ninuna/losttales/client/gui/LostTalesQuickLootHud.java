@@ -7,26 +7,27 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
 import ninuna.losttales.LostTales;
 import ninuna.losttales.block.entity.custom.LostTalesUrnBlockEntity;
-import ninuna.losttales.client.event.LostTalesInputEvent;
-import ninuna.losttales.network.packet.LostTalesQuickLootHudDropItemClientPacket;
+import ninuna.losttales.client.event.LostTalesQuickLootHudScrollEvent;
 import ninuna.losttales.network.packet.LostTalesQuickLootHudDropItemPacket;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LostTalesQuickLootHud {
-    //private static final ResourceLocation QUICKLOOT_HUD_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/quickLootHud.png");
     private static int SCROLL_INDEX = 0;
     private static int SELECTED_ROW_INDEX = 0;
     private static final int MAX_ITEMS_PER_SCREEN = 5;
+    //private static final ResourceLocation QUICKLOOT_HUD_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/quickLootHud.png");
 
     public static void renderHud(Minecraft minecraft, GuiGraphics guiGraphics, Container container) {
         Font font = minecraft.font;
@@ -42,8 +43,6 @@ public class LostTalesQuickLootHud {
         int paddingItemStack = 3;
 
         int itemStackXY = 16;
-        int hudTextureX;
-        int hudTextureY;
         int containerNameX = windowWidth / 2 + offsetHudX;
         int containerNameY = windowHeight / 2 - font.lineHeight / 2 - offsetHudY;
         int hLineNameY = windowHeight / 2 - offsetHudY + paddingHudY;
@@ -54,18 +53,7 @@ public class LostTalesQuickLootHud {
         int itemStackNameY = itemStackY + font.lineHeight / 2;
         int itemStackRowOffsetY = 0;
 
-        Component name;
-        if (container instanceof LostTalesUrnBlockEntity urnBlockEntity) {
-            name = urnBlockEntity.isSealed()
-                    ? Component.translatable(urnBlockEntity.getBlockState().getBlock().asItem().getDescriptionId() + "_sealed")
-                    : urnBlockEntity.getBlockState().getBlock().asItem().getName();
-        } else if (container instanceof BlockEntity blockEntity) {
-            name = blockEntity.getBlockState().getBlock().getName();
-
-        } else {
-            name = Component.translatable("quickLootHud." + LostTales.MOD_ID + ".null");
-        }
-
+        Component name = getContainerName(container);
         //guiGraphics.blitInscribed(QUICKLOOT_HUD_TEXTURE, containerNameX, containerNameY, 25, 25, 25, 25);
         guiGraphics.drawString(font, name, containerNameX, containerNameY, 0xFFFFFF, true);
         guiGraphics.hLine(containerNameX, hLineWidth, hLineNameY, 0xFFFFFFFF);
@@ -81,7 +69,7 @@ public class LostTalesQuickLootHud {
             }
 
             int j = 0;
-            for (int i = SCROLL_INDEX; i < getTotalRowCount(container) && j < MAX_ITEMS_PER_SCREEN; i++) {
+            for (int i = SCROLL_INDEX; i < totalRows && j < MAX_ITEMS_PER_SCREEN; i++) {
                 int containerIndex = visibleSlots.get(i);
                 ItemStack itemStack = container.getItem(containerIndex);
                 renderItemStacks(guiGraphics, itemStack, font, j, itemStackX, itemStackY, itemStackRowOffsetY, itemStackNameX, itemStackNameY);
@@ -139,18 +127,30 @@ public class LostTalesQuickLootHud {
         return indices;
     }
 
-    public static int getTotalRowCount(Container container) {
-        return getNonEmptyContainerSlots(container).size();
-    }
-
     public static void resetHud() {
         SCROLL_INDEX = 0;
         SELECTED_ROW_INDEX = 0;
-        LostTalesInputEvent.LAST_SCROLL_TIME = 0;
+        LostTalesQuickLootHudScrollEvent.LAST_SCROLL_TIME = 0;
     }
 
     public static int getSelectedRowIndex() {
         return SELECTED_ROW_INDEX;
+    }
+
+    private static Component getContainerName(Container container) {
+        if (container instanceof LostTalesUrnBlockEntity urnBlockEntity) {
+            Item urnItem = urnBlockEntity.getBlockState().getBlock().asItem();
+            return urnBlockEntity.isSealed()
+                    ? Component.translatable(urnItem.getDescriptionId() + "_sealed")
+                    : urnItem.getName();
+        }
+
+        if (container instanceof BlockEntity blockEntity) {
+            Block block = blockEntity.getBlockState().getBlock();
+            return block.getName();
+        }
+
+        return Component.translatable("quickLootHud." + LostTales.MOD_ID + ".empty");
     }
 
     public static void dropSelectedItem() {
@@ -168,7 +168,6 @@ public class LostTalesQuickLootHud {
                     if (selectedIndex >= 0 && selectedIndex < visibleSlots.size()) {
                         int containerSlot = visibleSlots.get(selectedIndex);
                         PacketDistributor.sendToServer(new LostTalesQuickLootHudDropItemPacket(blockPos.getX(), blockPos.getY(), blockPos.getZ(), containerSlot));
-                        PacketDistributor.sendToAllPlayers(new LostTalesQuickLootHudDropItemClientPacket(blockPos.getX(), blockPos.getY(), blockPos.getZ(), containerSlot));
                     }
                 }
             }

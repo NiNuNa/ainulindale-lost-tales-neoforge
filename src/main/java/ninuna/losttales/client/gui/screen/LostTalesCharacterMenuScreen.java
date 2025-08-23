@@ -8,13 +8,13 @@ import net.neoforged.api.distmarker.OnlyIn;
 import ninuna.losttales.client.event.LostTalesRegisterKeyMappingsEvent;
 
 @OnlyIn(Dist.CLIENT)
-public class LostTalesQuestJournalScreen extends Screen {
-    private static final Component QUEST_JOURNAL_TITLE = Component.translatable("questJournal.title");
+public class LostTalesCharacterMenuScreen extends Screen {
+    public static final Component CHARACTER_MENU_TITLE = Component.translatable("characterMenu.title");
 
     private final Screen parentScreen;
 
-    public LostTalesQuestJournalScreen(Screen parentScreen) {
-        super(QUEST_JOURNAL_TITLE);
+    public LostTalesCharacterMenuScreen(Screen parentScreen) {
+        super(CHARACTER_MENU_TITLE);
         this.parentScreen = parentScreen;
     }
 
@@ -26,11 +26,11 @@ public class LostTalesQuestJournalScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (LostTalesRegisterKeyMappingsEvent.QUEST_JOURNAL_MAPPING.get().matches(keyCode, scanCode)) {
+        if (LostTalesRegisterKeyMappingsEvent.CHARACTER_MENU_MAPPING.get().matches(keyCode, scanCode)) {
             this.minecraft.setScreen(null);
             return true;
-        } else if (LostTalesRegisterKeyMappingsEvent.CHARACTER_MENU_MAPPING.get().matches(keyCode, scanCode)) {
-            this.minecraft.setScreen(new LostTalesCharacterMenuScreen(minecraft.screen));
+        } else if (LostTalesRegisterKeyMappingsEvent.QUEST_JOURNAL_MAPPING.get().matches(keyCode, scanCode)) {
+            this.minecraft.setScreen(new LostTalesQuestJournalScreen(minecraft.screen));
             return true;
         } else {
             return super.keyPressed(keyCode, scanCode, modifiers);
