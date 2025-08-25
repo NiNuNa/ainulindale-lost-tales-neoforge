@@ -4,8 +4,10 @@ import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,40 +28,46 @@ import java.util.List;
 public class LostTalesQuickLootHud {
     private static int SCROLL_INDEX = 0;
     private static int SELECTED_ROW_INDEX = 0;
+
+    private static final int TEXTURE_HEIGHT= 160;
+    private static final int TEXTURE_TOP_HEIGHT = 23;
+    private static final int TEXTURE_MID_HEIGHT = 22;
+    private static final int ORNAMENT_HEIGHT = 10;
+    private static final int SELECTION_BOX_HEIGHT = 20;
+    private static final int TEXTURE_WIDTH = 320;
     private static final int MAX_ITEMS_PER_SCREEN = 5;
-    //private static final ResourceLocation QUICKLOOT_HUD_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/quickLootHud.png");
+    private static final ResourceLocation QUICK_LOOT_HUD_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/quickloothud.png");
 
     public static void renderHud(Minecraft minecraft, GuiGraphics guiGraphics, Container container) {
         Font font = minecraft.font;
         Window window = minecraft.getWindow();
+        Component name = getContainerName(container);
 
         int windowHeight = window.getGuiScaledHeight();
         int windowWidth = window.getGuiScaledWidth();
 
         int offsetHudX = windowWidth / 8;
         int offsetHudY = windowHeight / 6;
-        int paddingHudY = 6;
-        int paddingHudX = 2;
-        int paddingItemStack = 3;
-
         int itemStackXY = 16;
-        int containerNameX = windowWidth / 2 + offsetHudX;
-        int containerNameY = windowHeight / 2 - font.lineHeight / 2 - offsetHudY;
-        int hLineNameY = windowHeight / 2 - offsetHudY + paddingHudY;
-        int hLineWidth = window.getGuiScaledWidth();
-        int itemStackX = window.getGuiScaledWidth() / 2 + offsetHudX + paddingHudX;
-        int itemStackY = window.getGuiScaledHeight() / 2 - itemStackXY / 2 - offsetHudY + paddingHudY * 3;
-        int itemStackNameX = itemStackX + paddingHudX * 2 + itemStackXY;
-        int itemStackNameY = itemStackY + font.lineHeight / 2;
+        int textureTopY = windowHeight / 2 - offsetHudY;
+        int textureTopX =  windowWidth / 2 + offsetHudX;
+        int containerNameY = textureTopY + font.lineHeight / 2;
+        int containerNameX = textureTopX + 3;
+        int ornamentY = containerNameY - 1;
+        int ornamentX = textureTopX + font.width(name) + 5;
+        int itemStackX = textureTopX + 17;
+        int itemStackY = textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT / 2 - itemStackXY / 2;
+        int itemStackNameX = itemStackX + 21;
+        int itemStackNameY = textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT / 2 - font.lineHeight / 2;
         int itemStackRowOffsetY = 0;
 
-        Component name = getContainerName(container);
-        //guiGraphics.blitInscribed(QUICKLOOT_HUD_TEXTURE, containerNameX, containerNameY, 25, 25, 25, 25);
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX, textureTopY, 0, 0, TEXTURE_WIDTH, TEXTURE_TOP_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, ornamentX, ornamentY, 0, 126, TEXTURE_WIDTH, ORNAMENT_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         guiGraphics.drawString(font, name, containerNameX, containerNameY, 0xFFFFFF, true);
-        guiGraphics.hLine(containerNameX, hLineWidth, hLineNameY, 0xFFFFFFFF);
 
         if (container.isEmpty()) {
             guiGraphics.drawString(font, Component.translatable("quickLootHud." + LostTales.MOD_ID + ".empty"), itemStackNameX, itemStackNameY, 0xFFFFFF, true);
+            guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX, textureTopY + TEXTURE_TOP_HEIGHT, 0, 25, TEXTURE_WIDTH, TEXTURE_MID_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         } else {
             List<Integer> visibleSlots = getNonEmptyContainerSlots(container);
 
@@ -72,23 +80,23 @@ public class LostTalesQuickLootHud {
             for (int i = SCROLL_INDEX; i < totalRows && j < MAX_ITEMS_PER_SCREEN; i++) {
                 int containerIndex = visibleSlots.get(i);
                 ItemStack itemStack = container.getItem(containerIndex);
-                renderItemStacks(guiGraphics, itemStack, font, j, itemStackX, itemStackY, itemStackRowOffsetY, itemStackNameX, itemStackNameY);
-                itemStackRowOffsetY += itemStackXY + paddingItemStack;
+                renderItemStacks(guiGraphics, itemStack, font, j, itemStackX, itemStackY, itemStackRowOffsetY, itemStackNameX, itemStackNameY, textureTopX, textureTopY);
+                itemStackRowOffsetY += TEXTURE_MID_HEIGHT;
                 j++;
             }
         }
     }
 
-    public static void renderItemStacks(GuiGraphics guiGraphics, ItemStack itemStack, Font font, int j, int itemStackX, int itemStackY, int itemStackRowOffsetY, int itemStackNameX, int itemStackNameY) {
+    public static void renderItemStacks(GuiGraphics guiGraphics, ItemStack itemStack, Font font, int j, int itemStackX, int itemStackY, int itemStackRowOffsetY, int itemStackNameX, int itemStackNameY, int textureTopX, int textureTopY) {
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX, textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT * j, 0, 25,  TEXTURE_WIDTH, TEXTURE_MID_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         guiGraphics.renderItem(itemStack, itemStackX, itemStackY + itemStackRowOffsetY);
         guiGraphics.renderItemDecorations(font, itemStack, itemStackX , itemStackY + itemStackRowOffsetY);
 
         int actualIndex = SCROLL_INDEX + j;
         if (actualIndex == SELECTED_ROW_INDEX) {
-            guiGraphics.drawString(font, itemStack.getHoverName(), itemStackNameX, itemStackNameY + itemStackRowOffsetY, 0xFFFF00, true);
-        } else {
-            guiGraphics.drawString(font, itemStack.getStyledHoverName(), itemStackNameX, itemStackNameY + itemStackRowOffsetY, 0xFFFFFF, true);
+            guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX + 13, textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT * j + 1, 0, 72,  TEXTURE_WIDTH, SELECTION_BOX_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
+        guiGraphics.drawString(font, itemStack.getStyledHoverName(), itemStackNameX, itemStackNameY + itemStackRowOffsetY, 0xFFFFFF, true);
     }
 
     public static void moveSelectionIndex(Container container, int scrollDelta) {
