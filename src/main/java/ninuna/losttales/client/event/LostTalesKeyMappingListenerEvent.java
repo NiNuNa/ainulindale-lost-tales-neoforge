@@ -6,11 +6,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import ninuna.losttales.LostTales;
-import ninuna.losttales.client.gui.LostTalesHud;
 import ninuna.losttales.client.gui.LostTalesQuickLootHud;
 import ninuna.losttales.client.gui.screen.LostTalesCharacterMenuScreen;
 import ninuna.losttales.client.gui.screen.LostTalesQuestJournalScreen;
-import ninuna.losttales.util.LostTalesClientUtil;
+import ninuna.losttales.client.util.LostTalesGuiUtil;
+import ninuna.losttales.client.util.LostTalesKeyMappingUtil;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
 public class LostTalesKeyMappingListenerEvent {
@@ -24,16 +24,13 @@ public class LostTalesKeyMappingListenerEvent {
             Minecraft.getInstance().setScreen(new LostTalesCharacterMenuScreen(Minecraft.getInstance().screen));
         }
         else if (LostTalesRegisterKeyMappingsEvent.TOGGLE_HUD_MAPPING.get().consumeClick()) {
-            LostTalesHud.toggleLostTalesHud();
+            LostTalesGuiUtil.toggleLostTalesHud();
         }
         else if (LostTalesRegisterKeyMappingsEvent.USE_MAPPING.get().consumeClick()) {
             LostTalesQuickLootHud.dropSelectedItem();
         }
-        else if (LostTalesRegisterKeyMappingsEvent.MODIFIER_MAPPING.get().isDown()) {
-            LostTalesClientUtil.setIsModifierKeyDown(true);
-        }
         else {
-            LostTalesClientUtil.setIsModifierKeyDown(false);
+            LostTalesKeyMappingUtil.setIsModifierKeyDown(LostTalesRegisterKeyMappingsEvent.MODIFIER_MAPPING.get().isDown());
         }
     }
 }

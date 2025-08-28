@@ -1,24 +1,28 @@
-package ninuna.losttales.util;
+package ninuna.losttales.client.util;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
+import ninuna.losttales.client.event.LostTalesModConfigEvent;
 import ninuna.losttales.config.LostTalesConfigs;
+import ninuna.losttales.config.custom.LostTalesClientConfig;
 import org.joml.Matrix4f;
 
-public class LostTalesClientUtil {
-    private static boolean isModifierKeyDown = false;
+public class LostTalesGuiUtil {
+    public static final int COLOR_WHITE = 0xFFFFFBDE;
+    public static final int COLOR_WHITE_FADE = 0x00FFFBDE;
 
-    public static void setIsModifierKeyDown(boolean isModifierKeyDown) {
-        LostTalesClientUtil.isModifierKeyDown = isModifierKeyDown;
-    }
+    public static void toggleLostTalesHud() {
+        LostTalesClientConfig clientConfig = LostTalesConfigs.CLIENT;
 
-    public static boolean isModifierKeyDown() {
-        return isModifierKeyDown;
+        clientConfig.showLostTalesHud.set(!clientConfig.showLostTalesHud.get());
+        LostTalesModConfigEvent.syncLinkedConfigOptions();
+        LostTalesConfigs.CLIENT_SPEC.save();
+
+        renderToast();
     }
 
     public static void renderToast() {

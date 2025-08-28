@@ -59,6 +59,12 @@
   "losttales.configuration.showQuickLootHud.tooltip": "Toggle the Quick Loot HUD",
   "losttales.configuration.linkShowQuickLootHud": "Toggling Lost Tales HUD Toggles Quick Loot HUD",
   "losttales.configuration.linkShowQuickLootHud.tooltip": "If set to TRUE, toggling the Lost Tales HUD will also toggle the Quick Loot HUD. If set to FALSE, the two HUDs will behave separately.",
+  "losttales.configuration.compassHud": "Compass HUD Options",
+  "losttales.configuration.compassHud.tooltip": "All options and settings regarding the Compass HUD can be found here.",
+  "losttales.configuration.showCompassHud": "Show Compass HUD",
+  "losttales.configuration.showCompassHud.tooltip": "Toggle the Compass HUD",
+  "losttales.configuration.linkShowCompassHud": "Toggling Lost Tales HUD Toggles Compass HUD",
+  "losttales.configuration.linkShowCompassHud.tooltip": "If set to TRUE, toggling the Lost Tales HUD will also toggle the Compass HUD. If set to FALSE, the two HUDs will behave separately.",
 
   "#": "Toasts",
   "todo.todo": "Todo",
