@@ -70,5 +70,8 @@
   "questJournal.title": "Quest Journal",
 
   "#": "Quick Loot HUD",
-  "quickLootHud.losttales.empty": "Empty"
+  "quickLootHud.losttales.empty": "Empty",
+  "quickLootHud.losttales.drop": "Drop",
+  "quickLootHud.losttales.scroll": "Scroll Up/Down",
+  "quickLootHud.losttales.plus": "+"
 }

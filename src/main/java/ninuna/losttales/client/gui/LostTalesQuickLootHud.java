@@ -21,6 +21,7 @@ import ninuna.losttales.LostTales;
 import ninuna.losttales.block.entity.custom.LostTalesUrnBlockEntity;
 import ninuna.losttales.client.event.LostTalesQuickLootHudScrollEvent;
 import ninuna.losttales.network.packet.LostTalesQuickLootHudDropItemPacket;
+import ninuna.losttales.util.LostTalesClientUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,46 +30,68 @@ public class LostTalesQuickLootHud {
     private static int SCROLL_INDEX = 0;
     private static int SELECTED_ROW_INDEX = 0;
 
-    private static final int TEXTURE_HEIGHT= 160;
-    private static final int TEXTURE_TOP_HEIGHT = 23;
-    private static final int TEXTURE_MID_HEIGHT = 22;
-    private static final int ORNAMENT_HEIGHT = 10;
-    private static final int SELECTION_BOX_HEIGHT = 20;
-    private static final int TEXTURE_WIDTH = 320;
     private static final int MAX_ITEMS_PER_SCREEN = 5;
+    private static final int COLOR_WHITE = 0xFFFFFBDE;
+    private static final int COLOR_BLACK = 0x1228242E;
+    private static final int COLOR_FADE = 0x0028242E;
     private static final ResourceLocation QUICK_LOOT_HUD_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/quickloothud.png");
+    private static final int TEXTURE_HEIGHT= 160;
+    private static final int TEXTURE_WIDTH = 320;
+    private static final int TEXTURE_SEGMENT_TOP_HEIGHT = 23;
+    private static final int TEXTURE_SEGMENT_MID_HEIGHT = 22;
+    private static final int TEXTURE_SEGMENT_MID_WIDTH = 280;
+    private static final int TEXTURE_SEGMENT_BOT_HEIGHT = 8;
+    private static final int TEXTURE_ORNAMENT_HORIZONTAL_HEIGHT = 10;
+    private static final int TEXTURE_ORNAMENT_VERTICAL_HEIGHT = 22;
+    private static final int TEXTURE_SELECTION_BOX_HEIGHT = 20;
+    private static final int TEXTURE_SELECTION_BOX_OFFSET_X = 13;
+    private static final int TEXTURE_KEYS_HEIGHT = 13;
+    private static final int TEXTURE_KEY_R_WIDTH = 14;
+    private static final int TEXTURE_KEY_ALT_WIDTH = 20;
+    private static final int TEXTURE_KEY_SCROLL_WIDTH = 16;
 
     public static void renderHud(Minecraft minecraft, GuiGraphics guiGraphics, Container container) {
         Font font = minecraft.font;
         Window window = minecraft.getWindow();
         Component name = getContainerName(container);
+        Component textKeyR = Component.translatable("quickLootHud." + LostTales.MOD_ID + ".drop");
+        Component textKeyScroll = Component.translatable("quickLootHud." + LostTales.MOD_ID + ".scroll");
+        Component textKeyAlt = Component.translatable("quickLootHud." + LostTales.MOD_ID + ".plus");
 
         int windowHeight = window.getGuiScaledHeight();
         int windowWidth = window.getGuiScaledWidth();
 
-        int offsetHudX = windowWidth / 8;
-        int offsetHudY = windowHeight / 6;
+        int j = 0;
         int itemStackXY = 16;
-        int textureTopY = windowHeight / 2 - offsetHudY;
-        int textureTopX =  windowWidth / 2 + offsetHudX;
-        int containerNameY = textureTopY + font.lineHeight / 2;
-        int containerNameX = textureTopX + 3;
-        int ornamentY = containerNameY - 1;
-        int ornamentX = textureTopX + font.width(name) + 5;
-        int itemStackX = textureTopX + 17;
-        int itemStackY = textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT / 2 - itemStackXY / 2;
-        int itemStackNameX = itemStackX + 21;
-        int itemStackNameY = textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT / 2 - font.lineHeight / 2;
         int itemStackRowOffsetY = 0;
 
-        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX, textureTopY, 0, 0, TEXTURE_WIDTH, TEXTURE_TOP_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, ornamentX, ornamentY, 0, 126, TEXTURE_WIDTH, ORNAMENT_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        guiGraphics.drawString(font, name, containerNameX, containerNameY, 0xFFFFFF, true);
+        // Variables for HUD screen layout.
+        int offsetX = windowWidth / 8;
+        int offsetY = windowHeight / 6;
+        int textureSegmentTopY = windowHeight / 2 - offsetY;
+        int textureSegmentTopX =  windowWidth / 2 + offsetX;
+        int containerNameY = textureSegmentTopY + font.lineHeight / 2;
+        int containerNameX = textureSegmentTopX + 3;
+        int textureOrnamentHorY = containerNameY - 1;
+        int textureOrnamentHorX = textureSegmentTopX + font.width(name) + 5;
+        int itemStackX = textureSegmentTopX + 17;
+        int itemStackY = textureSegmentTopY + TEXTURE_SEGMENT_TOP_HEIGHT + TEXTURE_SEGMENT_MID_HEIGHT / 2 - itemStackXY / 2;
+        int itemStackNameX = itemStackX + 21;
+        int itemStackNameY = textureSegmentTopY + TEXTURE_SEGMENT_TOP_HEIGHT + TEXTURE_SEGMENT_MID_HEIGHT / 2 - font.lineHeight / 2;
+        int textureOrnamentVertX = textureSegmentTopX - 5;
+        int textureOrnamentVertLineX = textureSegmentTopX + 5;
+        int textKeyRX = containerNameX + TEXTURE_KEY_R_WIDTH + 3;
+        int textureKeyAltX = textKeyRX + font.width(textKeyR) + 7;
+        int textKeyAltX = textureKeyAltX + TEXTURE_KEY_ALT_WIDTH + 3;
+        int textureKeyScrollX = textKeyAltX + font.width(textKeyAlt) + 3;
+        int textKeyScrollX = textureKeyScrollX + TEXTURE_KEY_SCROLL_WIDTH + 3;
 
-        if (container.isEmpty()) {
-            guiGraphics.drawString(font, Component.translatable("quickLootHud." + LostTales.MOD_ID + ".empty"), itemStackNameX, itemStackNameY, 0xFFFFFF, true);
-            guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX, textureTopY + TEXTURE_TOP_HEIGHT, 0, 25, TEXTURE_WIDTH, TEXTURE_MID_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        } else {
+        // Draw top segment of the texture.
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureSegmentTopX, textureSegmentTopY, 0, 0, TEXTURE_WIDTH, TEXTURE_SEGMENT_TOP_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureOrnamentHorX, textureOrnamentHorY, 0, 122, TEXTURE_WIDTH, TEXTURE_ORNAMENT_HORIZONTAL_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        guiGraphics.drawString(font, name, containerNameX, containerNameY, COLOR_WHITE, true);
+
+        if (!container.isEmpty()) {
             List<Integer> visibleSlots = getNonEmptyContainerSlots(container);
 
             int totalRows = visibleSlots.size();
@@ -76,27 +99,58 @@ public class LostTalesQuickLootHud {
                 SELECTED_ROW_INDEX = Math.max(0, totalRows - 1);
             }
 
-            int j = 0;
             for (int i = SCROLL_INDEX; i < totalRows && j < MAX_ITEMS_PER_SCREEN; i++) {
                 int containerIndex = visibleSlots.get(i);
                 ItemStack itemStack = container.getItem(containerIndex);
-                renderItemStacks(guiGraphics, itemStack, font, j, itemStackX, itemStackY, itemStackRowOffsetY, itemStackNameX, itemStackNameY, textureTopX, textureTopY);
-                itemStackRowOffsetY += TEXTURE_MID_HEIGHT;
+                // Draw middle segment of the texture.
+                renderItemStacks(guiGraphics, itemStack, font, j, itemStackX, itemStackY, itemStackRowOffsetY, itemStackNameX, itemStackNameY, textureSegmentTopX, textureSegmentTopY);
+                itemStackRowOffsetY += TEXTURE_SEGMENT_MID_HEIGHT;
                 j++;
             }
+        } else {
+            j = 1;
+            guiGraphics.drawString(font, Component.translatable("quickLootHud." + LostTales.MOD_ID + ".empty"), itemStackNameX, itemStackNameY, COLOR_WHITE, true);
+            guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureSegmentTopX, textureSegmentTopY + TEXTURE_SEGMENT_TOP_HEIGHT, 0, 25, TEXTURE_WIDTH, TEXTURE_SEGMENT_MID_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
+        // Draw bottom segment of the texture.
+        int textureSegmentBotY = textureSegmentTopY + TEXTURE_SEGMENT_TOP_HEIGHT + TEXTURE_SEGMENT_MID_HEIGHT * j;
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureSegmentTopX, textureSegmentBotY, 0, 51, TEXTURE_WIDTH, TEXTURE_SEGMENT_BOT_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+
+        // Draw keys.
+        int textureKeysY = textureSegmentBotY + TEXTURE_SEGMENT_BOT_HEIGHT + 3;
+        int textKeysY = textureKeysY + TEXTURE_KEYS_HEIGHT / 2 - font.lineHeight / 2;
+
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, containerNameX, textureKeysY, 0, 61, TEXTURE_KEY_R_WIDTH, TEXTURE_KEYS_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        guiGraphics.drawString(font, textKeyR, textKeyRX, textKeysY, COLOR_WHITE, true);
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureKeyAltX, textureKeysY, 15, 61, TEXTURE_KEY_ALT_WIDTH, TEXTURE_KEYS_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        guiGraphics.drawString(font, textKeyAlt, textKeyAltX, textKeysY, COLOR_WHITE, true);
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureKeyScrollX, textureKeysY, 36, 61, TEXTURE_KEY_SCROLL_WIDTH, TEXTURE_KEYS_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        guiGraphics.drawString(font, textKeyScroll, textKeyScrollX, textKeysY, COLOR_WHITE, true);
+
+        //Draw vertical ornament texture.
+        int textureOrnamentVertY = textureSegmentTopY + TEXTURE_SEGMENT_TOP_HEIGHT + TEXTURE_SEGMENT_MID_HEIGHT * j / 2 - TEXTURE_ORNAMENT_VERTICAL_HEIGHT / 2;
+
+        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureOrnamentVertX, textureOrnamentVertY, 0, 98, TEXTURE_WIDTH, TEXTURE_ORNAMENT_VERTICAL_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        guiGraphics.fillGradient(textureOrnamentVertLineX + 1, textureOrnamentVertY, textureOrnamentVertLineX, textureOrnamentVertY - (j - 1) * 11 - 3, COLOR_WHITE, COLOR_FADE);
+        guiGraphics.fillGradient(textureOrnamentVertLineX + 1, textureOrnamentVertY + TEXTURE_ORNAMENT_VERTICAL_HEIGHT + (j - 1) * 11 + 3, textureOrnamentVertLineX, textureOrnamentVertY + TEXTURE_ORNAMENT_VERTICAL_HEIGHT, COLOR_FADE, COLOR_WHITE);
     }
 
     public static void renderItemStacks(GuiGraphics guiGraphics, ItemStack itemStack, Font font, int j, int itemStackX, int itemStackY, int itemStackRowOffsetY, int itemStackNameX, int itemStackNameY, int textureTopX, int textureTopY) {
-        guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX, textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT * j, 0, 25,  TEXTURE_WIDTH, TEXTURE_MID_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        int textureSegmentMidX2 = textureTopX + TEXTURE_SEGMENT_MID_WIDTH;
+        int textureSegmentMidY1 = textureTopY + TEXTURE_SEGMENT_TOP_HEIGHT + TEXTURE_SEGMENT_MID_HEIGHT * j;
+        int textureSegmentMidY2 = textureSegmentMidY1 + TEXTURE_SEGMENT_MID_HEIGHT;
+        int textureSelectionBoxY = textureSegmentMidY1 + (TEXTURE_SEGMENT_MID_HEIGHT - TEXTURE_SELECTION_BOX_HEIGHT) / 2;
+        int textureSelectionBoxX = textureTopX + TEXTURE_SELECTION_BOX_OFFSET_X;
+
+        LostTalesClientUtil.renderHorizontalFade(guiGraphics, textureTopX, textureSegmentMidY1, textureSegmentMidX2, textureSegmentMidY2,COLOR_BLACK, COLOR_FADE);
         guiGraphics.renderItem(itemStack, itemStackX, itemStackY + itemStackRowOffsetY);
         guiGraphics.renderItemDecorations(font, itemStack, itemStackX , itemStackY + itemStackRowOffsetY);
 
         int actualIndex = SCROLL_INDEX + j;
         if (actualIndex == SELECTED_ROW_INDEX) {
-            guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureTopX + 13, textureTopY + TEXTURE_TOP_HEIGHT + TEXTURE_MID_HEIGHT * j + 1, 0, 72,  TEXTURE_WIDTH, SELECTION_BOX_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            guiGraphics.blit(RenderType::guiTextured, QUICK_LOOT_HUD_TEXTURE, textureSelectionBoxX, textureSelectionBoxY, 0, 76,  TEXTURE_WIDTH, TEXTURE_SELECTION_BOX_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
-        guiGraphics.drawString(font, itemStack.getStyledHoverName(), itemStackNameX, itemStackNameY + itemStackRowOffsetY, 0xFFFFFF, true);
+        guiGraphics.drawString(font, itemStack.getStyledHoverName(), itemStackNameX, itemStackNameY + itemStackRowOffsetY, COLOR_WHITE, true);
     }
 
     public static void moveSelectionIndex(Container container, int scrollDelta) {
