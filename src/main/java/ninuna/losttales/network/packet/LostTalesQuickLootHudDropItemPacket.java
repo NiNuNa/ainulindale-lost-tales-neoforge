@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import ninuna.losttales.LostTales;
@@ -58,7 +59,7 @@ public record LostTalesQuickLootHudDropItemPacket(int x, int y, int z, int selec
             level.playSound(null, pos, SoundEvents.DISPENSER_DISPENSE, SoundSource.BLOCKS, 1.0f, 1.0f);
 
             LostTales.LOGGER.info("Dropped item: " + itemStack.getDisplayName().getString());
-            PacketDistributor.sendToAllPlayers(new LostTalesQuickLootHudDropItemClientPacket(x, y, z, selectedIndex));
+            PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(pos), new LostTalesQuickLootHudDropItemClientPacket(x, y, z, selectedIndex));
         }
     }
 }

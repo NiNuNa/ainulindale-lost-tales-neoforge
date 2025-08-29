@@ -46,6 +46,7 @@
   "#": "Keybinds",
   "key.categories.losttales.mappings": "Ainulindalë: Lost Tales",
   "key.losttales.questJournal": "Open Quest Journal",
+  "key.losttales.characterMenu": "Open Character Menu",
   "key.losttales.toggleHud": "Toggle HUD",
   "key.losttales.use": "Activate / Use",
   "key.losttales.modifier": "Modifier Key",
@@ -59,6 +60,14 @@
   "losttales.configuration.showQuickLootHud.tooltip": "Toggle the Quick Loot HUD",
   "losttales.configuration.linkShowQuickLootHud": "Toggling Lost Tales HUD Toggles Quick Loot HUD",
   "losttales.configuration.linkShowQuickLootHud.tooltip": "If set to TRUE, toggling the Lost Tales HUD will also toggle the Quick Loot HUD. If set to FALSE, the two HUDs will behave separately.",
+
+  "losttales.configuration.maxRowsPerQuickLootScreen": "Maximum Rows per Screen",
+  "losttales.configuration.maxRowsPerQuickLootScreen.tooltip": "Todo",
+  "losttales.configuration.quickLootHudOffsetX": "Quick Loot HUD X Offset",
+  "losttales.configuration.quickLootHudOffsetX.tooltip": "Todo",
+  "losttales.configuration.quickLootHudOffsetY": "Quick Loot HUD Y Offset",
+  "losttales.configuration.quickLootHudOffsetY.tooltip": "Todo",
+
   "losttales.configuration.compassHud": "Compass HUD Options",
   "losttales.configuration.compassHud.tooltip": "All options and settings regarding the Compass HUD can be found here.",
   "losttales.configuration.showCompassHud": "Show Compass HUD",
