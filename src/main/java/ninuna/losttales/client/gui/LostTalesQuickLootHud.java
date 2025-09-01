@@ -60,7 +60,7 @@ public class LostTalesQuickLootHud {
         Component name = getContainerName(container);
         int windowHeight = window.getGuiScaledHeight();
         int windowWidth = window.getGuiScaledWidth();
-        int maxRowsPerScreen = LostTalesConfigs.CLIENT.maxRowsPerQuickLootScreen.get();
+        int maxRowsPerScreen = LostTalesConfigs.CLIENT.quickLootHudMaxRows.get();
         int offsetX = LostTalesConfigs.CLIENT.quickLootHudOffsetX.get();
         int offsetY = LostTalesConfigs.CLIENT.quickLootHudOffsetY.get();;
 
@@ -173,7 +173,7 @@ public class LostTalesQuickLootHud {
 
     public static void moveSelectionIndex(Container container, int scrollDelta) {
         int maxIndex = getNonEmptyContainerSlots(container).size() - 1;
-        int maxRowsPerScreen = LostTalesConfigs.CLIENT.maxRowsPerQuickLootScreen.get();
+        int maxRowsPerScreen = LostTalesConfigs.CLIENT.quickLootHudMaxRows.get();
 
         SELECTED_ROW_INDEX = Math.max(0, Math.min(SELECTED_ROW_INDEX + scrollDelta, maxIndex));
 
