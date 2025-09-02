@@ -6,14 +6,34 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import dev.ninuna.losttales.client.event.LostTalesModConfigEvent;
+import dev.ninuna.losttales.common.config.LostTalesModConfigEvent;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
 import dev.ninuna.losttales.common.config.custom.LostTalesClientConfig;
 import org.joml.Matrix4f;
 
 public class LostTalesGuiHelper {
-    public static final int COLOR_WHITE = 0xFFFFFBDE;
-    public static final int COLOR_WHITE_FADE = 0x00FFFBDE;
+    public enum GuiColor {
+        WHITE   (0xFFFBDE),
+        RED     (0xFF0000),
+        BLUE    (0x0000FF);
+
+        private static final int ALPHA_SHIFT = 24;
+
+        private final int colorRgb;
+
+        GuiColor(int colorRgb) {
+            this.colorRgb = colorRgb;
+        }
+
+        public int getColorRgb() {
+            return this.colorRgb;
+        }
+
+        public int getColorArgb(float alpha) {
+            int alphaClamp = Math.min(255, Math.max(0, Math.round(alpha * 255)));
+            return (alphaClamp << ALPHA_SHIFT) | this.colorRgb;
+        }
+    }
 
     public static void toggleLostTalesHud() {
         LostTalesClientConfig clientConfig = LostTalesConfigs.CLIENT;

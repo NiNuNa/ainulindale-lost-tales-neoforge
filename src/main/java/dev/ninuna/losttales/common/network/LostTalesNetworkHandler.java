@@ -1,5 +1,6 @@
 package dev.ninuna.losttales.common.network;
 
+import dev.ninuna.losttales.common.network.packet.LostTalesSyncMapMarkersPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -22,6 +23,12 @@ public class LostTalesNetworkHandler {
                 LostTalesQuickLootHudDropItemClientPacket.TYPE,
                 LostTalesQuickLootHudDropItemClientPacket.STREAM_CODEC,
                 LostTalesQuickLootHudDropItemClientPacket::handle
+        );
+
+        event.registrar(LostTales.MOD_ID).playToClient(
+                LostTalesSyncMapMarkersPacket.TYPE,
+                LostTalesSyncMapMarkersPacket.STREAM_CODEC,
+                LostTalesSyncMapMarkersPacket::handle
         );
     }
 }

@@ -1,11 +1,16 @@
 package dev.ninuna.losttales.common;
 
+import com.mojang.brigadier.CommandDispatcher;
+import dev.ninuna.losttales.common.attachement.LostTalesAttachments;
 import dev.ninuna.losttales.common.block.LostTalesBlocks;
 import dev.ninuna.losttales.common.block.entity.LostTalesBlockEntities;
+import dev.ninuna.losttales.common.command.LostTalesMapMarkerCommand;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
 import dev.ninuna.losttales.common.item.LostTalesCreativeModeTabs;
 import dev.ninuna.losttales.common.item.LostTalesItems;
 import dev.ninuna.losttales.common.sound.LostTalesSoundEvents;
+import net.minecraft.commands.CommandSourceStack;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -17,7 +22,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 @Mod(LostTales.MOD_ID)
 public class LostTales {
@@ -32,6 +36,7 @@ public class LostTales {
         LostTalesBlockEntities.register(modEventBus);
         LostTalesItems.register(modEventBus);
         LostTalesCreativeModeTabs.register(modEventBus);
+        LostTalesAttachments.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (LostTales) to respond directly to events.
@@ -48,10 +53,9 @@ public class LostTales {
         LOGGER.info("HELLO FROM COMMON SETUP");
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
+        new LostTalesMapMarkerCommand(commandDispatcher);
     }
 }

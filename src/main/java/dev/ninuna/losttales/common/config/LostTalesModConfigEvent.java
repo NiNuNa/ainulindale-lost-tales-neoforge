@@ -1,15 +1,13 @@
-package dev.ninuna.losttales.client.event;
+package dev.ninuna.losttales.common.config;
 
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.client.gui.hud.LostTalesQuickLootHud;
-import dev.ninuna.losttales.common.config.LostTalesConfigs;
 import dev.ninuna.losttales.common.config.custom.LostTalesClientConfig;
 
-@EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = LostTales.MOD_ID)
 public class LostTalesModConfigEvent {
 
     @SubscribeEvent

@@ -88,5 +88,15 @@
   "quickLootHud.losttales.empty": "Empty",
   "quickLootHud.losttales.drop": "Drop",
   "quickLootHud.losttales.scroll": "Scroll Up/Down",
-  "quickLootHud.losttales.plus": "+"
+  "quickLootHud.losttales.plus": "+",
+
+  "#": "Map Markers",
+  "mapMarker.losttales.north": "North",
+  "mapMarker.losttales.northEast": "North-East",
+  "mapMarker.losttales.east": "East",
+  "mapMarker.losttales.southEast": "South-East",
+  "mapMarker.losttales.south": "South",
+  "mapMarker.losttales.southWest": "South-West",
+  "mapMarker.losttales.west": "West",
+  "mapMarker.losttales.northWest": "North-West"
 }

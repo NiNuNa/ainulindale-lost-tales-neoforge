@@ -34,9 +34,9 @@ public record LostTalesQuickLootHudDropItemClientPacket(int x, int y, int z, int
                     container.setItem(selectedIndex, ItemStack.EMPTY);
                     container.setChanged();
 
-                    int scrollIndex = LostTalesQuickLootHud.getScrollIndex();
+                    int scrollIndex = LostTalesQuickLootHud.getIndexScrollOverflow();
                     if (scrollIndex > 0) {
-                        LostTalesQuickLootHud.setScrollIndex(scrollIndex - 1);
+                        LostTalesQuickLootHud.setIndexScrollOverflow(scrollIndex - 1);
                     }
 
                     LostTales.LOGGER.info("UPDTED");
