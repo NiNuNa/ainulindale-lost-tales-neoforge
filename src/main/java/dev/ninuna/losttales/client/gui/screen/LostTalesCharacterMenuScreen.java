@@ -1,11 +1,11 @@
 package dev.ninuna.losttales.client.gui.screen;
 
+import dev.ninuna.losttales.client.keymapping.LostTalesKeyMappingRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import dev.ninuna.losttales.client.keymapping.LostTalesRegisterKeyMappingsEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class LostTalesCharacterMenuScreen extends Screen {
@@ -26,10 +26,10 @@ public class LostTalesCharacterMenuScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (LostTalesRegisterKeyMappingsEvent.CHARACTER_MENU_MAPPING.get().matches(keyCode, scanCode)) {
+        if (LostTalesKeyMappingRegistry.CHARACTER_MENU_MAPPING.get().matches(keyCode, scanCode)) {
             this.minecraft.setScreen(null);
             return true;
-        } else if (LostTalesRegisterKeyMappingsEvent.QUEST_JOURNAL_MAPPING.get().matches(keyCode, scanCode)) {
+        } else if (LostTalesKeyMappingRegistry.QUEST_JOURNAL_MAPPING.get().matches(keyCode, scanCode)) {
             this.minecraft.setScreen(new LostTalesQuestJournalScreen(minecraft.screen));
             return true;
         } else {

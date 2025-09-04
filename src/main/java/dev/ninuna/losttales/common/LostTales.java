@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.common;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.ninuna.losttales.common.attachement.LostTalesAttachments;
+import dev.ninuna.losttales.common.data.attachement.LostTalesAttachments;
 import dev.ninuna.losttales.common.block.LostTalesBlocks;
 import dev.ninuna.losttales.common.block.entity.LostTalesBlockEntities;
 import dev.ninuna.losttales.common.command.LostTalesMapMarkerCommand;

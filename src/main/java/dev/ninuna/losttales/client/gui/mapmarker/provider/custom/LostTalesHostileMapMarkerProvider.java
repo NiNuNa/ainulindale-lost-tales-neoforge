@@ -1,5 +1,7 @@
 package dev.ninuna.losttales.client.gui.mapmarker.provider.custom;
 
+import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -33,13 +35,12 @@ public class LostTalesHostileMapMarkerProvider implements LostTalesMapMarkerProv
             double dz = entity.getZ();
             double dy = entity.getY();
 
-
             LostTalesMapMarker mapMarker = new LostTalesMapMarker(
-                    entity.getUUID(), entity.getDisplayName(), LostTalesGuiHelper.GuiColor.WHITE.getColorRgb(), entity.level().dimension(),
+                    entity.getUUID(), entity.getDisplayName(), LostTalesMapMarkerIcon.HOSTILE ,LostTalesGuiColor.WHITE,
+                    entity.level().dimension(),
                     true, true, true,
                     HOSTILE_SCAN_RADIUS,
-                    dx, dz, dy,
-                    11, 0
+                    dx, dz, dy
             );
             mapMarkers.add(mapMarker);
         }

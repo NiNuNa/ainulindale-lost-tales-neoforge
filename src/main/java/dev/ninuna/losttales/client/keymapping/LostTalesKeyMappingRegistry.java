@@ -11,7 +11,7 @@ import dev.ninuna.losttales.common.LostTales;
 import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
-public class LostTalesRegisterKeyMappingsEvent {
+public class LostTalesKeyMappingRegistry {
     // Translation keys>
     public static final String LOSTTALES_MAPPING_CATEGORY_LANG_KEY = "key.categories." + LostTales.MOD_ID + ".mappings";
 

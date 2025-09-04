@@ -2,7 +2,6 @@ package dev.ninuna.losttales.client.gui.mapmarker.provider.custom;
 
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
-import dev.ninuna.losttales.client.gui.mapmarker.LostTalesClientMapMarker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
@@ -20,15 +19,15 @@ public class LostTalesSharedMapMarkerProvider implements LostTalesMapMarkerProvi
         Level level = player.level();
         var mapMarkers = new ArrayList<LostTalesMapMarker>();
 
-        for (var mapMarker : LostTalesClientMapMarker.shared()) {
-            if (!mapMarker.dim.equals(level.dimension())) continue;
+        for (var mapMarker : LostTalesMapMarker.shared()) {
+            if (!mapMarker.dimension.equals(level.dimension())) continue;
 
             mapMarkers.add(new LostTalesMapMarker(
-                    mapMarker.id, Component.literal(mapMarker.name), mapMarker.color, mapMarker.dim,
+                    mapMarker.id, Component.literal(mapMarker.name), mapMarker.icon, mapMarker.color,
+                    mapMarker.dimension,
                     true, true, false,
-                    0.0f,
-                    mapMarker.x, mapMarker.z, mapMarker.y,
-                    22, 0
+                    mapMarker.fadeInRadius,
+                    mapMarker.x, mapMarker.z, mapMarker.y
             ));
         }
         return mapMarkers;

@@ -1,4 +1,4 @@
-package dev.ninuna.losttales.common.attachement;
+package dev.ninuna.losttales.common.data.attachement;
 
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;

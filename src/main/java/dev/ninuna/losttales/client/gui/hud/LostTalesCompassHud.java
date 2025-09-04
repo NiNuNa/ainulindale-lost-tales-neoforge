@@ -1,19 +1,19 @@
 package dev.ninuna.losttales.client.gui.hud;
 
 import com.mojang.blaze3d.platform.Window;
+import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesSharedMapMarkerProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import dev.ninuna.losttales.client.gui.LostTalesGuiHelper;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesDirectionMapMarkerProvider;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesHostileMapMarkerProvider;
-import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesVillageMapMarkerProvider;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
 
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ public class LostTalesCompassHud {
 
     private static final List<LostTalesMapMarkerProvider> PROVIDERS = List.of(
             new LostTalesDirectionMapMarkerProvider(),
-            new LostTalesVillageMapMarkerProvider(),
             new LostTalesSharedMapMarkerProvider(),
             new LostTalesHostileMapMarkerProvider()
     );
@@ -127,7 +126,7 @@ public class LostTalesCompassHud {
             float distT = 1f;
             if (icon.fadeOutRadiusDistance() > 0f) {
                 double dist = Math.hypot(dx, dz);
-                float r = icon.fadeOutRadiusDistance();
+                double r = icon.fadeOutRadiusDistance();
                 float t = Math.max(0f, Math.min(1f, (float)(dist / r)));
                 distT = 1f - (t * t * (3f - 2f * t));
             }
@@ -135,7 +134,7 @@ public class LostTalesCompassHud {
             if (alphaT <= 0f) continue;
 
             float baseScale = 1.0f - (MAP_MARKER_SCALE_MODIFIER / 2) * (1 - edgeT);
-            int color = LostTalesGuiHelper.GuiColor.WHITE.getColorArgb(alphaT);
+            int color = icon.color().getColorArgb(alphaT);
 
             renderItems.add(new RenderItem(icon, px, edgeT, centerEmphasis, alphaT, color, baseScale));
 
@@ -169,13 +168,13 @@ public class LostTalesCompassHud {
             var pose = guiGraphics.pose();
             pose.pushPose();
             pose.translate(ri.px(),
-                    compassY + MAP_MARKER_OFFSET_Y + LostTalesMapMarker.getMapMarkerHeight() / 2f, 0);
+                    compassY + MAP_MARKER_OFFSET_Y + LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT / 2f, 0);
             pose.scale(scale, scale, 1f);
-            guiGraphics.blit(RenderType::guiTextured, LostTalesMapMarker.getMapMarkerTexture(),
-                    -LostTalesMapMarker.getMapMarkerWidth() / 2, -LostTalesMapMarker.getMapMarkerHeight(),
-                    icon.textureU(), icon.textureV(),
-                    LostTalesMapMarker.getMapMarkerWidth(), LostTalesMapMarker.getMapMarkerHeight(),
-                    LostTalesMapMarker.getMapMarkerTextureWidth(), LostTalesMapMarker.getMapMarkerTextureHeight(),
+            guiGraphics.blit(RenderType::guiTextured, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE,
+                    -LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2, -LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
+                    icon.icon().getU(), icon.icon().getV(),
+                    LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
+                    LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_HEIGHT,
                     ri.color());
             pose.popPose();
         }
@@ -185,7 +184,7 @@ public class LostTalesCompassHud {
             int mapMarkerNameLabelY = compassY + COMPASS_HEIGHT + MAP_MARKER_NAME_OFFSET_Y;
             int mapMarkerDistanceLabelY = compassY - minecraft.font.lineHeight - COMPASS_OFFSET_Y;
 
-            int labelColor = LostTalesGuiHelper.GuiColor.WHITE.getColorArgb(bestEmphasis);
+            int labelColor = LostTalesGuiColor.WHITE.getColorArgb(bestEmphasis);
 
             // name
             drawCenteredText(guiGraphics, minecraft, bestIcon.name(), compassCenterX, mapMarkerNameLabelY, labelColor);
@@ -197,7 +196,7 @@ public class LostTalesCompassHud {
                 drawCenteredText(guiGraphics, minecraft, label, bestPx, mapMarkerDistanceLabelY, labelColor);
 
                 // Show indicator when there's a meaningful vertical delta
-                double deltaY = bestIcon.getYDelta(minecraft);
+                double deltaY = bestIcon.getDeltaY(minecraft);
                 if (Math.abs(deltaY) >= 5) {
                     int indicatorU = 0, indicatorV = 20, indicatorHeight = 3, indicatorWidth = 5;
                     if (deltaY >= 10.0) {

@@ -12,29 +12,6 @@ import dev.ninuna.losttales.common.config.custom.LostTalesClientConfig;
 import org.joml.Matrix4f;
 
 public class LostTalesGuiHelper {
-    public enum GuiColor {
-        WHITE   (0xFFFBDE),
-        RED     (0xFF0000),
-        BLUE    (0x0000FF);
-
-        private static final int ALPHA_SHIFT = 24;
-
-        private final int colorRgb;
-
-        GuiColor(int colorRgb) {
-            this.colorRgb = colorRgb;
-        }
-
-        public int getColorRgb() {
-            return this.colorRgb;
-        }
-
-        public int getColorArgb(float alpha) {
-            int alphaClamp = Math.min(255, Math.max(0, Math.round(alpha * 255)));
-            return (alphaClamp << ALPHA_SHIFT) | this.colorRgb;
-        }
-    }
-
     public static void toggleLostTalesHud() {
         LostTalesClientConfig clientConfig = LostTalesConfigs.CLIENT;
 

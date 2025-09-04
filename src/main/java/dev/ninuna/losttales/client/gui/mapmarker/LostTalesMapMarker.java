@@ -1,30 +1,26 @@
 package dev.ninuna.losttales.client.gui.mapmarker;
 
+import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
 import dev.ninuna.losttales.common.LostTales;
+import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-import java.util.UUID;
+import java.util.*;
 
 public record LostTalesMapMarker(
-        UUID id, Component name, int color, ResourceKey<Level> dimension,
+        UUID id, Component name, LostTalesMapMarkerIcon icon, LostTalesGuiColor color,
+        ResourceKey<Level> dimension,
         boolean scaleWithCenterFocus, boolean showDistanceLabel, boolean hasActiveQuest,
-        float fadeOutRadiusDistance,
-        Double x, Double z, Double y,
-        int textureU, int textureV
+        double fadeOutRadiusDistance,
+        Double x, Double z, Double y
 ) {
-    private static final ResourceLocation MAP_MARKER_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/mapmarkers.png");
+    private static final List<LostTalesMapMarkerData.Entry> SHARED = new ArrayList<>();
+    private static final List<LostTalesMapMarkerData.Entry> PERSONAL = new ArrayList<>();
 
-    private static final int MAP_MARKER_TEXTURE_WIDTH  = 193;
-    private static final int MAP_MARKER_TEXTURE_HEIGHT = 64;
-
-    private static final int MAP_MARKER_WIDTH = 11;
-    private static final int MAP_MARKER_HEIGHT = 11;
-
-    public double getYDelta(Minecraft minecraft) {
+    public double getDeltaY(Minecraft minecraft) {
         if (y != null) return y - minecraft.player.getY();
         return 0.0;
     }
@@ -33,27 +29,26 @@ public record LostTalesMapMarker(
         return Component.translatable("mapMarker." + LostTales.MOD_ID + "." + key);
     }
 
-    public static UUID getMapMarkerUUID() {
-        return UUID.fromString("Lol");
+    public static synchronized void setShared(Collection<LostTalesMapMarkerData.Entry> entries) {
+        SHARED.clear();
+        SHARED.addAll(entries);
     }
 
-    public static ResourceLocation getMapMarkerTexture() {
-        return MAP_MARKER_TEXTURE;
+    public static synchronized void setPersonal(Collection<LostTalesMapMarkerData.Entry> entries) {
+        PERSONAL.clear();
+        PERSONAL.addAll(entries);
     }
 
-    public static int getMapMarkerHeight() {
-        return MAP_MARKER_HEIGHT;
+    public static synchronized List<LostTalesMapMarkerData.Entry> shared() {
+        return Collections.unmodifiableList(SHARED);
     }
 
-    public static int getMapMarkerWidth() {
-        return MAP_MARKER_WIDTH;
+    public static synchronized List<LostTalesMapMarkerData.Entry> personal() {
+        return Collections.unmodifiableList(PERSONAL);
     }
 
-    public static int getMapMarkerTextureHeight() {
-        return MAP_MARKER_TEXTURE_HEIGHT;
-    }
-
-    public static int getMapMarkerTextureWidth() {
-        return MAP_MARKER_TEXTURE_WIDTH;
+    public static synchronized void clearAll() {
+        SHARED.clear();
+        PERSONAL.clear();
     }
 }
