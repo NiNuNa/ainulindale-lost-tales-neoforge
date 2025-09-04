@@ -3,6 +3,7 @@ package dev.ninuna.losttales.common.network.packet;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarker;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
+import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerDataStore;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -34,9 +35,9 @@ public record LostTalesSyncMapMarkersPacket(boolean isLevelMapMarker, Collection
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             if (isLevelMapMarker) {
-                LostTalesMapMarker.setShared(mapMarkers);
+                LostTalesMapMarkerDataStore.setShared(mapMarkers);
             } else {
-                LostTalesMapMarker.setPersonal(mapMarkers);
+                LostTalesMapMarkerDataStore.setPersonal(mapMarkers);
             }
             // Debug (client only):
             LostTales.LOGGER.info("[LostTales] received " + mapMarkers.size() + " markers");

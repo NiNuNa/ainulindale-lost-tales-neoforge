@@ -51,7 +51,7 @@ public class LostTalesDirectionMapMarkerProvider implements LostTalesMapMarkerPr
                     UUID.randomUUID(), principalDirection.name, principalDirection.getMapMarkerIcon(), LostTalesGuiColor.WHITE,
                     minecraft.level.dimension(),
                     false, false, false,
-                    0,
+                    0, 0,
                     x + minecraft.player.getX() , z + minecraft.player.getZ(), minecraft.player.getY()
             ));
         }

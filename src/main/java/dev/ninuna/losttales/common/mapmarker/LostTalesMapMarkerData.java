@@ -1,6 +1,7 @@
 package dev.ninuna.losttales.common.mapmarker;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
@@ -45,7 +46,7 @@ public class LostTalesMapMarkerData {
         ).apply(entryInstance, Entry::new));
     }
 
-    public static final Codec<LostTalesMapMarkerData> CODEC = RecordCodecBuilder.create(dataInstance -> dataInstance.group(
+    public static final MapCodec<LostTalesMapMarkerData> MAP_CODEC = RecordCodecBuilder.mapCodec(dataInstance -> dataInstance.group(
             Entry.CODEC.listOf().fieldOf("map_markers").forGetter(data -> List.copyOf(
                     data.byId.values()))).apply(dataInstance, list -> {
                         LostTalesMapMarkerData data = new LostTalesMapMarkerData();

@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "ninuna.losttales.mixin",
+  "package": "dev.ninuna.losttales.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "injectors": {

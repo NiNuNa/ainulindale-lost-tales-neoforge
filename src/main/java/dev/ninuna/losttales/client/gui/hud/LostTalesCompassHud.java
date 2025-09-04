@@ -6,7 +6,7 @@ import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesSharedMapMarkerProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarker;
@@ -63,7 +63,7 @@ public class LostTalesCompassHud {
         float pixelPerDegree = (float) COMPASS_WIDTH / visibleDegreeRange;
 
         // Draw Compass Background Texture.
-        guiGraphics.blit(RenderType::guiTextured, COMPASS_HUD_TEXTURE, compassX, compassY, 0, 0,
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, COMPASS_HUD_TEXTURE, compassX, compassY, 0, 0,
                 COMPASS_WIDTH, COMPASS_HEIGHT, TEXTURE_COMPASS_HUD_WIDTH, TEXTURE_COMPASS_HUD_HEIGHT);
 
         // Draw Icon Textures and Name of Focused Icon.
@@ -124,9 +124,9 @@ public class LostTalesCompassHud {
             float centerEmphasis = focusEmphasis(centerDistPx, START_CENTER_FOCUS_OFFSET);
 
             float distT = 1f;
-            if (icon.fadeOutRadiusDistance() > 0f) {
+            if (icon.fadeInRadius() > 0f) {
                 double dist = Math.hypot(dx, dz);
-                double r = icon.fadeOutRadiusDistance();
+                double r = icon.fadeInRadius();
                 float t = Math.max(0f, Math.min(1f, (float)(dist / r)));
                 distT = 1f - (t * t * (3f - 2f * t));
             }
@@ -134,7 +134,7 @@ public class LostTalesCompassHud {
             if (alphaT <= 0f) continue;
 
             float baseScale = 1.0f - (MAP_MARKER_SCALE_MODIFIER / 2) * (1 - edgeT);
-            int color = icon.color().getColorArgb(alphaT);
+            int color = icon.color().getColorWithAlpha(alphaT);
 
             renderItems.add(new RenderItem(icon, px, edgeT, centerEmphasis, alphaT, color, baseScale));
 
@@ -166,17 +166,16 @@ public class LostTalesCompassHud {
             }
 
             var pose = guiGraphics.pose();
-            pose.pushPose();
-            pose.translate(ri.px(),
-                    compassY + MAP_MARKER_OFFSET_Y + LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT / 2f, 0);
-            pose.scale(scale, scale, 1f);
-            guiGraphics.blit(RenderType::guiTextured, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE,
+            pose.pushMatrix();
+            pose.translate(ri.px(), compassY + MAP_MARKER_OFFSET_Y + LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT / 2f);
+            pose.scale(scale, scale);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE,
                     -LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2, -LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
                     icon.icon().getU(), icon.icon().getV(),
                     LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
                     LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_HEIGHT,
                     ri.color());
-            pose.popPose();
+            pose.popMatrix();
         }
 
         // -------- Labels for the single focused icon --------
@@ -184,7 +183,7 @@ public class LostTalesCompassHud {
             int mapMarkerNameLabelY = compassY + COMPASS_HEIGHT + MAP_MARKER_NAME_OFFSET_Y;
             int mapMarkerDistanceLabelY = compassY - minecraft.font.lineHeight - COMPASS_OFFSET_Y;
 
-            int labelColor = LostTalesGuiColor.WHITE.getColorArgb(bestEmphasis);
+            int labelColor = LostTalesGuiColor.WHITE.getColorWithAlpha(bestEmphasis);
 
             // name
             drawCenteredText(guiGraphics, minecraft, bestIcon.name(), compassCenterX, mapMarkerNameLabelY, labelColor);
@@ -207,7 +206,7 @@ public class LostTalesCompassHud {
                     } else if (deltaY <= -5.0) {
                         indicatorU = 6;      // down-soft
                     }
-                    guiGraphics.blit(RenderType::guiTextured, COMPASS_HUD_TEXTURE,
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, COMPASS_HUD_TEXTURE,
                             bestPx + minecraft.font.width(label) / 2 + VERTICAL_INDICATOR_OFFSET_X,
                             mapMarkerDistanceLabelY,
                             indicatorU, indicatorV, indicatorWidth, indicatorHeight,

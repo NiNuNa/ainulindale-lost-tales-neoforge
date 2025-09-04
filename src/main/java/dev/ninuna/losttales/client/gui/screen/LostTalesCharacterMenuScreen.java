@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+//@OnlyIn(Dist.CLIENT)
 public class LostTalesCharacterMenuScreen extends Screen {
     public static final Component CHARACTER_MENU_TITLE = Component.translatable("characterMenu.title");
 

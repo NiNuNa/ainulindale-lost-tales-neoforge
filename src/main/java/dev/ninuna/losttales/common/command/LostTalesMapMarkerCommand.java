@@ -7,7 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.common.data.attachement.LostTalesAttachments;
+import dev.ninuna.losttales.common.data.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
 import dev.ninuna.losttales.common.network.packet.LostTalesSyncMapMarkersPacket;
 import net.minecraft.commands.CommandSourceStack;
@@ -134,22 +134,22 @@ public class LostTalesMapMarkerCommand {
         return 1;
     }
 
-    private int listMapMarkers(CommandContext<CommandSourceStack> ctx) {
-        ServerLevel level = ctx.getSource().getLevel();
+    private int listMapMarkers(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
         LostTalesMapMarkerData data = level.getData(LostTalesAttachments.LEVEL_MARKERS.get());
         List<LostTalesMapMarkerData.Entry> all = new ArrayList<>(data.all());
 
         if (all.isEmpty()) {
-            ctx.getSource().sendSuccess(() -> Component.literal("No shared markers set."), false);
+            context.getSource().sendSuccess(() -> Component.literal("No shared markers set."), false);
             return 1;
         }
 
-        ctx.getSource().sendSuccess(() -> Component.literal("Shared markers (" + all.size() + "):"), false);
+        context.getSource().sendSuccess(() -> Component.literal("Shared markers (" + all.size() + "):"), false);
         for (LostTalesMapMarkerData.Entry e : all) {
-            ctx.getSource().sendSuccess(() ->
+            context.getSource().sendSuccess(() ->
                     Component.literal("• " + e.name + " " + e.id + " @ " +
                             String.format("(%.1f, %.1f, %.1f)", e.x, e.y, e.z) +
-                            " " + e.dimension.location() + " " + hex(e.color.getColorRgb())), false);
+                            " " + e.dimension.location() + " " + hex(e.color.getColorWithAlpha(1.0f))), false);
         }
         return 1;
     }

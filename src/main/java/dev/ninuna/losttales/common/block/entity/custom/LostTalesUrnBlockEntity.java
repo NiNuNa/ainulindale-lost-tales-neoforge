@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import dev.ninuna.losttales.common.block.custom.LostTalesUrnDoubleBlock;
 import dev.ninuna.losttales.common.block.entity.LostTalesBlockEntities;
 import dev.ninuna.losttales.common.block.entity.LostTalesRespawnableBlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -51,17 +53,17 @@ public class LostTalesUrnBlockEntity extends LostTalesRespawnableBlockEntity imp
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        this.sealed = tag.getBooleanOr("sealed", false);
-        this.rotation = tag.getFloatOr("rotation", 0.0f);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.sealed = input.getBooleanOr("sealed", false);
+        this.rotation = input.getFloatOr("rotation", 0.0f);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putBoolean("sealed", this.sealed);
-        tag.putFloat("rotation", this.rotation);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putBoolean("sealed", this.sealed);
+        output.putFloat("rotation", this.rotation);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.common.mapmarker;
 
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.common.data.attachement.LostTalesAttachments;
+import dev.ninuna.losttales.common.data.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.network.packet.LostTalesSyncMapMarkersPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -40,7 +40,7 @@ public class LostTalesMapMarkerEvents {
     @SubscribeEvent
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         MinecraftServer server = event.getPlayer() != null
-                ? event.getPlayer().server
+                ? event.getPlayer().getServer()
                 : event.getPlayerList().getServer();
 
         for (ServerLevel level : server.getAllLevels()) {
@@ -58,7 +58,7 @@ public class LostTalesMapMarkerEvents {
     private static void syncMapMarkerDataToPlayer(Player player) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
-        var data = serverPlayer.serverLevel().getData(LostTalesAttachments.LEVEL_MARKERS.get());
+        var data = serverPlayer.level().getData(LostTalesAttachments.LEVEL_MARKERS.get());
         PacketDistributor.sendToPlayer(serverPlayer, new LostTalesSyncMapMarkersPacket(true, data.all()));
     }
 
@@ -67,8 +67,11 @@ public class LostTalesMapMarkerEvents {
         var list = LostTalesMapMarkerDataReloadListener.BY_DIMENSION.getOrDefault(dimensionKey, List.of());
         var levelData = level.getData(LostTalesAttachments.LEVEL_MARKERS.get());
 
-        levelData.clear();
-        levelData.addAll(list);
-        LostTales.LOGGER.debug("[LostTales] Seeded {} markers into {}", list.size(), dimensionKey);
+        if (levelData.all().isEmpty()) {
+            levelData.addAll(list);
+            LostTales.LOGGER.debug("[" + LostTales.MOD_ID + "] Seeded {} map markers into {}", list.size(), dimensionKey);
+        } else {
+            LostTales.LOGGER.debug("[" + LostTales.MOD_ID + "] Skipped map marker seeding; {} already has {} markers", dimensionKey, levelData.all().size());
+        }
     }
 }

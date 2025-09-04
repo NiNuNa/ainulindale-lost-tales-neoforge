@@ -1,4 +1,4 @@
-package dev.ninuna.losttales.common.data.attachement;
+package dev.ninuna.losttales.common.data.attachment;
 
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
@@ -14,14 +14,13 @@ public final class LostTalesAttachments {
 
     public static final Supplier<AttachmentType<LostTalesMapMarkerData>> LEVEL_MARKERS = ATTACHMENT_TYPES.register(
             "level_map_markers", () -> AttachmentType.builder(LostTalesMapMarkerData::new)
-                    .serialize(LostTalesMapMarkerData.CODEC)
+                    .serialize(LostTalesMapMarkerData.MAP_CODEC)
                     .build()
     );
 
     public static final Supplier<AttachmentType<LostTalesMapMarkerData>> PLAYER_MARKERS = ATTACHMENT_TYPES.register(
             "player_map_markers", () -> AttachmentType.builder(LostTalesMapMarkerData::new)
-                    .serialize(LostTalesMapMarkerData.CODEC)
-                    .copyOnDeath()
+                    .serialize(LostTalesMapMarkerData.MAP_CODEC)
                     .build()
     );
 

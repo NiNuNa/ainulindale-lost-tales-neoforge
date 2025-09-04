@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+//@OnlyIn(Dist.CLIENT)
 public class LostTalesQuestJournalScreen extends Screen {
     private static final Component QUEST_JOURNAL_TITLE = Component.translatable("questJournal.title");
 

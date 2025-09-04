@@ -7,14 +7,6 @@
       "dimension": "minecraft:overworld",
       "x": 0.0, "y": 64.0, "z": 0.0,
       "fadeInRadius": 80.0, "unlockRadius": 8.0
-    },
-    {
-      "id": "e2d7a7e1-cc1a-4a83-9b77-4c2f7d4efabb",
-      "name": "Nether Hub",
-      "icon": "s", "color": "red",
-      "dimension": "minecraft:the_nether",
-      "x": 10.0, "y": 70.0, "z": -12.0,
-      "fadeInRadius": 64.0, "unlockRadius": 10.0
     }
   ]
 }

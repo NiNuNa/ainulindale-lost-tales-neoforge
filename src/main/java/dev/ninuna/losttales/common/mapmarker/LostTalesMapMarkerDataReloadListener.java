@@ -43,6 +43,6 @@ public class LostTalesMapMarkerDataReloadListener extends SimpleJsonResourceRelo
 
         // Debug/Log
         int total = grouped.values().stream().mapToInt(List::size).sum();
-        LostTales.LOGGER.info("[LostTales] Loaded {} map markers from datapacks across {} dimensions", total, grouped.size());
+        LostTales.LOGGER.info("[" + LostTales.MOD_ID + "] Loaded {} map markers from datapacks across {} dimensions", total, grouped.size());
     }
 }

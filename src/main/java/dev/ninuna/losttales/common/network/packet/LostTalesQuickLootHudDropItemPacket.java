@@ -39,7 +39,7 @@ public record LostTalesQuickLootHudDropItemPacket(int x, int y, int z, int selec
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             ServerPlayer player = (ServerPlayer) context.player();
-            ServerLevel level = player.serverLevel();
+            ServerLevel level = player.level();
             BlockPos pos = BlockPos.containing(x, y, z);
 
             if (level.getBlockEntity(pos) instanceof Container container) {

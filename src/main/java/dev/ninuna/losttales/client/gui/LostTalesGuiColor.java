@@ -19,11 +19,7 @@ public enum LostTalesGuiColor implements StringRepresentable {
         this.colorRgb = colorRgb;
     }
 
-    public int getColorRgb() {
-        return this.colorRgb;
-    }
-
-    public int getColorArgb(float alpha) {
+    public int getColorWithAlpha(float alpha) {
         int alphaClamp = Math.min(255, Math.max(0, Math.round(alpha * 255)));
         return (alphaClamp << ALPHA_SHIFT) | this.colorRgb;
     }

@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.common;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.ninuna.losttales.common.data.attachement.LostTalesAttachments;
+import dev.ninuna.losttales.common.data.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.block.LostTalesBlocks;
 import dev.ninuna.losttales.common.block.entity.LostTalesBlockEntities;
 import dev.ninuna.losttales.common.command.LostTalesMapMarkerCommand;
@@ -10,6 +10,7 @@ import dev.ninuna.losttales.common.item.LostTalesCreativeModeTabs;
 import dev.ninuna.losttales.common.item.LostTalesItems;
 import dev.ninuna.losttales.common.sound.LostTalesSoundEvents;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
 
@@ -57,5 +58,9 @@ public class LostTales {
     public void onRegisterCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
         new LostTalesMapMarkerCommand(commandDispatcher);
+    }
+
+    public static ResourceLocation getResourceLocation(String key) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, key);
     }
 }

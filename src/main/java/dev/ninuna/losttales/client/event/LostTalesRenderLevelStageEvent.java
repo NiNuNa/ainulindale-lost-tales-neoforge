@@ -10,7 +10,7 @@ import dev.ninuna.losttales.common.LostTales;
 public class LostTalesRenderLevelStageEvent {
 
     @SubscribeEvent
-    public static void renderQuestMarker(RenderLevelStageEvent event) {
+    public static void renderQuestMarker(RenderLevelStageEvent.AfterBlockEntities event) {
 
     }
 }

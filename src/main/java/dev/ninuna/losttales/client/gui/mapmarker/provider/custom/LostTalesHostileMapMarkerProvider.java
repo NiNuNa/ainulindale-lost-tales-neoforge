@@ -39,7 +39,7 @@ public class LostTalesHostileMapMarkerProvider implements LostTalesMapMarkerProv
                     entity.getUUID(), entity.getDisplayName(), LostTalesMapMarkerIcon.HOSTILE ,LostTalesGuiColor.WHITE,
                     entity.level().dimension(),
                     true, true, true,
-                    HOSTILE_SCAN_RADIUS,
+                    HOSTILE_SCAN_RADIUS, 0,
                     dx, dz, dy
             );
             mapMarkers.add(mapMarker);

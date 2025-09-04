@@ -14,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class LostTalesRespawnableBlockEntity extends BlockEntity implements Container {
@@ -25,25 +27,22 @@ public abstract class LostTalesRespawnableBlockEntity extends BlockEntity implem
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        this.respawn = tag.getBooleanOr("respawn", false);
-        ContainerHelper.loadAllItems(tag, this.getInventory(), registries);
-
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.respawn = input.getBooleanOr("respawn", false);
+        ContainerHelper.loadAllItems(input, this.getInventory());
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putBoolean("respawn", this.respawn);
-        ContainerHelper.saveAllItems(tag, this.getInventory(), registries);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putBoolean("respawn", this.respawn);
+        ContainerHelper.saveAllItems(output, this.getInventory());
     }
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        this.saveAdditional(tag, registries);
-        return tag;
+        return this.saveWithoutMetadata(registries);
     }
 
     @Override
