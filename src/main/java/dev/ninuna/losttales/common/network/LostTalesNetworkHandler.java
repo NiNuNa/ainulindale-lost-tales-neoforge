@@ -1,5 +1,6 @@
 package dev.ninuna.losttales.common.network;
 
+import dev.ninuna.losttales.common.network.packet.LostTalesLockedOnTargetPacket;
 import dev.ninuna.losttales.common.network.packet.LostTalesSyncMapMarkersPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -29,6 +30,12 @@ public class LostTalesNetworkHandler {
                 LostTalesSyncMapMarkersPacket.TYPE,
                 LostTalesSyncMapMarkersPacket.STREAM_CODEC,
                 LostTalesSyncMapMarkersPacket::handle
+        );
+
+        event.registrar(LostTales.MOD_ID).playToClient(
+                LostTalesLockedOnTargetPacket.TYPE,
+                LostTalesLockedOnTargetPacket.STREAM_CODEC,
+                LostTalesLockedOnTargetPacket::handle
         );
     }
 }

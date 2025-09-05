@@ -2,6 +2,7 @@ package dev.ninuna.losttales.client.gui.hud;
 
 import com.mojang.blaze3d.platform.Window;
 import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesBearingMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesSharedMapMarkerProvider;
 import net.minecraft.client.Minecraft;
@@ -9,20 +10,20 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarker;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesPositionMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesDirectionMapMarkerProvider;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesHostileMapMarkerProvider;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
+import net.minecraft.util.Mth;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LostTalesCompassHud {
 
-    private static final ResourceLocation COMPASS_HUD_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/compasshud.png");
+    private static final ResourceLocation COMPASS_HUD_TEXTURE = LostTales.getResourceLocation("textures/gui/compasshud.png");
 
     private static final int TEXTURE_COMPASS_HUD_WIDTH  = 193;
     private static final int TEXTURE_COMPASS_HUD_HEIGHT = 64;
@@ -33,11 +34,13 @@ public class LostTalesCompassHud {
 
     private static final int MAP_MARKER_OFFSET_Y = 5;
     private static final int MAP_MARKER_NAME_OFFSET_Y = 3;
-    private static final float MAP_MARKER_SCALE_MODIFIER = 0.20f;
 
-    private static final int VERTICAL_INDICATOR_OFFSET_X = 2;
-    private static final int START_EDGE_FADE_OFFSET = COMPASS_WIDTH / 4;
-    private static final int START_CENTER_FOCUS_OFFSET = 13;
+    private static final float MAP_MARKER_SCALE_MODIFIER = 0.18f;
+    private static final float MAP_MARKER_DISTANCE_FADE_IN_FLOOR_ALPHA = 0.4f;
+
+    private static final int MAP_MARKER_VERTICAL_INDICATOR_OFFSET_X = 2;
+    private static final int MAP_MARKER_BEGIN_EDGE_FADE_OUT_OFFSET = COMPASS_WIDTH / 4;
+    private static final int MAP_MARKER_BEGIN_CENTER_FOCUS_OFFSET = 22;
 
     private static final List<LostTalesMapMarkerProvider> PROVIDERS = List.of(
             new LostTalesDirectionMapMarkerProvider(),
@@ -52,150 +55,187 @@ public class LostTalesCompassHud {
 
         int customOffsetY = LostTalesConfigs.CLIENT.compassHudOffsetY.get();
         int customOffsetX = LostTalesConfigs.CLIENT.compassHudOffsetX.get();
+
         int visibleDegreeRange = LostTalesConfigs.CLIENT.compassHudDisplayRadius.get();
+        float pixelPerDegree = (float) COMPASS_WIDTH / (float) visibleDegreeRange;
 
         int compassX = (windowWidth - COMPASS_WIDTH) * customOffsetX / 100;
         int compassY = windowHeight * customOffsetY / 100 + minecraft.font.lineHeight + COMPASS_OFFSET_Y;
         int compassCenterX = compassX + COMPASS_WIDTH / 2;
 
-        float yaw = minecraft.player.getYRot();
-        float normalizedYaw = ((yaw % 360) + 360) % 360;
-        float pixelPerDegree = (float) COMPASS_WIDTH / visibleDegreeRange;
+        float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(!minecraft.isPaused());
+        float viewYaw = minecraft.player.getViewYRot(partialTick);
+        float normalizedViewYaw = ((viewYaw % 360f) + 360f) % 360f;
 
-        // Draw Compass Background Texture.
+        // Draw Compass HUD Background
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, COMPASS_HUD_TEXTURE, compassX, compassY, 0, 0,
                 COMPASS_WIDTH, COMPASS_HEIGHT, TEXTURE_COMPASS_HUD_WIDTH, TEXTURE_COMPASS_HUD_HEIGHT);
 
-        // Draw Icon Textures and Name of Focused Icon.
-        drawMapIcons(minecraft, guiGraphics, compassCenterX, compassY, normalizedYaw, pixelPerDegree, visibleDegreeRange);
+        // Draw Map Markers
+        drawMapMarkers(minecraft, guiGraphics, compassCenterX, compassY, normalizedViewYaw, pixelPerDegree, visibleDegreeRange, partialTick);
     }
 
-    private static void drawMapIcons(Minecraft minecraft, GuiGraphics guiGraphics, int compassCenterX, int compassY,
-                                     float normalizedYaw, float pixelPerDegree, int visibleDegreeRange) {
-        List<LostTalesMapMarker> icons = new ArrayList<>();
-        for (LostTalesMapMarkerProvider provider : PROVIDERS) {
+    private static void drawMapMarkers(Minecraft minecraft, GuiGraphics guiGraphics, int compassCenterX, int compassY, float normalizedViewYaw, float pixelPerDegree, int visibleDegreeRange, float partialTick) {
+        List<LostTalesPositionMapMarker> mapMarkers = new ArrayList<>();
+        for (LostTalesMapMarkerProvider mapMarkerProvider : PROVIDERS) {
             try {
-                List<LostTalesMapMarker> batch = provider.collectMapMarkers(minecraft);
-                if (batch != null && !batch.isEmpty()) icons.addAll(batch);
+                List<LostTalesPositionMapMarker> batch = mapMarkerProvider.collectMapMarkers(minecraft);
+                if (batch != null && !batch.isEmpty()) mapMarkers.addAll(batch);
             } catch (Throwable ignored) {
                 /* keep HUD resilient */
             }
         }
-        if (icons.isEmpty()) return;
+        if (mapMarkers.isEmpty()) return;
 
-        int halfWidth = COMPASS_WIDTH / 2;
+        // Interpolated player position (prevents strafe jitter)
+        if (minecraft.player == null) return;
+        var player = minecraft.player;
+        double playerPosX = Mth.lerp(partialTick, player.xo, player.getX());
+        double playerPosY = Mth.lerp(partialTick, player.yo, player.getY());
+        double playerPosZ = Mth.lerp(partialTick, player.zo, player.getZ());
 
-        // Cache per-icon draw info
-        record RenderItem(LostTalesMapMarker icon, int px, float edgeT, float centerEmphasis,
-                          float alphaT, int color, float baseScale) {}
-        List<RenderItem> renderItems = new ArrayList<>(icons.size());
+        // Draw cache
+        record RenderItem(LostTalesPositionMapMarker icon, float px, float edgeT, float centerEmphasis, float alphaT, int color, double distSq) {}
+        List<RenderItem> renderItems = new ArrayList<>(mapMarkers.size());
 
-        // Focus candidate tracking (single winner)
-        LostTalesMapMarker bestIcon = null;
-        int bestPx = 0;
+        // Focus candidate
+        LostTalesPositionMapMarker focusedMapMarker = null;
+        float bestPx = 0f;
         float bestEmphasis = 0f;
         double bestDx = 0, bestDy = 0, bestDz = 0;
 
-        // -------- Pass 1: compute geometry, cache draw info, choose best candidate --------
-        for (LostTalesMapMarker icon : icons) {
-            // Ignore icons without world coordinates; compass needs an angle
-            if (icon.x() == null || icon.z() == null) continue;
+        // Pass 1: geometry + pick focus
+        for (LostTalesPositionMapMarker mapMarker : mapMarkers) {
+            // Need world coords for angle
+            // NOTE: If you can expose the source Entity or prev coords on the marker,
+            // lerp those here with 'pt'. For now, we use the marker's tick coords,
+            // which is still fine because the player is interpolated.
+            double ix = mapMarker.getX();
+            double iy = mapMarker.getY();
+            double iz = mapMarker.getZ();
 
-            double dx = icon.x() - minecraft.player.getX();
-            double dz = icon.z() - minecraft.player.getZ();
+            double dx = ix - playerPosX;
+            double dy = iy - playerPosY;
+            double dz = iz - playerPosZ;
 
-            float targetAngle = (float) Math.toDegrees(Math.atan2(-dx, dz));
-            targetAngle %= 360f;
-            if (targetAngle < 0f) targetAngle += 360f;
+            // Angle to target (degrees) OR fixed bearing (for bearing markers)
+            float targetAngle;
+            if (mapMarker instanceof LostTalesBearingMapMarker bearing) {
+                targetAngle = bearing.getBearingDegree();
+                // normalize to [0,360)
+                if (targetAngle < 0f) targetAngle = (targetAngle % 360f + 360f) % 360f;
+                else if (targetAngle >= 360f) targetAngle = targetAngle % 360f;
+            } else {
+                targetAngle = (float) Math.toDegrees(Math.atan2(-dx, dz));
+                if (targetAngle < 0f) targetAngle += 360f;
+            }
 
-            float delta = targetAngle - normalizedYaw;
-            delta %= 360f;
-            if (delta >= 180f) delta -= 360f;
-            if (delta < -180f)  delta += 360f;
+            // Shortest signed delta to camera yaw
+            float delta = (targetAngle - normalizedViewYaw + 540f) % 360f - 180f;
 
             if (Math.abs(delta) > visibleDegreeRange / 2f) continue;
 
-            int px = compassCenterX + Math.round(delta * pixelPerDegree);
+            // Sub-pixel screen x
+            float pxF = compassCenterX + (delta * pixelPerDegree);
+            float halfWidth = COMPASS_WIDTH / 2f;
 
-            float edgeT = edgeCenterFactor(px, compassCenterX, halfWidth, START_EDGE_FADE_OFFSET);
+            float edgeT = edgeCenterFactor(pxF, compassCenterX, halfWidth, MAP_MARKER_BEGIN_EDGE_FADE_OUT_OFFSET);
             if (edgeT <= 0f) continue;
 
-            int centerDistPx = Math.abs(px - compassCenterX);
-            float centerEmphasis = focusEmphasis(centerDistPx, START_CENTER_FOCUS_OFFSET);
+            float centerDistPx = Math.abs(pxF - compassCenterX);
+            float centerEmphasis = focusEmphasis(centerDistPx, MAP_MARKER_BEGIN_CENTER_FOCUS_OFFSET);
 
             float distT = 1f;
-            if (icon.fadeInRadius() > 0f) {
-                double dist = Math.hypot(dx, dz);
-                double r = icon.fadeInRadius();
-                float t = Math.max(0f, Math.min(1f, (float)(dist / r)));
+            double distSq = dx * dx + dy * dy + dz * dz;   // <--- add this
+            if (mapMarker.getFadeInRadius() > 0f) {
+                double dist = Math.sqrt(distSq);           // reuse distSq here
+                double fadeInRadius = mapMarker.getFadeInRadius();
+                if (dist > fadeInRadius) continue;
+
+                float t = (float) (dist / fadeInRadius);
                 distT = 1f - (t * t * (3f - 2f * t));
             }
-            float alphaT = Math.max(0f, Math.min(1f, edgeT * distT));
+
+            // Combine distance fade with edge fade
+            float distanceAlpha = MAP_MARKER_DISTANCE_FADE_IN_FLOOR_ALPHA + (1f - MAP_MARKER_DISTANCE_FADE_IN_FLOOR_ALPHA) * distT;
+            float alphaT = Mth.clamp(edgeT * distanceAlpha, 0f, 1f);
             if (alphaT <= 0f) continue;
+            int color = mapMarker.getColor().getColorWithAlpha(alphaT);
 
-            float baseScale = 1.0f - (MAP_MARKER_SCALE_MODIFIER / 2) * (1 - edgeT);
-            int color = icon.color().getColorWithAlpha(alphaT);
+            renderItems.add(new RenderItem(mapMarker, pxF, edgeT, centerEmphasis, alphaT, color, distSq));
 
-            renderItems.add(new RenderItem(icon, px, edgeT, centerEmphasis, alphaT, color, baseScale));
-
-            // candidate can be ANY visible icon
             boolean better = centerEmphasis > bestEmphasis;
             if (!better && centerEmphasis == bestEmphasis) {
-                int bestDist = Math.abs(bestPx - compassCenterX);
-                better = centerDistPx < bestDist;
+                better = Math.abs(pxF - compassCenterX) < Math.abs(bestPx - compassCenterX);
             }
             if (better) {
                 bestEmphasis = centerEmphasis;
-                bestIcon = icon;
-                bestPx = px;
+                focusedMapMarker = mapMarker;
+                bestPx = pxF;
 
                 bestDx = dx;
-                bestDy = icon.y() != null ? icon.y() - minecraft.player.getY() : 0.0;
+                bestDy = iy - playerPosY; // interpolated vertical delta
                 bestDz = dz;
             }
         }
 
         if (renderItems.isEmpty()) return;
 
-        // -------- Pass 2: draw icons; scale bump ONLY for bestIcon --------
+        // Sort: distance DESC (far first), then alpha ASC (more opaque later/on top),
+        // then "farther from center first" so centered ones end up later/on top.
+        renderItems.sort((a, b) -> {
+            int c = Double.compare(b.distSq(), a.distSq());   // <-- reversed: far first
+            if (c != 0) return c;
+            c = Float.compare(a.alphaT(), b.alphaT());        // low alpha first
+            if (c != 0) return c;
+            float ac = Math.abs(a.px() - compassCenterX);
+            float bc = Math.abs(b.px() - compassCenterX);
+            return Float.compare(bc, ac);                     // farther from center first
+        });
+
+        // Pass 2: draw icons
         for (RenderItem ri : renderItems) {
-            LostTalesMapMarker icon = ri.icon();
-            float scale = ri.baseScale();
-            if (bestIcon != null && icon == bestIcon && icon.scaleWithCenterFocus()) {
-                scale = ri.baseScale() * (1f + MAP_MARKER_SCALE_MODIFIER * bestEmphasis);
+            LostTalesPositionMapMarker icon = ri.icon();
+            float mapMarkerScale = 1.0f;
+            if (focusedMapMarker != null && icon == focusedMapMarker && icon.isScaleWithCenterFocus()) {
+                mapMarkerScale *= (1f + MAP_MARKER_SCALE_MODIFIER * bestEmphasis);
             }
 
             var pose = guiGraphics.pose();
             pose.pushMatrix();
             pose.translate(ri.px(), compassY + MAP_MARKER_OFFSET_Y + LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT / 2f);
-            pose.scale(scale, scale);
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE,
-                    -LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2, -LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
-                    icon.icon().getU(), icon.icon().getV(),
+            pose.scale(mapMarkerScale, mapMarkerScale);
+            guiGraphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE,
+                    -LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2,
+                    -LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
+                    icon.getIcon().getU(), icon.getIcon().getV(),
                     LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
                     LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_HEIGHT,
-                    ri.color());
+                    ri.color()
+            );
             pose.popMatrix();
         }
 
-        // -------- Labels for the single focused icon --------
-        if (bestIcon != null && bestEmphasis > 0f) {
+        // Focused label (single)
+        if (focusedMapMarker != null && bestEmphasis > 0f) {
             int mapMarkerNameLabelY = compassY + COMPASS_HEIGHT + MAP_MARKER_NAME_OFFSET_Y;
             int mapMarkerDistanceLabelY = compassY - minecraft.font.lineHeight - COMPASS_OFFSET_Y;
 
             int labelColor = LostTalesGuiColor.WHITE.getColorWithAlpha(bestEmphasis);
 
-            // name
-            drawCenteredText(guiGraphics, minecraft, bestIcon.name(), compassCenterX, mapMarkerNameLabelY, labelColor);
+            // Name centered on compass center
+            drawCenteredText(guiGraphics, minecraft, focusedMapMarker.getName(), compassCenterX, mapMarkerNameLabelY, labelColor);
 
-            // distance / vertical indicator (based on Y delta only; no hasVertical() gate anymore)
-            if (bestIcon.showDistanceLabel()) {
+            if (focusedMapMarker.isShowDistanceLabel()) {
                 double distBlocks = Math.sqrt(bestDx * bestDx + bestDy * bestDy + bestDz * bestDz);
                 Component label = Component.literal(Math.round(distBlocks) + "m");
-                drawCenteredText(guiGraphics, minecraft, label, bestPx, mapMarkerDistanceLabelY, labelColor);
 
-                // Show indicator when there's a meaningful vertical delta
-                double deltaY = bestIcon.getDeltaY(minecraft);
+                int bestPxInt = Mth.floor(bestPx); // convert only for text placement
+                drawCenteredText(guiGraphics, minecraft, label, bestPxInt, mapMarkerDistanceLabelY, labelColor);
+
+                double deltaY = bestDy; // already interpolated
                 if (Math.abs(deltaY) >= 5) {
                     int indicatorU = 0, indicatorV = 20, indicatorHeight = 3, indicatorWidth = 5;
                     if (deltaY >= 10.0) {
@@ -206,32 +246,35 @@ public class LostTalesCompassHud {
                     } else if (deltaY <= -5.0) {
                         indicatorU = 6;      // down-soft
                     }
-                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, COMPASS_HUD_TEXTURE,
-                            bestPx + minecraft.font.width(label) / 2 + VERTICAL_INDICATOR_OFFSET_X,
+                    guiGraphics.blit(
+                            RenderPipelines.GUI_TEXTURED,
+                            COMPASS_HUD_TEXTURE,
+                            bestPxInt + minecraft.font.width(label) / 2 + MAP_MARKER_VERTICAL_INDICATOR_OFFSET_X,
                             mapMarkerDistanceLabelY,
                             indicatorU, indicatorV, indicatorWidth, indicatorHeight,
-                            TEXTURE_COMPASS_HUD_WIDTH, TEXTURE_COMPASS_HUD_HEIGHT, labelColor);
+                            TEXTURE_COMPASS_HUD_WIDTH, TEXTURE_COMPASS_HUD_HEIGHT,
+                            labelColor
+                    );
                 }
             }
         }
     }
 
-    // 1 inside, then smooth to 0 toward edges
-    private static float edgeCenterFactor(int px, int centerX, int halfWidth, int fadeEdgePx) {
-        int dist = Math.abs(px - centerX);
-        int fadeStart = Math.max(0, halfWidth - fadeEdgePx);
+    // 1 inside, smooth to 0 toward edges (cosine smoothstep)
+    private static float edgeCenterFactor(float px, float centerX, float halfWidth, float fadeEdgePx) {
+        float dist = Math.abs(px - centerX);
+        float fadeStart = Math.max(0f, halfWidth - fadeEdgePx);
 
         if (dist <= fadeStart) return 1f;
         if (dist >= halfWidth) return 0f;
 
-        float t = (halfWidth - dist) / (float) (halfWidth - fadeStart);
-        t = 0.5f - 0.5f * (float) Math.cos(Math.PI * t);
-        return t;
+        float t = (halfWidth - dist) / (halfWidth - fadeStart);
+        return 0.5f - 0.5f * (float) Math.cos(Math.PI * t);
     }
 
-    // focus curve near center (0..1), Hermite smoothstep
-    private static float focusEmphasis(int centerDistPx, int focusRadiusPx) {
-        float t = 1f - Math.min(1f, centerDistPx / (float) focusRadiusPx);
+    // Focus curve near center (0..1), Hermite smoothstep
+    private static float focusEmphasis(float centerDistPx, float focusRadiusPx) {
+        float t = 1f - Math.min(1f, centerDistPx / focusRadiusPx);
         return t * t * (3f - 2f * t);
     }
 

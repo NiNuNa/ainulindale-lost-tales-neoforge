@@ -20,7 +20,6 @@ public enum LostTalesMapMarkerIcon implements StringRepresentable {
     FORT        (44, 0),
     TAVERN      (0, 0);
 
-
     public static final Codec<LostTalesMapMarkerIcon> CODEC = StringRepresentable.fromEnum(LostTalesMapMarkerIcon::values);
 
     public static final ResourceLocation MAP_MARKER_ICON_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/mapmarkericons.png");

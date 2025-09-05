@@ -1,6 +1,5 @@
 package dev.ninuna.losttales.common.network.packet;
 
-import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarker;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerDataStore;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public record LostTalesSyncMapMarkersPacket(boolean isLevelMapMarker, Collection<LostTalesMapMarkerData.Entry> mapMarkers) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<LostTalesSyncMapMarkersPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "sync_map_markers"));
+    public static final CustomPacketPayload.Type<LostTalesSyncMapMarkersPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("sync_map_markers"));
 
     @Override
     public Type<? extends CustomPacketPayload> type() {

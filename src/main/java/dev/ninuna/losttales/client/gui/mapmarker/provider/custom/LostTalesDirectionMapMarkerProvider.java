@@ -1,11 +1,12 @@
 package dev.ninuna.losttales.client.gui.mapmarker.provider.custom;
 
 import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesBearingMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
+import dev.ninuna.losttales.common.LostTales;
 import net.minecraft.client.Minecraft;
-import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarker;
-import net.minecraft.network.chat.Component;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesPositionMapMarker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,46 +15,36 @@ import java.util.UUID;
 public class LostTalesDirectionMapMarkerProvider implements LostTalesMapMarkerProvider {
 
     private enum PrincipalDirection {
-        N   (LostTalesMapMarker.getMapMarkerName("north"),      180f,   LostTalesMapMarkerIcon.N),
-        NE  (LostTalesMapMarker.getMapMarkerName("northEast"),  225f,   LostTalesMapMarkerIcon.NE),
-        E   (LostTalesMapMarker.getMapMarkerName("east"),       270f,   LostTalesMapMarkerIcon.E),
-        SE  (LostTalesMapMarker.getMapMarkerName("southEast"),  315f,   LostTalesMapMarkerIcon.SE),
-        S   (LostTalesMapMarker.getMapMarkerName("south"),      0f,     LostTalesMapMarkerIcon.S),
-        SW  (LostTalesMapMarker.getMapMarkerName("southWest"),  45f,    LostTalesMapMarkerIcon.SW),
-        W   (LostTalesMapMarker.getMapMarkerName("west"),       90f,    LostTalesMapMarkerIcon.W),
-        NW  (LostTalesMapMarker.getMapMarkerName("northWest"),  135f,   LostTalesMapMarkerIcon.NW);
+        N   ("north",      180f,   LostTalesMapMarkerIcon.N),
+        NE  ("northEast",  225f,   LostTalesMapMarkerIcon.NE),
+        E   ("east",       270f,   LostTalesMapMarkerIcon.E),
+        SE  ("southEast",  315f,   LostTalesMapMarkerIcon.SE),
+        S   ("south",      0f,     LostTalesMapMarkerIcon.S),
+        SW  ("southWest",  45f,    LostTalesMapMarkerIcon.SW),
+        W   ("west",       90f,    LostTalesMapMarkerIcon.W),
+        NW  ("northWest",  135f,   LostTalesMapMarkerIcon.NW);
 
-        private final Component name;
-        private final float angleDeg;
+        private final String key;
+        private final float bearingDegree;
         private final LostTalesMapMarkerIcon mapMarkerIcon;
+        private final UUID uuid;
 
-        PrincipalDirection(Component name, float angleDeg, LostTalesMapMarkerIcon mapMarkerIcon) {
-            this.name = name;
-            this.angleDeg = angleDeg;
+        PrincipalDirection(String key, float angleDeg, LostTalesMapMarkerIcon mapMarkerIcon) {
+            this.key = key;
+            this.bearingDegree = angleDeg;
             this.mapMarkerIcon = mapMarkerIcon;
-        }
-
-        public LostTalesMapMarkerIcon getMapMarkerIcon() {
-            return mapMarkerIcon;
+            this.uuid = UUID.nameUUIDFromBytes((LostTales.MOD_ID + ":direction:" + this.name()).getBytes());
         }
     }
 
     @Override
-    public List<LostTalesMapMarker> collectMapMarkers(Minecraft minecraft) {
-        List<LostTalesMapMarker> mapMarkers = new ArrayList<>(PrincipalDirection.values().length);
+    public List<LostTalesPositionMapMarker> collectMapMarkers(Minecraft minecraft) {
+        var level = minecraft.level;
+        if (level == null) return List.of();
 
-        for (PrincipalDirection principalDirection : PrincipalDirection.values()) {
-            double rad = Math.toRadians(principalDirection.angleDeg);
-            double x = -Math.sin(rad);
-            double z =  Math.cos(rad);
-
-            mapMarkers.add(new LostTalesMapMarker(
-                    UUID.randomUUID(), principalDirection.name, principalDirection.getMapMarkerIcon(), LostTalesGuiColor.WHITE,
-                    minecraft.level.dimension(),
-                    false, false, false,
-                    0, 0,
-                    x + minecraft.player.getX() , z + minecraft.player.getZ(), minecraft.player.getY()
-            ));
+        var mapMarkers = new ArrayList<LostTalesPositionMapMarker>(PrincipalDirection.values().length);
+        for (var principalDirection : PrincipalDirection.values()) {
+            mapMarkers.add(new LostTalesBearingMapMarker(principalDirection.uuid, principalDirection.key, principalDirection.mapMarkerIcon, LostTalesGuiColor.WHITE, principalDirection.bearingDegree));
         }
         return mapMarkers;
     }
