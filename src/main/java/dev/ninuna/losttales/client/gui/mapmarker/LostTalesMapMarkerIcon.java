@@ -8,16 +8,17 @@ import net.minecraft.util.StringRepresentable;
 import java.util.Locale;
 
 public enum LostTalesMapMarkerIcon implements StringRepresentable {
-    N           (0, 0),
-    NE          (0, 0),
-    E           (0, 0),
-    SE          (0, 0),
-    S           (0, 0),
-    SW          (0, 0),
-    W           (0, 0),
-    NW          (0, 0),
-    HOSTILE     (11, 0),
-    FORT        (44, 0),
+    N           (0, 12),
+    NE          (0, 12),
+    E           (0, 12),
+    SE          (0, 12),
+    S           (0, 12),
+    SW          (0, 12),
+    W           (0, 12),
+    NW          (0, 12),
+    QUEST       (24, 0),
+    HOSTILE     (12, 0),
+    FORT        (48, 0),
     TAVERN      (0, 0);
 
     public static final Codec<LostTalesMapMarkerIcon> CODEC = StringRepresentable.fromEnum(LostTalesMapMarkerIcon::values);

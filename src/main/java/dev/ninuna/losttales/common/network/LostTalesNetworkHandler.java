@@ -15,27 +15,19 @@ public class LostTalesNetworkHandler {
     @SubscribeEvent
     public static void registerPayloads(final RegisterPayloadHandlersEvent event) {
         event.registrar(LostTales.MOD_ID).playToServer(
-                LostTalesQuickLootHudDropItemPacket.TYPE,
-                LostTalesQuickLootHudDropItemPacket.STREAM_CODEC,
-                LostTalesQuickLootHudDropItemPacket::handle
+                LostTalesQuickLootHudDropItemPacket.TYPE, LostTalesQuickLootHudDropItemPacket.STREAM_CODEC, LostTalesQuickLootHudDropItemPacket::handle
         );
 
         event.registrar(LostTales.MOD_ID).playToClient(
-                LostTalesQuickLootHudDropItemClientPacket.TYPE,
-                LostTalesQuickLootHudDropItemClientPacket.STREAM_CODEC,
-                LostTalesQuickLootHudDropItemClientPacket::handle
+                LostTalesQuickLootHudDropItemClientPacket.TYPE, LostTalesQuickLootHudDropItemClientPacket.STREAM_CODEC, LostTalesQuickLootHudDropItemClientPacket::handle
         );
 
         event.registrar(LostTales.MOD_ID).playToClient(
-                LostTalesSyncMapMarkersPacket.TYPE,
-                LostTalesSyncMapMarkersPacket.STREAM_CODEC,
-                LostTalesSyncMapMarkersPacket::handle
+                LostTalesSyncMapMarkersPacket.TYPE, LostTalesSyncMapMarkersPacket.STREAM_CODEC, LostTalesSyncMapMarkersPacket::handle
         );
 
         event.registrar(LostTales.MOD_ID).playToClient(
-                LostTalesLockedOnTargetPacket.TYPE,
-                LostTalesLockedOnTargetPacket.STREAM_CODEC,
-                LostTalesLockedOnTargetPacket::handle
+                LostTalesLockedOnTargetPacket.TYPE, LostTalesLockedOnTargetPacket.STREAM_CODEC, LostTalesLockedOnTargetPacket::handle
         );
     }
 }

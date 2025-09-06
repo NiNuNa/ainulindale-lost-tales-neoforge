@@ -26,27 +26,27 @@ public class LostTalesMobAggroTracker {
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer sp)) return;
-        if (!(sp.level() instanceof ServerLevel level)) return;
-        if (sp.tickCount % PERIOD_TICKS != 0) return;
+        if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
+        if (serverPlayer.tickCount % PERIOD_TICKS != 0) return;
 
-        AABB box = sp.getBoundingBox().inflate(AGGRO_MOB_SCAN_RADIUS);
-        List<Integer> ids = new ArrayList<>(32);
+        AABB box = serverPlayer.getBoundingBox().inflate(AGGRO_MOB_SCAN_RADIUS);
+        List<Integer> ids = new ArrayList<>();
+        ServerLevel serverLevel = serverPlayer.level();
 
-        for (Entity ent : level.getEntities(sp, box, en -> en instanceof Mob)) {
-            Mob mob = (Mob) ent;
-            boolean locked = mob.getTarget() == sp;
+        for (Entity entity : serverLevel.getEntities(serverPlayer, box, entity -> entity instanceof Mob)) {
+            Mob mob = (Mob) entity;
+            boolean isAggro = mob.getTarget() == serverPlayer;
 
-            if (!locked && mob instanceof NeutralMob neutral) {
+            if (!isAggro && mob instanceof NeutralMob neutral) {
                 UUID anger = neutral.getPersistentAngerTarget();
-                if ((anger != null && anger.equals(sp.getUUID())) || neutral.isAngryAt(sp, level)) {
-                    locked = true;
+                if ((anger != null && anger.equals(serverPlayer.getUUID())) || neutral.isAngryAt(serverPlayer, serverLevel)) {
+                    isAggro = true;
                 }
             }
 
-            if (locked) ids.add(mob.getId());
+            if (isAggro) ids.add(mob.getId());
         }
 
-        PacketDistributor.sendToPlayer(sp, new LostTalesLockedOnTargetPacket(ids));
+        PacketDistributor.sendToPlayer(serverPlayer, new LostTalesLockedOnTargetPacket(ids));
     }
 }
