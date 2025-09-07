@@ -1,7 +1,7 @@
-package dev.ninuna.losttales.common.mapmarker;
+package dev.ninuna.losttales.common.datapack.loader;
 
-import com.mojang.serialization.Codec;
 import dev.ninuna.losttales.common.LostTales;
+import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -14,13 +14,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class LostTalesMapMarkerDataReloadListener extends SimpleJsonResourceReloadListener<LostTalesMapMarkerData> {
+public class LostTalesMapMarkerDatapackLoader extends SimpleJsonResourceReloadListener<LostTalesMapMarkerData> {
     public static final Map<ResourceLocation, LostTalesMapMarkerData> RAW_FILES = new ConcurrentHashMap<>();
     public static final Map<ResourceLocation, List<LostTalesMapMarkerData.Entry>> RAW_ENTRIES = new ConcurrentHashMap<>();
     public static final Map<ResourceLocation, List<LostTalesMapMarkerData.Entry>> BY_DIMENSION = new ConcurrentHashMap<>();
 
-    public LostTalesMapMarkerDataReloadListener(Codec<LostTalesMapMarkerData> codec, FileToIdConverter fileToId) {
-        super(codec, fileToId);
+    public LostTalesMapMarkerDatapackLoader() {
+        super(LostTalesMapMarkerData.MAP_CODEC.codec(), FileToIdConverter.json("map_marker"));
     }
 
     @Override
@@ -43,6 +43,6 @@ public class LostTalesMapMarkerDataReloadListener extends SimpleJsonResourceRelo
 
         // Debug/Log
         int total = grouped.values().stream().mapToInt(List::size).sum();
-        LostTales.LOGGER.info("[" + LostTales.MOD_ID + "] Loaded {} map markers from datapacks across {} dimensions", total, grouped.size());
+        LostTales.LOGGER.info("[{}] Loaded {} map markers from datapacks across {} dimensions", LostTales.MOD_ID, total, grouped.size());
     }
 }

@@ -4,10 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.common.data.attachment.LostTalesAttachments;
+import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
 import dev.ninuna.losttales.common.network.packet.LostTalesSyncMapMarkersPacket;
 import net.minecraft.commands.CommandSourceStack;
@@ -90,7 +90,7 @@ public class LostTalesMapMarkerCommand {
         ServerLevel level = ctx.getSource().getLevel();
         LostTalesMapMarkerData data = level.getData(LostTalesAttachments.LEVEL_MARKERS.get());
         int color = parseColor(colorStr).orElse(0xFF5555);
-        LostTalesGuiColor color1 = LostTalesGuiColor.BLUE;
+        LostTalesColor color1 = LostTalesColor.BLUE;
 
         LostTalesMapMarkerData.Entry entry = new LostTalesMapMarkerData.Entry(
                 UUID.randomUUID(),

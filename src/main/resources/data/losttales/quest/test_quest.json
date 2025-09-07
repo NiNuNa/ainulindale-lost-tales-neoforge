@@ -1,0 +1,57 @@
+{
+  "id":"losttales:test_quest",
+  "title":"A Stranger in the Woods",
+  "description":"A villager hinted at trouble nearby.",
+  "repeatable":true,
+  "journalLog":{
+    "10":"You've spoken to the villager. They asked you to clear out nearby hostiles.",
+    "20":"You dealt with the hostiles. Return to the villager."
+  },
+  "stages":[
+    {
+      "id":"10",
+      "objectives":[
+        {
+          "id":"kill_hostiles",
+          "type":"kill",
+          "description":"Defeat 3 Zombies.",
+          "optional":false,
+          "params":{
+            "entity":"minecraft:zombie",
+            "count":"3",
+            "radius":"64"
+          }
+        },
+        {
+          "id":"kill_hostiles2",
+          "type":"kill",
+          "description":"Defeat 4 Creepers.",
+          "optional":false,
+          "params":{
+            "entity":"minecraft:creeper",
+            "count":"4",
+            "radius":"64"
+          }
+        }
+      ]
+    },
+    {
+      "id":"20",
+      "objectives":[
+        {
+          "id":"return",
+          "type":"goto",
+          "description":"Return to the villager",
+          "optional":false,
+          "params":{
+            "x":"120",
+            "y":"64",
+            "z":"200",
+            "dimension":"minecraft:overworld",
+            "radius":"6"
+          }
+        }
+      ]
+    }
+  ]
+}

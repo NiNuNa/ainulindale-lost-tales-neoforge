@@ -1,11 +1,11 @@
 package dev.ninuna.losttales.client.gui.mapmarker.provider.custom;
 
-import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesPositionMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
 import dev.ninuna.losttales.common.event.LostTalesMobAggroTracker;
-import dev.ninuna.losttales.common.network.LostTalesCLientAggroCache;
+import dev.ninuna.losttales.client.cache.LostTalesClientMobAggroCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -31,14 +31,14 @@ public class LostTalesHostileMapMarkerProvider implements LostTalesMapMarkerProv
         List<LostTalesPositionMapMarker> mapMarkers = new ArrayList<>(nearby.size());
         for (Entity entity : nearby) {
             // Only render if the server says this entity is "locked on" the player
-            if (!LostTalesCLientAggroCache.isLocked(entity.getId())) continue;
+            if (!LostTalesClientMobAggroCache.isLocked(entity.getId())) continue;
 
             // Build your marker (adjust args to match your constructor if it differs)
             LostTalesPositionMapMarker marker = new LostTalesPositionMapMarker(
                     entity.getUUID(),
                     entity.getDisplayName(),
                     LostTalesMapMarkerIcon.HOSTILE,
-                    LostTalesGuiColor.WHITE,
+                    LostTalesColor.WHITE,
                     entity.level().dimension(),
                     true, true, false,
                     (float) LostTalesMobAggroTracker.AGGRO_MOB_SCAN_RADIUS, 0,

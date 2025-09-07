@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.client.gui.hud;
 
 import com.mojang.blaze3d.platform.Window;
-import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesBearingMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.custom.LostTalesSharedMapMarkerProvider;
@@ -175,7 +175,7 @@ public class LostTalesCompassHud {
 
             if (alphaT <= 0f) continue;
 
-            int color = isActiveQuest ? LostTalesGuiColor.WHITE.getColorWithAlpha(alphaT) : mapMarker.getColor().getColorWithAlpha(alphaT);
+            int color = isActiveQuest ? LostTalesColor.WHITE.getColorWithAlpha(alphaT) : mapMarker.getColor().getColorWithAlpha(alphaT);
 
             renderItems.add(new RenderItem(mapMarker, pxF, centerEmphasis, alphaT, color, distSq, dy, isActiveQuest));
 
@@ -246,7 +246,7 @@ public class LostTalesCompassHud {
         if (focusedMapMarker != null && bestEmphasis > 0f) {
             int mapMarkerNameLabelY = compassY + COMPASS_HEIGHT + MAP_MARKER_NAME_LABEL_OFFSET_Y;
             int mapMarkerDistanceLabelY = compassY - minecraft.font.lineHeight - MAP_MARKER_DISTANCE_LABEL_OFFSET_Y;
-            int labelColor = LostTalesGuiColor.WHITE.getColorWithAlpha(bestEmphasis);
+            int labelColor = LostTalesColor.WHITE.getColorWithAlpha(bestEmphasis);
 
             // Name centered on compass center
             drawString(guiGraphics, minecraft, focusedMapMarker.getName(), bestPx, mapMarkerNameLabelY, labelColor, true);

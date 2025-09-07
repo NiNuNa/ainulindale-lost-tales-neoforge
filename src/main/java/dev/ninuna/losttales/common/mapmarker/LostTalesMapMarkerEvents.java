@@ -1,7 +1,8 @@
 package dev.ninuna.losttales.common.mapmarker;
 
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.common.data.attachment.LostTalesAttachments;
+import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
+import dev.ninuna.losttales.common.datapack.loader.LostTalesMapMarkerDatapackLoader;
 import dev.ninuna.losttales.common.network.packet.LostTalesSyncMapMarkersPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -64,7 +65,7 @@ public class LostTalesMapMarkerEvents {
 
     private static void seedLevelFromCache(ServerLevel level) {
         var dimensionKey = level.dimension().location();
-        var list = LostTalesMapMarkerDataReloadListener.BY_DIMENSION.getOrDefault(dimensionKey, List.of());
+        var list = LostTalesMapMarkerDatapackLoader.BY_DIMENSION.getOrDefault(dimensionKey, List.of());
         var levelData = level.getData(LostTalesAttachments.LEVEL_MARKERS.get());
 
         if (levelData.all().isEmpty()) {

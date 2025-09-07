@@ -1,15 +1,15 @@
-package dev.ninuna.losttales.common.network;
+package dev.ninuna.losttales.client.cache;
 
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
 import net.minecraft.client.Minecraft;
 
 import java.util.Collection;
 
-public class LostTalesCLientAggroCache {
+public class LostTalesClientMobAggroCache {
     private static final Int2LongOpenHashMap LOCKED_UNTIL = new Int2LongOpenHashMap();
     private static final int TTL_TICKS = 20; // ~1s
 
-    private LostTalesCLientAggroCache() {}
+    private LostTalesClientMobAggroCache() {}
 
     public static void accept(Collection<Integer> ids) {
         long now = tick();

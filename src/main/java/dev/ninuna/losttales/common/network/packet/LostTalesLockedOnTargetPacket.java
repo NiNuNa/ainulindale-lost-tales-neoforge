@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.common.network.packet;
 
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.common.network.LostTalesCLientAggroCache;
+import dev.ninuna.losttales.client.cache.LostTalesClientMobAggroCache;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -27,7 +27,7 @@ public record  LostTalesLockedOnTargetPacket(List<Integer> ids) implements Custo
 
     public static void handle(LostTalesLockedOnTargetPacket lostTalesLockedOnTargetPacket, IPayloadContext context) {
         context.enqueueWork(() -> {
-            LostTalesCLientAggroCache.accept(lostTalesLockedOnTargetPacket.ids());
+            LostTalesClientMobAggroCache.accept(lostTalesLockedOnTargetPacket.ids());
         });
     }
 }

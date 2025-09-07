@@ -1,7 +1,8 @@
-package dev.ninuna.losttales.common.data.attachment;
+package dev.ninuna.losttales.common.attachment;
 
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerData;
+import dev.ninuna.losttales.common.quest.LostTalesQuestPlayerData;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -14,14 +15,17 @@ public final class LostTalesAttachments {
 
     public static final Supplier<AttachmentType<LostTalesMapMarkerData>> LEVEL_MARKERS = ATTACHMENT_TYPES.register(
             "level_map_markers", () -> AttachmentType.builder(LostTalesMapMarkerData::new)
-                    .serialize(LostTalesMapMarkerData.MAP_CODEC)
-                    .build()
+                    .serialize(LostTalesMapMarkerData.MAP_CODEC).build()
     );
 
     public static final Supplier<AttachmentType<LostTalesMapMarkerData>> PLAYER_MARKERS = ATTACHMENT_TYPES.register(
             "player_map_markers", () -> AttachmentType.builder(LostTalesMapMarkerData::new)
-                    .serialize(LostTalesMapMarkerData.MAP_CODEC)
-                    .build()
+                    .serialize(LostTalesMapMarkerData.MAP_CODEC).build()
+    );
+
+    public static final Supplier<AttachmentType<LostTalesQuestPlayerData>> PLAYER_QUESTS = ATTACHMENT_TYPES.register(
+            "player_quests", () -> AttachmentType.builder(LostTalesQuestPlayerData::new)
+                    .serialize(LostTalesQuestPlayerData.MAP_CODEC).build()
     );
 
     public static void register(IEventBus eventBus) {

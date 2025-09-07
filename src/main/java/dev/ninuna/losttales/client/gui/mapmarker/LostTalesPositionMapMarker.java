@@ -1,6 +1,6 @@
 package dev.ninuna.losttales.client.gui.mapmarker;
 
-import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.common.LostTales;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -12,7 +12,7 @@ public class LostTalesPositionMapMarker {
     private final UUID uuid;
     private final Component name;
     private final LostTalesMapMarkerIcon icon;
-    private final LostTalesGuiColor color;
+    private final LostTalesColor color;
     private final ResourceKey<Level> dimension;
 
     private final boolean scaleWithCenterFocus;
@@ -25,7 +25,7 @@ public class LostTalesPositionMapMarker {
     private final double y;
     private final double z;
 
-    public LostTalesPositionMapMarker(UUID uuid, Component name, LostTalesMapMarkerIcon icon, LostTalesGuiColor color, ResourceKey<Level> dimension,
+    public LostTalesPositionMapMarker(UUID uuid, Component name, LostTalesMapMarkerIcon icon, LostTalesColor color, ResourceKey<Level> dimension,
                                       boolean scaleWithCenterFocus, boolean showDistanceLabel, boolean hasActiveQuest, double fadeInRadius, double unlockRadius, double x, double y, double z) {
         this.uuid = uuid;
         this.name = name;
@@ -42,7 +42,7 @@ public class LostTalesPositionMapMarker {
         this.z = z;
     }
 
-    public LostTalesPositionMapMarker(UUID uuid, String name, LostTalesMapMarkerIcon icon, LostTalesGuiColor color, ResourceKey<Level> dimension,
+    public LostTalesPositionMapMarker(UUID uuid, String name, LostTalesMapMarkerIcon icon, LostTalesColor color, ResourceKey<Level> dimension,
                                       boolean scaleWithCenterFocus, boolean showDistanceLabel, boolean hasActiveQuest, double fadeInRadius, double unlockRadius, double x, double y, double z) {
         this.uuid = uuid;
         this.name = Component.translatable("mapMarker." + LostTales.MOD_ID + "." + name);
@@ -71,7 +71,7 @@ public class LostTalesPositionMapMarker {
         return icon;
     }
 
-    public LostTalesGuiColor getColor() {
+    public LostTalesColor getColor() {
         return color;
     }
 

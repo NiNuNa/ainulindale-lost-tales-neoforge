@@ -5,17 +5,17 @@ import net.minecraft.util.StringRepresentable;
 
 import java.util.Locale;
 
-public enum LostTalesGuiColor implements StringRepresentable {
+public enum LostTalesColor implements StringRepresentable {
     WHITE   (0xFFFBDE),
     RED     (0xFF0000),
     BLUE    (0x0000FF);
 
     private static final int ALPHA_SHIFT = 24;
-    public static final Codec<LostTalesGuiColor> CODEC = StringRepresentable.fromEnum(LostTalesGuiColor::values);
+    public static final Codec<LostTalesColor> CODEC = StringRepresentable.fromEnum(LostTalesColor::values);
 
     private final int colorRgb;
 
-    LostTalesGuiColor(int colorRgb) {
+    LostTalesColor(int colorRgb) {
         this.colorRgb = colorRgb;
     }
 

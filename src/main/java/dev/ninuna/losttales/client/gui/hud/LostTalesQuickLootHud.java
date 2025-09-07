@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.client.gui.hud;
 
 import com.mojang.blaze3d.platform.Window;
-import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.LostTalesColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -95,7 +95,7 @@ public class LostTalesQuickLootHud {
         // Draw top segment of the texture.
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, QUICK_LOOT_HUD_TEXTURE, textureSegmentTopX, textureSegmentTopY, 0, 0, TEXTURE_WIDTH, TEXTURE_SEGMENT_TOP_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, QUICK_LOOT_HUD_TEXTURE, textureOrnamentHorX, textureOrnamentHorY, 0, 120, TEXTURE_WIDTH, TEXTURE_ORNAMENT_HORIZONTAL_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        guiGraphics.drawString(font, name, containerNameX, containerNameY, LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f), true);
+        guiGraphics.drawString(font, name, containerNameX, containerNameY, LostTalesColor.WHITE.getColorWithAlpha(1.0f), true);
 
         List<Integer> visibleSlots = getNonEmptyContainerSlots(container);
         int totalRows = visibleSlots.size();
@@ -116,7 +116,7 @@ public class LostTalesQuickLootHud {
         } else {
             j = 1;
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED, QUICK_LOOT_HUD_TEXTURE, textureSegmentTopX, textureSegmentTopY + TEXTURE_SEGMENT_TOP_HEIGHT, 0, 25, TEXTURE_WIDTH, TEXTURE_SEGMENT_MID_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-            guiGraphics.drawString(font, TEXT_EMPTY, itemStackNameX, itemStackNameY, LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f), true);
+            guiGraphics.drawString(font, TEXT_EMPTY, itemStackNameX, itemStackNameY, LostTalesColor.WHITE.getColorWithAlpha(1.0f), true);
         }
 
         // Draw bottom segment of the texture.
@@ -138,8 +138,8 @@ public class LostTalesQuickLootHud {
         int textureOrnamentVertY = textureSegmentTopY + TEXTURE_SEGMENT_TOP_HEIGHT + TEXTURE_SEGMENT_MID_HEIGHT * j / 2 - TEXTURE_ORNAMENT_VERTICAL_HEIGHT / 2;
 
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, QUICK_LOOT_HUD_TEXTURE, textureOrnamentVertX, textureOrnamentVertY, 0, 96, TEXTURE_WIDTH, TEXTURE_ORNAMENT_VERTICAL_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        guiGraphics.fillGradient(textureOrnamentVertLineX + 1, textureOrnamentVertY, textureOrnamentVertLineX, textureOrnamentVertY - (j - 1) * 11 - 3, LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f), LostTalesGuiColor.WHITE.getColorWithAlpha(0.0f));
-        guiGraphics.fillGradient(textureOrnamentVertLineX + 1, textureOrnamentVertY + TEXTURE_ORNAMENT_VERTICAL_HEIGHT + (j - 1) * 11 + 3, textureOrnamentVertLineX, textureOrnamentVertY + TEXTURE_ORNAMENT_VERTICAL_HEIGHT, LostTalesGuiColor.WHITE.getColorWithAlpha(0.0f), LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f));
+        guiGraphics.fillGradient(textureOrnamentVertLineX + 1, textureOrnamentVertY, textureOrnamentVertLineX, textureOrnamentVertY - (j - 1) * 11 - 3, LostTalesColor.WHITE.getColorWithAlpha(1.0f), LostTalesColor.WHITE.getColorWithAlpha(0.0f));
+        guiGraphics.fillGradient(textureOrnamentVertLineX + 1, textureOrnamentVertY + TEXTURE_ORNAMENT_VERTICAL_HEIGHT + (j - 1) * 11 + 3, textureOrnamentVertLineX, textureOrnamentVertY + TEXTURE_ORNAMENT_VERTICAL_HEIGHT, LostTalesColor.WHITE.getColorWithAlpha(0.0f), LostTalesColor.WHITE.getColorWithAlpha(1.0f));
     }
 
     public static void renderItemStacks(GuiGraphics guiGraphics, ItemStack itemStack, Font font, int j, int itemStackX, int itemStackY, int itemStackRowOffsetY, int itemStackNameX, int itemStackNameY, int textureSegmentTopX, int textureSegmentTopY) {
@@ -156,7 +156,7 @@ public class LostTalesQuickLootHud {
 
         guiGraphics.renderItem(itemStack, itemStackX, itemStackY + itemStackRowOffsetY);
         guiGraphics.renderItemDecorations(font, itemStack, itemStackX , itemStackY + itemStackRowOffsetY);
-        guiGraphics.drawString(font, itemStack.getStyledHoverName(), itemStackNameX, itemStackNameY + itemStackRowOffsetY, LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f), true);
+        guiGraphics.drawString(font, itemStack.getStyledHoverName(), itemStackNameX, itemStackNameY + itemStackRowOffsetY, LostTalesColor.WHITE.getColorWithAlpha(1.0f), true);
     }
 
     private static void renderKeys(GuiGraphics guiGraphics, Font font, int x, int y, boolean drawRKey) {
@@ -166,7 +166,7 @@ public class LostTalesQuickLootHud {
 
         if (drawRKey) {
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED, QUICK_LOOT_HUD_TEXTURE, x, y, 0, 59, TEXTURE_KEY_R_WIDTH, TEXTURE_KEYS_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-            guiGraphics.drawString(font, TEXT_KEY_R, textKeyRX, textKeysY, LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f), true);
+            guiGraphics.drawString(font, TEXT_KEY_R, textKeyRX, textKeysY, LostTalesColor.WHITE.getColorWithAlpha(1.0f), true);
         } else {
             textureKeyAltX = x;
         }
@@ -176,9 +176,9 @@ public class LostTalesQuickLootHud {
         int textKeyScrollX = textureKeyScrollX + TEXTURE_KEY_SCROLL_WIDTH + 3;
 
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, QUICK_LOOT_HUD_TEXTURE, textureKeyAltX, y, 15, 59, TEXTURE_KEY_ALT_WIDTH, TEXTURE_KEYS_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        guiGraphics.drawString(font, TEXT_KEY_ALT, textKeyAltX, textKeysY, LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f), true);
+        guiGraphics.drawString(font, TEXT_KEY_ALT, textKeyAltX, textKeysY, LostTalesColor.WHITE.getColorWithAlpha(1.0f), true);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, QUICK_LOOT_HUD_TEXTURE, textureKeyScrollX, y, 36, 59, TEXTURE_KEY_SCROLL_WIDTH, TEXTURE_KEYS_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        guiGraphics.drawString(font, TEXT_KEY_SCROLL, textKeyScrollX, textKeysY, LostTalesGuiColor.WHITE.getColorWithAlpha(1.0f), true);
+        guiGraphics.drawString(font, TEXT_KEY_SCROLL, textKeyScrollX, textKeysY, LostTalesColor.WHITE.getColorWithAlpha(1.0f), true);
     }
 
     public static void moveSelectionIndex(Container container, int scrollDelta) {

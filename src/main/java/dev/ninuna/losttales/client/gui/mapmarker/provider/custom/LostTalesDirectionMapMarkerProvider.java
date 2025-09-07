@@ -1,6 +1,6 @@
 package dev.ninuna.losttales.client.gui.mapmarker.provider.custom;
 
-import dev.ninuna.losttales.client.gui.LostTalesGuiColor;
+import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesBearingMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
@@ -42,7 +42,7 @@ public class LostTalesDirectionMapMarkerProvider implements LostTalesMapMarkerPr
 
         var mapMarkers = new ArrayList<LostTalesPositionMapMarker>(PrincipalDirection.values().length);
         for (var principalDirection : PrincipalDirection.values()) {
-            mapMarkers.add(new LostTalesBearingMapMarker(principalDirection.uuid, null, principalDirection.mapMarkerIcon, LostTalesGuiColor.WHITE, principalDirection.bearingDegree));
+            mapMarkers.add(new LostTalesBearingMapMarker(principalDirection.uuid, null, principalDirection.mapMarkerIcon, LostTalesColor.WHITE, principalDirection.bearingDegree));
         }
         return mapMarkers;
     }

@@ -1,13 +1,17 @@
 package dev.ninuna.losttales.common;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.ninuna.losttales.common.data.attachment.LostTalesAttachments;
+import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.block.LostTalesBlocks;
 import dev.ninuna.losttales.common.block.entity.LostTalesBlockEntities;
 import dev.ninuna.losttales.common.command.LostTalesMapMarkerCommand;
+import dev.ninuna.losttales.common.command.LostTalesQuestCommand;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
 import dev.ninuna.losttales.common.item.LostTalesCreativeModeTabs;
 import dev.ninuna.losttales.common.item.LostTalesItems;
+import dev.ninuna.losttales.common.quest.objective.handler.LostTalesQuestObjectiveHandlers;
+import dev.ninuna.losttales.common.quest.objective.handler.custom.LostTalesGotoQuestObjectiveHandler;
+import dev.ninuna.losttales.common.quest.objective.handler.custom.LostTalesKillQuestObjectiveHandler;
 import dev.ninuna.losttales.common.sound.LostTalesSoundEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceLocation;
@@ -50,14 +54,16 @@ public class LostTales {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        // Register quest objective handlers
+        LostTalesQuestObjectiveHandlers.register(new LostTalesKillQuestObjectiveHandler());
+        LostTalesQuestObjectiveHandlers.register(new LostTalesGotoQuestObjectiveHandler());
     }
 
     @SubscribeEvent
     public void onRegisterCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
         new LostTalesMapMarkerCommand(commandDispatcher);
+        new LostTalesQuestCommand(commandDispatcher);
     }
 
     public static ResourceLocation getResourceLocation(String key) {
