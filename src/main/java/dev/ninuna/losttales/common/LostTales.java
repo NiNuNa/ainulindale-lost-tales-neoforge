@@ -61,6 +61,7 @@ public class LostTales {
 
     @SubscribeEvent
     public void onRegisterCommands(RegisterCommandsEvent event) {
+        // Register commands
         CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
         new LostTalesMapMarkerCommand(commandDispatcher);
         new LostTalesQuestCommand(commandDispatcher);

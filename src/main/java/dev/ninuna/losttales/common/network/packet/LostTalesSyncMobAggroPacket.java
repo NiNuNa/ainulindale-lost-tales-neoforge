@@ -11,21 +11,21 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public record  LostTalesLockedOnTargetPacket(List<Integer> ids) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<LostTalesLockedOnTargetPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("locked_targets"));
+public record LostTalesSyncMobAggroPacket(List<Integer> ids) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<LostTalesSyncMobAggroPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("aggroed_mobs"));
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, LostTalesLockedOnTargetPacket> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, LostTalesSyncMobAggroPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.collection(ArrayList::new, ByteBufCodecs.VAR_INT),
-            LostTalesLockedOnTargetPacket::ids,
-            LostTalesLockedOnTargetPacket::new
+            LostTalesSyncMobAggroPacket::ids,
+            LostTalesSyncMobAggroPacket::new
     );
 
-    public static void handle(LostTalesLockedOnTargetPacket lostTalesLockedOnTargetPacket, IPayloadContext context) {
+    public static void handle(LostTalesSyncMobAggroPacket lostTalesLockedOnTargetPacket, IPayloadContext context) {
         context.enqueueWork(() -> {
             LostTalesClientMobAggroCache.accept(lostTalesLockedOnTargetPacket.ids());
         });

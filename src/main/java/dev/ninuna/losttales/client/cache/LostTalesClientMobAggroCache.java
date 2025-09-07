@@ -9,8 +9,6 @@ public class LostTalesClientMobAggroCache {
     private static final Int2LongOpenHashMap LOCKED_UNTIL = new Int2LongOpenHashMap();
     private static final int TTL_TICKS = 20; // ~1s
 
-    private LostTalesClientMobAggroCache() {}
-
     public static void accept(Collection<Integer> ids) {
         long now = tick();
         long until = now + TTL_TICKS;

@@ -78,4 +78,10 @@ public class LostTalesQuestPlayerData {
         qp.objectiveProgress.put(objectiveId, v);
         return v;
     }
+
+    public void setProgress(ResourceLocation id, String objectiveId, int value) {
+        QuestProgress questProgress = activeQuests.get(id);
+        if (questProgress == null) return;
+        questProgress.objectiveProgress.put(objectiveId, value);
+    }
 }

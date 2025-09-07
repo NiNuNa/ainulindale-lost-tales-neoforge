@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.common.event;
 
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.common.network.packet.LostTalesLockedOnTargetPacket;
+import dev.ninuna.losttales.common.network.packet.LostTalesSyncMobAggroPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -47,6 +47,6 @@ public class LostTalesMobAggroTracker {
             if (isAggro) ids.add(mob.getId());
         }
 
-        PacketDistributor.sendToPlayer(serverPlayer, new LostTalesLockedOnTargetPacket(ids));
+        PacketDistributor.sendToPlayer(serverPlayer, new LostTalesSyncMobAggroPacket(ids));
     }
 }

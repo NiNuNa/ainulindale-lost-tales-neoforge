@@ -1,13 +1,11 @@
 package dev.ninuna.losttales.client.gui.screen;
 
+import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.keymapping.LostTalesKeyMappingRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-//@OnlyIn(Dist.CLIENT)
 public class LostTalesCharacterMenuScreen extends Screen {
     public static final Component CHARACTER_MENU_TITLE = Component.translatable("characterMenu.title");
 
@@ -21,7 +19,7 @@ public class LostTalesCharacterMenuScreen extends Screen {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         super.render(guiGraphics, mouseX, mouseY, delta);
-        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 100, 16777215);
+        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 100, LostTalesColor.WHITE.getColorWithAlpha(1.0f));
     }
 
     @Override

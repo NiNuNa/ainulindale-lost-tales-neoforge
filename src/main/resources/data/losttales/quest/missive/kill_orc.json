@@ -1,0 +1,27 @@
+{
+  "id":"losttales:missive/kill_orc",
+  "title":"Missive: A Stranger in the Woods",
+  "description":"A villager hinted at trouble nearby.",
+  "repeatable":true,
+  "journalLog":{
+    "10":"You've spoken to the villager. They asked you to clear out nearby hostiles."
+  },
+  "stages":[
+    {
+      "id":"10",
+      "objectives":[
+        {
+          "id":"kill_cows",
+          "type":"kill",
+          "description":"Defeat 3 Zombies.",
+          "optional":false,
+          "params":{
+            "entity":"minecraft:cow",
+            "count":"5",
+            "radius":"64"
+          }
+        }
+      ]
+    }
+  ]
+}

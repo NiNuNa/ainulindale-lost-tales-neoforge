@@ -36,12 +36,13 @@ public class LostTalesGotoQuestObjectiveHandler implements LostTalesQuestObjecti
         double dx = player.getX() - x, dy = player.getY() - y, dz = player.getZ() - z;
         if (dx*dx + dy*dy + dz*dz <= radius * radius) {
             var data = player.getData(LostTalesAttachments.PLAYER_QUESTS.get());
-            int now = data.addProgress(quest.id(), obj.id(), 1);
+            int before = data.addProgress(quest.id(), obj.id(), 0);
+            if (before >= 1) return;
+
+            data.setProgress(quest.id(), obj.id(), 1);
             LostTalesQuestStageLogic.evaluateStage(player, quest);
 
-            if (now == 1) {
-                LostTales.LOGGER.info("[{}] GOTO {} reached.", LostTales.MOD_ID, obj.id());
-            }
+            LostTales.LOGGER.info("[{}] GOTO {} reached.", LostTales.MOD_ID, obj.id());
         }
     }
 }

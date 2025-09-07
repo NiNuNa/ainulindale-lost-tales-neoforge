@@ -1,11 +1,12 @@
 {
   "id":"losttales:test_quest",
-  "title":"A Stranger in the Woods",
-  "description":"A villager hinted at trouble nearby.",
+  "title":"Test Quest",
+  "description":"Quest Description Text",
   "repeatable":true,
   "journalLog":{
-    "10":"You've spoken to the villager. They asked you to clear out nearby hostiles.",
-    "20":"You dealt with the hostiles. Return to the villager."
+    "10":"I've finished part 1 of the quest.",
+    "20":"I've finished part 2 of the quest.",
+    "30":"I've finished part 3 of the quest."
   },
   "stages":[
     {
@@ -41,7 +42,7 @@
         {
           "id":"return",
           "type":"goto",
-          "description":"Return to the villager",
+          "description":"Move to the map marker.",
           "optional":false,
           "params":{
             "x":"120",
@@ -49,6 +50,22 @@
             "z":"200",
             "dimension":"minecraft:overworld",
             "radius":"6"
+          }
+        }
+      ]
+    },
+    {
+      "id":"30",
+      "objectives":[
+        {
+          "id":"kill_hostiles_again",
+          "type":"kill",
+          "description":"Defeat 1 Zombie.",
+          "optional":false,
+          "params":{
+            "entity":"minecraft:zombie",
+            "count":"1",
+            "radius":"64"
           }
         }
       ]

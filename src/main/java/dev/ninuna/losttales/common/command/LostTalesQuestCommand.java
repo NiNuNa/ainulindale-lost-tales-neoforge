@@ -11,6 +11,8 @@ import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.quest.LostTalesQuest;
 import dev.ninuna.losttales.common.quest.LostTalesQuestPlayerData;
 import dev.ninuna.losttales.common.quest.LostTalesQuestServices;
+import dev.ninuna.losttales.common.quest.objective.LostTalesQuestObjective;
+import dev.ninuna.losttales.common.quest.stage.LostTalesQuestStage;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -28,48 +30,36 @@ import java.util.stream.Stream;
 
 public class LostTalesQuestCommand {
 
-    // ---------- Suggestion providers ----------
-
     private static final SuggestionProvider<CommandSourceStack> QUEST_IDS = (ctx, builder) -> {
         var quests = LostTalesQuestServices.quests();
         if (quests == null) return SharedSuggestionProvider.suggest(Stream.of(), builder);
-        return SharedSuggestionProvider.suggest(quests.getQuests().stream().map(q -> q.id().toString()), builder);
+        return SharedSuggestionProvider.suggest(quests.getQuests().stream().map(quest -> quest.id().toString()), builder);
     };
 
     private static final SuggestionProvider<CommandSourceStack> STAGE_IDS = (ctx, builder) -> {
         var questId = ResourceLocationArgument.getId(ctx, "quest_id");
-        Optional<LostTalesQuest> q = parseQuest(questId);
-        if (q.isEmpty()) return SharedSuggestionProvider.suggest(Stream.of(), builder);
-        return SharedSuggestionProvider.suggest(q.get().stages().stream().map(s -> s.id()), builder);
+        Optional<LostTalesQuest> quest = parseQuest(questId);
+        return quest.map(lostTalesQuest -> SharedSuggestionProvider.suggest(lostTalesQuest.stages().stream().map(LostTalesQuestStage::id), builder)).orElseGet(() -> SharedSuggestionProvider.suggest(Stream.of(), builder));
     };
 
     private static final SuggestionProvider<CommandSourceStack> OBJECTIVE_IDS = (ctx, builder) -> {
         var questId = ResourceLocationArgument.getId(ctx, "quest_id");
-        Optional<LostTalesQuest> q = parseQuest(questId);
-        if (q.isEmpty()) return SharedSuggestionProvider.suggest(Stream.of(), builder);
-        return SharedSuggestionProvider.suggest(
-                q.get().stages().stream().flatMap(s -> s.objectives().stream().map(o -> o.id())),
-                builder
-        );
+        Optional<LostTalesQuest> lostTalesQuest = parseQuest(questId);
+        return lostTalesQuest.map(quest -> SharedSuggestionProvider.suggest(quest.stages().stream().flatMap(stage -> stage.objectives().stream().map(LostTalesQuestObjective::id)), builder)).orElseGet(() -> SharedSuggestionProvider.suggest(Stream.of(), builder));
     };
 
-    // ---------- Registration ----------
-
     public LostTalesQuestCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
-        LiteralArgumentBuilder<CommandSourceStack> quest =
+        LiteralArgumentBuilder<CommandSourceStack> questCommands =
                 Commands.literal("quest")
-
-                        // /<modid> quest ids
                         .then(Commands.literal("ids")
-                                .executes(LostTalesQuestCommand::listIds))
-
-                        // /<modid> quest list [player]
+                                .executes(LostTalesQuestCommand::listIds)
+                        )
                         .then(Commands.literal("list")
                                 .executes(LostTalesQuestCommand::listSelf)
                                 .then(Commands.argument("player", EntityArgument.player())
-                                        .executes(ctx -> listOther(ctx, EntityArgument.getPlayer(ctx, "player")))))
-
-                        // /<modid> quest start <quest_id> [player]
+                                        .executes(ctx -> listOther(ctx, EntityArgument.getPlayer(ctx, "player")))
+                                )
+                        )
                         .then(Commands.literal("start")
                                 .then(Commands.argument("quest_id", ResourceLocationArgument.id()).suggests(QUEST_IDS)
                                         .executes(ctx -> {
@@ -80,9 +70,10 @@ public class LostTalesQuestCommand {
                                                 .executes(ctx -> {
                                                     var id = ResourceLocationArgument.getId(ctx, "quest_id");
                                                     return startFor(ctx, EntityArgument.getPlayer(ctx, "player"), id.toString());
-                                                }))))
-
-                        // /<modid> quest setstage <quest_id> <stage_id> [player]
+                                                })
+                                        )
+                                )
+                        )
                         .then(Commands.literal("setstage")
                                 .then(Commands.argument("quest_id", ResourceLocationArgument.id()).suggests(QUEST_IDS)
                                         .then(Commands.argument("stage_id", StringArgumentType.word()).suggests(STAGE_IDS)
@@ -96,7 +87,11 @@ public class LostTalesQuestCommand {
                                                             var id = ResourceLocationArgument.getId(ctx, "quest_id");
                                                             var stage = StringArgumentType.getString(ctx, "stage_id");
                                                             return setStageFor(ctx, EntityArgument.getPlayer(ctx, "player"), id.toString(), stage);
-                                                        })))))
+                                                        })
+                                                )
+                                        )
+                                )
+                        )
                         .then(Commands.literal("addprogress")
                                 .then(Commands.argument("quest_id", ResourceLocationArgument.id()).suggests(QUEST_IDS)
                                         .then(Commands.argument("objective_id", StringArgumentType.word()).suggests(OBJECTIVE_IDS)
@@ -113,9 +108,12 @@ public class LostTalesQuestCommand {
                                                                     var obj = StringArgumentType.getString(ctx, "objective_id");
                                                                     int amt = IntegerArgumentType.getInteger(ctx, "amount");
                                                                     return addProgressFor(ctx, EntityArgument.getPlayer(ctx, "player"), id.toString(), obj, amt);
-                                                                }))))))
-
-                        // /<modid> quest reset <quest_id> [player]
+                                                                })
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
                         .then(Commands.literal("reset")
                                 .then(Commands.argument("quest_id", ResourceLocationArgument.id()).suggests(QUEST_IDS)
                                         .executes(ctx -> {
@@ -126,9 +124,10 @@ public class LostTalesQuestCommand {
                                                 .executes(ctx -> {
                                                     var id = ResourceLocationArgument.getId(ctx, "quest_id");
                                                     return resetFor(ctx, EntityArgument.getPlayer(ctx, "player"), id.toString());
-                                                }))))
-
-                        // /<modid> quest complete <quest_id> [player]
+                                                })
+                                        )
+                                )
+                        )
                         .then(Commands.literal("complete")
                                 .then(Commands.argument("quest_id", ResourceLocationArgument.id()).suggests(QUEST_IDS)
                                         .executes(ctx -> {
@@ -139,17 +138,17 @@ public class LostTalesQuestCommand {
                                                 .executes(ctx -> {
                                                     var id = ResourceLocationArgument.getId(ctx, "quest_id");
                                                     return completeFor(ctx, EntityArgument.getPlayer(ctx, "player"), id.toString());
-                                                }))));
+                                                })
+                                        )
+                                )
+                        );
 
         LiteralArgumentBuilder<CommandSourceStack> root =
                 Commands.literal(LostTales.MOD_ID)
                         .requires(src -> src.hasPermission(2))
-                        .then(quest); // attach the entire quest subtree once
-
+                        .then(questCommands);
         dispatcher.register(root);
     }
-
-    // ---------- Helpers & command impls ----------
 
     private static Optional<LostTalesQuest> parseQuest(ResourceLocation questId) {
         var loader = LostTalesQuestServices.quests();
