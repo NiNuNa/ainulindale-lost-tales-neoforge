@@ -8,28 +8,29 @@ import net.minecraft.util.StringRepresentable;
 import java.util.Locale;
 
 public enum LostTalesMapMarkerIcon implements StringRepresentable {
-    N           (0, 12),
-    NE          (0, 12),
-    E           (0, 12),
-    SE          (0, 12),
-    S           (0, 12),
-    SW          (0, 12),
-    W           (0, 12),
-    NW          (0, 12),
-    QUEST       (24, 0),
-    HOSTILE     (12, 0),
-    FORT        (48, 0),
-    TAVERN      (0, 0);
+    N               (0, 19),
+    NE              (19, 19),
+    E               (38, 19),
+    SE              (57, 19),
+    S               (76, 19),
+    SW              (95, 19),
+    W               (114, 19),
+    NW              (133, 19),
+    QUEST           (0, 0),
+    HOSTILE         (19, 0),
+    FORT            (76, 38),
+    UNDISCOVERED    (38, 0),
+    TAVERN          (19, 38);
 
     public static final Codec<LostTalesMapMarkerIcon> CODEC = StringRepresentable.fromEnum(LostTalesMapMarkerIcon::values);
 
     public static final ResourceLocation MAP_MARKER_ICON_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/mapmarkericons.png");
 
-    public static final int MAP_MARKER_ICON_TEXTURE_WIDTH  = 193;
+    public static final int MAP_MARKER_ICON_TEXTURE_WIDTH  = 207;
     public static final int MAP_MARKER_ICON_TEXTURE_HEIGHT = 64;
 
-    public static final int MAP_MARKER_ICON_WIDTH = 11;
-    public static final int MAP_MARKER_ICON_HEIGHT = 11;
+    public static final int MAP_MARKER_ICON_WIDTH = 17;
+    public static final int MAP_MARKER_ICON_HEIGHT = 17;
 
     private final int u;
     private final int v;

@@ -25,15 +25,15 @@ public class LostTalesCompassHud {
 
     private static final ResourceLocation COMPASS_HUD_TEXTURE = LostTales.getResourceLocation("textures/gui/compasshud.png");
 
-    private static final int TEXTURE_COMPASS_HUD_WIDTH  = 193;
+    private static final int TEXTURE_COMPASS_HUD_WIDTH  = 257;
     private static final int TEXTURE_COMPASS_HUD_HEIGHT = 64;
 
     private static final int COMPASS_WIDTH  = TEXTURE_COMPASS_HUD_WIDTH;
-    private static final int COMPASS_HEIGHT = 18;
-    private static final int COMPASS_OFFSET_Y = 4;
+    private static final int COMPASS_HEIGHT = 24;
 
-    private static final int MAP_MARKER_OFFSET_Y = 5;
-    private static final int MAP_MARKER_NAME_OFFSET_Y = 3;
+    private static final int MAP_MARKER_OFFSET_Y = 8;
+    private static final int MAP_MARKER_NAME_LABEL_OFFSET_Y = 3;
+    private static final int MAP_MARKER_DISTANCE_LABEL_OFFSET_Y = 4;
 
     private static final float MAP_MARKER_SCALE_MODIFIER = 0.18f;
     private static final float MAP_MARKER_DISTANCE_FADE_IN_FLOOR_ALPHA = 0.4f;
@@ -60,7 +60,7 @@ public class LostTalesCompassHud {
         float pixelPerDegree = (float) COMPASS_WIDTH / (float) visibleDegreeRange;
 
         int compassX = (windowWidth - COMPASS_WIDTH) * customOffsetX / 100;
-        int compassY = windowHeight * customOffsetY / 100 + minecraft.font.lineHeight + COMPASS_OFFSET_Y;
+        int compassY = windowHeight * customOffsetY / 100 + minecraft.font.lineHeight + MAP_MARKER_DISTANCE_LABEL_OFFSET_Y;
         int compassCenterX = compassX + COMPASS_WIDTH / 2;
 
         float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(!minecraft.isPaused());
@@ -172,25 +172,29 @@ public class LostTalesCompassHud {
             // Alpha: no edge fade and no distance fade for active quests (always fully visible)
             float distanceAlpha = MAP_MARKER_DISTANCE_FADE_IN_FLOOR_ALPHA + (1f - MAP_MARKER_DISTANCE_FADE_IN_FLOOR_ALPHA) * distT;
             float alphaT = isActiveQuest ? 1f : Mth.clamp(edgeT * distanceAlpha, 0f, 1f);
+
             if (alphaT <= 0f) continue;
 
-            int color = mapMarker.getColor().getColorWithAlpha(alphaT);
+            int color = isActiveQuest ? LostTalesGuiColor.WHITE.getColorWithAlpha(alphaT) : mapMarker.getColor().getColorWithAlpha(alphaT);
 
             renderItems.add(new RenderItem(mapMarker, pxF, centerEmphasis, alphaT, color, distSq, dy, isActiveQuest));
 
-            // Pick focus (unchanged)
-            boolean better = centerEmphasis > bestEmphasis;
-            if (!better && centerEmphasis == bestEmphasis) {
-                better = Math.abs(pxF - compassCenterX) < Math.abs(bestPx - compassCenterX);
-            }
-            if (better) {
-                bestEmphasis = centerEmphasis;
-                focusedMapMarker = mapMarker;
-                bestPx = pxF;
+            // ---- Focus picking (skip bearing markers) ----
+            boolean isFocusable = mapMarker.isScaleWithCenterFocus();
+            if (isFocusable) {
+                boolean better = centerEmphasis > bestEmphasis;
+                if (!better && centerEmphasis == bestEmphasis) {
+                    better = Math.abs(pxF - compassCenterX) < Math.abs(bestPx - compassCenterX);
+                }
+                if (better) {
+                    bestEmphasis = centerEmphasis;
+                    focusedMapMarker = mapMarker;
+                    bestPx = pxF;
 
-                bestDx = dx;
-                bestDy = dy;
-                bestDz = dz;
+                    bestDx = dx;
+                    bestDy = dy;
+                    bestDz = dz;
+                }
             }
         }
 
@@ -240,8 +244,8 @@ public class LostTalesCompassHud {
 
         // Focused label (name + distance at center, unchanged)
         if (focusedMapMarker != null && bestEmphasis > 0f) {
-            int mapMarkerNameLabelY = compassY + COMPASS_HEIGHT + MAP_MARKER_NAME_OFFSET_Y;
-            int mapMarkerDistanceLabelY = compassY - minecraft.font.lineHeight - COMPASS_OFFSET_Y;
+            int mapMarkerNameLabelY = compassY + COMPASS_HEIGHT + MAP_MARKER_NAME_LABEL_OFFSET_Y;
+            int mapMarkerDistanceLabelY = compassY - minecraft.font.lineHeight - MAP_MARKER_DISTANCE_LABEL_OFFSET_Y;
             int labelColor = LostTalesGuiColor.WHITE.getColorWithAlpha(bestEmphasis);
 
             // Name centered on compass center
@@ -255,7 +259,7 @@ public class LostTalesCompassHud {
 
                 double deltaY = bestDy;
                 if (Math.abs(deltaY) >= 5) {
-                    int indicatorU = 0, indicatorV = 20, indicatorHeight = 3, indicatorWidth = 5;
+                    int indicatorU = 0, indicatorV = 26, indicatorHeight = 3, indicatorWidth = 5;
                     if (deltaY >= 10.0) {
                         indicatorHeight = 7; // up-strong
                     } else if (deltaY <= -10.0) {

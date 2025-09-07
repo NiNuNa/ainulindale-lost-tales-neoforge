@@ -24,16 +24,14 @@ public class LostTalesDirectionMapMarkerProvider implements LostTalesMapMarkerPr
         W   ("west",       90f,    LostTalesMapMarkerIcon.W),
         NW  ("northWest",  135f,   LostTalesMapMarkerIcon.NW);
 
-        private final String key;
         private final float bearingDegree;
         private final LostTalesMapMarkerIcon mapMarkerIcon;
         private final UUID uuid;
 
         PrincipalDirection(String key, float angleDeg, LostTalesMapMarkerIcon mapMarkerIcon) {
-            this.key = key;
             this.bearingDegree = angleDeg;
             this.mapMarkerIcon = mapMarkerIcon;
-            this.uuid = UUID.nameUUIDFromBytes((LostTales.MOD_ID + ":direction:" + this.name()).getBytes());
+            this.uuid = UUID.nameUUIDFromBytes((LostTales.MOD_ID + ":direction:" + key).getBytes());
         }
     }
 
@@ -44,7 +42,7 @@ public class LostTalesDirectionMapMarkerProvider implements LostTalesMapMarkerPr
 
         var mapMarkers = new ArrayList<LostTalesPositionMapMarker>(PrincipalDirection.values().length);
         for (var principalDirection : PrincipalDirection.values()) {
-            mapMarkers.add(new LostTalesBearingMapMarker(principalDirection.uuid, principalDirection.key, principalDirection.mapMarkerIcon, LostTalesGuiColor.WHITE, principalDirection.bearingDegree));
+            mapMarkers.add(new LostTalesBearingMapMarker(principalDirection.uuid, null, principalDirection.mapMarkerIcon, LostTalesGuiColor.WHITE, principalDirection.bearingDegree));
         }
         return mapMarkers;
     }
