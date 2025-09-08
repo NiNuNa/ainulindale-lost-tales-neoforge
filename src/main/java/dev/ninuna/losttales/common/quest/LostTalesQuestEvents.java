@@ -2,7 +2,7 @@ package dev.ninuna.losttales.common.quest;
 
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
-import dev.ninuna.losttales.common.network.packet.LostTalesSyncQuestsPacket;
+import dev.ninuna.losttales.common.datapack.loader.LostTalesQuestDatapackLoader;
 import dev.ninuna.losttales.common.quest.objective.handler.LostTalesQuestObjectiveHandlers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -11,9 +11,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-
-import java.util.ArrayList;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID)
 public class LostTalesQuestEvents {
@@ -25,7 +22,7 @@ public class LostTalesQuestEvents {
 
         var questData = serverPlayer.getData(LostTalesAttachments.PLAYER_QUESTS.get());
         for (var questProgress : questData.getActiveQuests()) {
-            var questOpt = LostTalesQuestServices.quests().getQuest(questProgress.questId);
+            var questOpt = LostTalesQuestDatapackLoader.getQuest(questProgress.questId);
             if (questOpt.isEmpty()) continue;
             var quest = questOpt.get();
 
@@ -49,7 +46,7 @@ public class LostTalesQuestEvents {
 
         var data = player.getData(LostTalesAttachments.PLAYER_QUESTS.get());
         for (var qp : data.getActiveQuests()) {
-            var questOpt = LostTalesQuestServices.quests().getQuest(qp.questId);
+            var questOpt = LostTalesQuestDatapackLoader.getQuest(qp.questId);
             if (questOpt.isEmpty()) continue;
             var quest = questOpt.get();
 
@@ -69,20 +66,14 @@ public class LostTalesQuestEvents {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            syncToPlayer(serverPlayer);
+            LostTalesQuestManager.syncQuestDataToPlayer(serverPlayer);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            syncToPlayer(serverPlayer);
+            LostTalesQuestManager.syncQuestDataToPlayer(serverPlayer);
         }
-    }
-
-    public static void syncToPlayer(ServerPlayer player) {
-        var data = player.getData(LostTalesAttachments.PLAYER_QUESTS.get());
-        var list = new ArrayList<>(data.getActiveQuests());
-        PacketDistributor.sendToPlayer(player, new LostTalesSyncQuestsPacket(list));
     }
 }

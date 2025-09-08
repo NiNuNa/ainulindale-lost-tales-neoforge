@@ -2,6 +2,7 @@ package dev.ninuna.losttales.common.datapack.loader;
 
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.quest.LostTalesQuest;
+import dev.ninuna.losttales.common.quest.objective.handler.LostTalesQuestObjectiveHandlers;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class LostTalesQuestDatapackLoader extends SimpleJsonResourceReloadListener<LostTalesQuest> {
-    private Map<ResourceLocation, LostTalesQuest> quests = Map.of();
+    private static Map<ResourceLocation, LostTalesQuest> ALL_QUESTS = Map.of();
 
     public LostTalesQuestDatapackLoader() {
         super(LostTalesQuest.CODEC, FileToIdConverter.json("quest"));
@@ -21,15 +22,28 @@ public class LostTalesQuestDatapackLoader extends SimpleJsonResourceReloadListen
 
     @Override
     protected void apply(Map<ResourceLocation, LostTalesQuest> resources, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
-        this.quests = Map.copyOf(resources);
-        LostTales.LOGGER.info("[{}] Loaded {} quests from datapacks", LostTales.MOD_ID, quests.size());
+        ALL_QUESTS = Map.copyOf(resources);
+
+        for (var quest : ALL_QUESTS.values()) {
+            for (var stage : quest.stages()) {
+                for (var objective : stage.objectives()) {
+                    LostTalesQuestObjectiveHandlers.get(objective.type()).ifPresent(objectiveHandler -> {
+                        try { objectiveHandler.validate(quest, objective);
+                        } catch (Exception exception) {
+                            LostTales.LOGGER.warn("[{}] Invalid objective {} in quest {}: {}", LostTales.MOD_ID, objective.id(), quest.id(), exception.getMessage());
+                        }
+                    });
+                }
+            }
+        }
+        LostTales.LOGGER.info("[{}] Loaded {} quests from datapacks", LostTales.MOD_ID, ALL_QUESTS.size());
     }
 
-    public Collection<LostTalesQuest> getQuests() {
-        return quests.values();
+    public static Collection<LostTalesQuest> getAllQuests() {
+        return ALL_QUESTS.values();
     }
 
-    public Optional<LostTalesQuest> getQuest(ResourceLocation id) {
-        return Optional.ofNullable(quests.get(id));
+    public static Optional<LostTalesQuest> getQuest(ResourceLocation id) {
+        return Optional.ofNullable(ALL_QUESTS.get(id));
     }
 }

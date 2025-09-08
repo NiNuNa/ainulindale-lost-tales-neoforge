@@ -2,7 +2,7 @@
   "id":"losttales:test_quest",
   "title":"Test Quest",
   "description":"Quest Description Text",
-  "repeatable":true,
+  "repeatable":false,
   "journalLog":{
     "10":"I've finished part 1 of the quest.",
     "20":"I've finished part 2 of the quest.",

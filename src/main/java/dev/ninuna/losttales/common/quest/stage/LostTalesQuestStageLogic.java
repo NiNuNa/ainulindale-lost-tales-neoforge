@@ -1,14 +1,16 @@
 package dev.ninuna.losttales.common.quest.stage;
 
+import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.quest.LostTalesQuest;
+import dev.ninuna.losttales.common.quest.LostTalesQuestManager;
 import net.minecraft.server.level.ServerPlayer;
 
 public class LostTalesQuestStageLogic {
 
-    public static void evaluateStage(ServerPlayer player, LostTalesQuest quest) {
-        var data = player.getData(LostTalesAttachments.PLAYER_QUESTS.get());
-        var qpOpt = data.getQuest(quest.id());
+    public static void evaluateStage(ServerPlayer serverPlayer, LostTalesQuest quest) {
+        var questPlayerData = serverPlayer.getData(LostTalesAttachments.PLAYER_QUESTS.get());
+        var qpOpt = questPlayerData.getActiveQuest(quest.id());
         if (qpOpt.isEmpty()) return;
         var qp = qpOpt.get();
 
@@ -30,14 +32,16 @@ public class LostTalesQuestStageLogic {
         // advance
         int idx = quest.stages().indexOf(stage);
         if (idx >= 0 && idx + 1 < quest.stages().size()) {
-            data.setStage(quest.id(), quest.stages().get(idx + 1).id());
+            questPlayerData.setStage(quest.id(), quest.stages().get(idx + 1).id());
         } else {
-            // last stage
-            data.completeQuest(quest.id());
+            // Last Stage: Quest Completed
+            questPlayerData.completeQuest(quest.id());
+            LostTales.LOGGER.info("Completed Quest: " + quest.title());
         }
+        LostTalesQuestManager.syncQuestDataToPlayer(serverPlayer);
     }
 
     private static int parseIntSafe(String s, int dft) {
-        try { return Integer.parseInt(s); } catch (Exception e) { return dft; }
+        try {return Integer.parseInt(s); } catch (Exception e) { return dft; }
     }
 }

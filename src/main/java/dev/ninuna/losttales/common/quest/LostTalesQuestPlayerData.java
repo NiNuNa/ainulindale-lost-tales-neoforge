@@ -44,31 +44,48 @@ public class LostTalesQuestPlayerData {
         return activeQuests.values();
     }
 
-    public boolean isQuestCompleted(ResourceLocation id) {
-        return completedQuests.contains(id);
+    public Set<ResourceLocation> getCompletedQuests() {
+        return Set.copyOf(completedQuests);
     }
 
-    public Optional<QuestProgress> getQuest(ResourceLocation id) {
-        return Optional.ofNullable(activeQuests.get(id));
+    public boolean isQuestActive(ResourceLocation questId) {
+        return activeQuests.get(questId) != null;
     }
 
-    public QuestProgress startQuest(ResourceLocation id, String firstStageId) {
-        QuestProgress questProgress = new QuestProgress(id, firstStageId, Map.of());
-        activeQuests.put(id, questProgress);
-        return questProgress;
+    public Optional<QuestProgress> getActiveQuest(ResourceLocation questId) {
+        return Optional.ofNullable(activeQuests.get(questId));
+    }
+
+    public boolean isQuestCompleted(ResourceLocation questId) {
+        return completedQuests.contains(questId);
+    }
+
+    public void abandonQuest(ResourceLocation id) {
+        this.activeQuests.remove(id);
+    }
+
+    public void removeCompletedQuest(ResourceLocation id) {
+        this.completedQuests.remove(id);
+    }
+
+    public void clearObjectiveProgress(ResourceLocation id) {
+        QuestProgress qp = this.activeQuests.get(id);
+        if (qp != null) qp.objectiveProgress.clear();
+    }
+
+    public void startQuest(ResourceLocation id, String stageId) {
+        QuestProgress qp = new QuestProgress(id, stageId, new java.util.HashMap<>());
+        this.activeQuests.put(id, qp);
     }
 
     public void completeQuest(ResourceLocation id) {
-        activeQuests.remove(id);
-        completedQuests.add(id);
+        this.activeQuests.remove(id);
+        this.completedQuests.add(id);
     }
 
-    public void setStage(ResourceLocation id, String newStage) {
-        QuestProgress qp = activeQuests.get(id);
-        if (qp != null) {
-            qp.stageId = newStage;
-            qp.objectiveProgress.clear();
-        }
+    public void setStage(ResourceLocation id, String stageId) {
+        QuestProgress qp = this.activeQuests.get(id);
+        if (qp != null) qp.stageId = stageId;
     }
 
     public int addProgress(ResourceLocation id, String objectiveId, int delta) {

@@ -5,8 +5,8 @@ import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.gui.screen.widget.LostTalesQuestListWidget;
 import dev.ninuna.losttales.client.gui.screen.widget.entry.LostTalesQuestListWidgetEntry;
 import dev.ninuna.losttales.client.keymapping.LostTalesKeyMappingRegistry;
+import dev.ninuna.losttales.common.datapack.loader.LostTalesQuestDatapackLoader;
 import dev.ninuna.losttales.common.quest.LostTalesQuest;
-import dev.ninuna.losttales.common.quest.LostTalesQuestServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -66,14 +66,6 @@ public class LostTalesQuestJournalScreen extends Screen {
         this.minecraft.setScreen(this.parentScreen);
     }
 
-    private LostTalesQuest tryResolve(ResourceLocation id) {
-        if (LostTalesQuestServices.quests() == null) return null;
-        try {
-            return LostTalesQuestServices.quests().getQuest(id).get();
-        } catch (Throwable t) {
-            return null;
-        }
-    }
 
     private void reloadQuestListEntries() {
         var entries = new ArrayList<LostTalesQuestListWidgetEntry>();
@@ -84,7 +76,7 @@ public class LostTalesQuestJournalScreen extends Screen {
             entries.add(new LostTalesQuestListWidgetEntry(Component.translatable("test")));
         } else {
             active.forEach((questId, progress) -> {
-                LostTalesQuest quest = tryResolve(questId);
+                LostTalesQuest quest = LostTalesQuestDatapackLoader.getQuest(questId).get();
                 Component title = quest != null
                         ? Component.literal(quest.title()).withStyle(ChatFormatting.GOLD)
                         : Component.literal(questId.toString()).withStyle(ChatFormatting.GOLD);
