@@ -3,7 +3,7 @@ package dev.ninuna.losttales.common.quest.objective.handler.custom;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.quest.LostTalesQuest;
-import dev.ninuna.losttales.common.quest.stage.LostTalesQuestStageLogic;
+import dev.ninuna.losttales.common.quest.LostTalesQuestManager;
 import dev.ninuna.losttales.common.quest.objective.LostTalesQuestObjective;
 import dev.ninuna.losttales.common.quest.objective.handler.LostTalesQuestObjectiveHandler;
 import net.minecraft.resources.ResourceLocation;
@@ -11,11 +11,31 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 
+import java.util.Map;
+
 public class LostTalesKillQuestObjectiveHandler implements LostTalesQuestObjectiveHandler {
 
     @Override
-    public String type() {
+    public String questObjectiveType() {
         return "kill";
+    }
+
+    @Override
+    public void validateQuestObjective(LostTalesQuest quest, LostTalesQuestObjective objective) {
+        Map<String, String> p = objective.params();
+        boolean hasEntity = p.containsKey("entity");
+        boolean hasTag = p.containsKey("tag");
+        if (!hasEntity && !hasTag) {
+            LostTales.LOGGER.warn("[{}] Objective {} in quest {} missing 'entity' or 'tag' parameter for type 'kill'",
+                    LostTales.MOD_ID, objective.id(), quest.id());
+        }
+        if (p.containsKey("count")) {
+            try { Integer.parseInt(p.get("count")); }
+            catch (Exception e) {
+                LostTales.LOGGER.warn("[{}] Objective {} in quest {} has non-integer 'count': {}",
+                        LostTales.MOD_ID, objective.id(), quest.id(), p.get("count"));
+            }
+        }
     }
 
     @Override
@@ -43,7 +63,7 @@ public class LostTalesKillQuestObjectiveHandler implements LostTalesQuestObjecti
         int before = data.addProgress(quest.id(), obj.id(), 0);
         if (before < targetCount) {
             int now = data.addProgress(quest.id(), obj.id(), 1);
-            LostTalesQuestStageLogic.evaluateStage(killer, quest);
+            LostTalesQuestManager.evaluateStageProgressForPlayer(quest.id(), killer);
             LostTales.LOGGER.info("[{}] KILL progress {} -> {}/{}", LostTales.MOD_ID, obj.id(), now, target);
         }
     }

@@ -10,6 +10,8 @@ import dev.ninuna.losttales.common.config.LostTalesConfigs;
 import dev.ninuna.losttales.common.item.LostTalesCreativeModeTabs;
 import dev.ninuna.losttales.common.item.LostTalesItems;
 import dev.ninuna.losttales.common.quest.objective.handler.LostTalesQuestObjectiveHandlers;
+import dev.ninuna.losttales.common.quest.objective.handler.custom.LostTalesCraftQuestObjectiveHandler;
+import dev.ninuna.losttales.common.quest.objective.handler.custom.LostTalesGatherQuestObjectiveHandler;
 import dev.ninuna.losttales.common.quest.objective.handler.custom.LostTalesGotoQuestObjectiveHandler;
 import dev.ninuna.losttales.common.quest.objective.handler.custom.LostTalesKillQuestObjectiveHandler;
 import dev.ninuna.losttales.common.sound.LostTalesSoundEvents;
@@ -54,14 +56,16 @@ public class LostTales {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // Register quest objective handlers
+        // Register quest objective handlers.
         LostTalesQuestObjectiveHandlers.register(new LostTalesKillQuestObjectiveHandler());
         LostTalesQuestObjectiveHandlers.register(new LostTalesGotoQuestObjectiveHandler());
+        LostTalesQuestObjectiveHandlers.register(new LostTalesCraftQuestObjectiveHandler());
+        LostTalesQuestObjectiveHandlers.register(new LostTalesGatherQuestObjectiveHandler());
     }
 
     @SubscribeEvent
     public void onRegisterCommands(RegisterCommandsEvent event) {
-        // Register commands
+        // Register commands.
         CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
         new LostTalesMapMarkerCommand(commandDispatcher);
         new LostTalesQuestCommand(commandDispatcher);

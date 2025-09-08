@@ -1,5 +1,6 @@
 package dev.ninuna.losttales.common.quest;
 
+import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.datapack.loader.LostTalesQuestDatapackLoader;
 import dev.ninuna.losttales.common.network.packet.LostTalesSyncQuestsPacket;
@@ -98,5 +99,53 @@ public class LostTalesQuestManager {
         LostTalesQuestPlayerData questPlayerData = serverPlayer.getData(LostTalesAttachments.PLAYER_QUESTS.get());
         var activeQuests = new ArrayList<>(questPlayerData.getActiveQuests());
         PacketDistributor.sendToPlayer(serverPlayer, new LostTalesSyncQuestsPacket(activeQuests));
+    }
+
+    /** Evaluate quest stage progress for player (advance to next stage if possible). */
+    public static void evaluateStageProgressForPlayer(ResourceLocation questId, ServerPlayer serverPlayer) {
+        LostTalesQuestPlayerData questPlayerData = serverPlayer.getData(LostTalesAttachments.PLAYER_QUESTS.get());
+
+        var questProgressOptional = questPlayerData.getActiveQuest(questId);
+        if (questProgressOptional.isEmpty()) return;
+        LostTalesQuestPlayerData.QuestProgress questProgress = questProgressOptional.get();
+
+        var questOptional = LostTalesQuestDatapackLoader.getQuest(questId);
+        if (questOptional.isEmpty()) return;
+        LostTalesQuest quest = questOptional.get();
+
+        var stage = quest.stages().stream().filter(lostTalesQuestStage -> lostTalesQuestStage.id().equals(questProgress.stageId)).findFirst().orElse(null);
+        if (stage == null) return;
+
+        boolean allDone = true;
+        for (var objective : stage.objectives()) {
+            if (objective.optional()) continue;
+
+            int need = parseIntSafe(objective.params().get("count"), 1);
+            int have = questProgress.objectiveProgress.getOrDefault(objective.id(), 0);
+
+            if (have < need) {
+                allDone = false; break;
+            }
+        }
+        if (!allDone) return;
+
+        // Advance to next stage.
+        int stageIndex = quest.stages().indexOf(stage);
+        if (stageIndex >= 0 && stageIndex + 1 < quest.stages().size()) {
+            questPlayerData.setStage(quest.id(), quest.stages().get(stageIndex + 1).id());
+        } else {
+            // Last Stage: Quest Completed
+            questPlayerData.completeQuest(quest.id());
+            LostTales.LOGGER.info("Completed Quest: " + quest.title());
+        }
+        LostTalesQuestManager.syncQuestDataToPlayer(serverPlayer);
+    }
+
+    private static int parseIntSafe(String s, int dft) {
+        try {
+            return Integer.parseInt(s);
+        } catch (Exception e) {
+            return dft;
+        }
     }
 }

@@ -6,9 +6,11 @@ import dev.ninuna.losttales.common.datapack.loader.LostTalesQuestDatapackLoader;
 import dev.ninuna.losttales.common.quest.objective.handler.LostTalesQuestObjectiveHandlers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -59,6 +61,60 @@ public class LostTalesQuestEvents {
                 LostTalesQuestObjectiveHandlers.get(obj.type()).ifPresent(handler -> {
                     handler.onPlayerTick(player, quest, obj);
                 });
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
+        var data = serverPlayer.getData(LostTalesAttachments.PLAYER_QUESTS.get());
+        if (data.getActiveQuests().isEmpty()) return;
+
+        ItemStack crafted = event.getCrafting();
+
+        for (var questProgress : data.getActiveQuests()) {
+            var questOpt = LostTalesQuestDatapackLoader.getQuest(questProgress.questId);
+            if (questOpt.isEmpty()) continue;
+            var quest = questOpt.get();
+
+            var stage = quest.stages().stream()
+                    .filter(s -> s.id().equals(questProgress.stageId))
+                    .findFirst().orElse(null);
+            if (stage == null) continue;
+
+            for (var obj : stage.objectives()) {
+                LostTalesQuestObjectiveHandlers.get(obj.type()).ifPresent(handler ->
+                        handler.onItemCrafted(serverPlayer, quest, obj, crafted)
+                );
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemPickup(ItemEntityPickupEvent.Post event) {
+        if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
+
+        var data = serverPlayer.getData(LostTalesAttachments.PLAYER_QUESTS.get());
+        if (data.getActiveQuests().isEmpty()) return;
+
+        // The stack being added to inventory
+        ItemStack picked = event.getItemEntity().getItem();
+
+        for (var questProgress : data.getActiveQuests()) {
+            var questOpt = LostTalesQuestDatapackLoader.getQuest(questProgress.questId);
+            if (questOpt.isEmpty()) continue;
+            var quest = questOpt.get();
+
+            var stage = quest.stages().stream()
+                    .filter(s -> s.id().equals(questProgress.stageId))
+                    .findFirst().orElse(null);
+            if (stage == null) continue;
+
+            for (var obj : stage.objectives()) {
+                LostTalesQuestObjectiveHandlers.get(obj.type()).ifPresent(handler ->
+                        handler.onItemPickedUp(serverPlayer, quest, obj, picked)
+                );
             }
         }
     }

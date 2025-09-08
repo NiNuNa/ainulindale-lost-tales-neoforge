@@ -28,7 +28,8 @@ public class LostTalesQuestDatapackLoader extends SimpleJsonResourceReloadListen
             for (var stage : quest.stages()) {
                 for (var objective : stage.objectives()) {
                     LostTalesQuestObjectiveHandlers.get(objective.type()).ifPresent(objectiveHandler -> {
-                        try { objectiveHandler.validate(quest, objective);
+                        try {
+                            objectiveHandler.validateQuestObjective(quest, objective);
                         } catch (Exception exception) {
                             LostTales.LOGGER.warn("[{}] Invalid objective {} in quest {}: {}", LostTales.MOD_ID, objective.id(), quest.id(), exception.getMessage());
                         }

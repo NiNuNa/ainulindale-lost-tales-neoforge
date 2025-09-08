@@ -1,0 +1,36 @@
+{
+  "id":"losttales:path/blacksmith/test_crafting_quest",
+  "title":"Path of the Blacksmith: The Beginning",
+  "description":"Quest Description Text",
+  "repeatable":true,
+  "journalLog":{
+    "10":"I've finished part 1 of the quest."
+  },
+  "stages":[
+    {
+      "id":"10",
+      "objectives":[
+        {
+          "id":"craft_sticks",
+          "type":"craft",
+          "description":"Craft 5 Sticks",
+          "optional":false,
+          "params": {
+            "item": "minecraft:stick",
+            "count": "5"
+          }
+        },
+        {
+          "id": "gather_logs",
+          "type": "gather",
+          "description": "Pick up 8 Oak Logs",
+          "optional": false,
+          "params": {
+            "item": "minecraft:oak_log",
+            "count": "8"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,7 @@ package dev.ninuna.losttales.common.quest.objective.handler.custom;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.attachment.LostTalesAttachments;
 import dev.ninuna.losttales.common.quest.LostTalesQuest;
-import dev.ninuna.losttales.common.quest.stage.LostTalesQuestStageLogic;
+import dev.ninuna.losttales.common.quest.LostTalesQuestManager;
 import dev.ninuna.losttales.common.quest.objective.LostTalesQuestObjective;
 import dev.ninuna.losttales.common.quest.objective.handler.LostTalesQuestObjectiveHandler;
 import net.minecraft.core.registries.Registries;
@@ -13,11 +13,32 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
+import java.util.Map;
+
 public class LostTalesGotoQuestObjectiveHandler implements LostTalesQuestObjectiveHandler {
 
     @Override
-    public String type() {
+    public String questObjectiveType() {
         return "goto";
+    }
+
+    @Override
+    public void validateQuestObjective(LostTalesQuest quest, LostTalesQuestObjective objective) {
+        Map<String, String> p = objective.params();
+        String sx = p.get("x");
+        String sy = p.get("y");
+        String sz = p.get("z");
+        if (sx == null || sy == null || sz == null) {
+            LostTales.LOGGER.warn("[{}] Objective {} in quest {} missing x/y/z for type 'goto'",
+                    LostTales.MOD_ID, objective.id(), quest.id());
+        }
+        if (p.containsKey("radius")) {
+            try { Double.parseDouble(p.get("radius")); } catch (Exception e) {
+                LostTales.LOGGER.warn("[{}] Objective {} in quest {} has non-numeric 'radius': {}",
+                        LostTales.MOD_ID, objective.id(), quest.id(), p.get("radius"));
+            }
+        }
+        // dimension string is optional; if present, we just parse it later
     }
 
     @Override
@@ -40,7 +61,7 @@ public class LostTalesGotoQuestObjectiveHandler implements LostTalesQuestObjecti
             if (before >= 1) return;
 
             data.setProgress(quest.id(), obj.id(), 1);
-            LostTalesQuestStageLogic.evaluateStage(player, quest);
+            LostTalesQuestManager.evaluateStageProgressForPlayer(quest.id(), player);
 
             LostTales.LOGGER.info("[{}] GOTO {} reached.", LostTales.MOD_ID, obj.id());
         }
