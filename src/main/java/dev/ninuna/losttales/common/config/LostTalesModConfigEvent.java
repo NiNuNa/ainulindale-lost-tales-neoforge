@@ -4,7 +4,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.client.gui.hud.LostTalesQuickLootHud;
+import dev.ninuna.losttales.client.gui.hud.loot.LostTalesQuickLootHudRenderer;
 import dev.ninuna.losttales.common.config.custom.LostTalesClientConfig;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID)
@@ -35,6 +35,6 @@ public class LostTalesModConfigEvent {
             clientConfig.showCompassHud.set(showLostTalesHud);
         }
 
-        LostTalesQuickLootHud.resetHud();
+        LostTalesQuickLootHudRenderer.resetHud();
     }
 }

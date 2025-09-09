@@ -1,4 +1,4 @@
-package dev.ninuna.losttales.client.gui.hud;
+package dev.ninuna.losttales.client.gui.hud.loot;
 
 import com.mojang.blaze3d.platform.Window;
 import dev.ninuna.losttales.client.gui.LostTalesColor;
@@ -20,14 +20,13 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.common.block.entity.custom.LostTalesUrnBlockEntity;
-import dev.ninuna.losttales.client.event.LostTalesQuickLootHudScrollEvent;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
 import dev.ninuna.losttales.common.network.packet.LostTalesQuickLootHudDropItemPacket;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LostTalesQuickLootHud {
+public class LostTalesQuickLootHudRenderer {
     private static int INDEX_SCROLL_OVERFLOW = 0;
     private static int INDEX_SELECTED_ROW = 0;
 
@@ -246,8 +245,8 @@ public class LostTalesQuickLootHud {
             if (level != null && level.getBlockEntity(blockPos) != null && level.getBlockEntity(blockPos) instanceof Container container) {
                 // Doesn't work when urn is sealed
                 if (!(container instanceof LostTalesUrnBlockEntity urnBlockEntity) || !urnBlockEntity.isSealed()) {
-                    int selectedIndex = LostTalesQuickLootHud.getIndexSelectedRow();
-                    List<Integer> visibleSlots = LostTalesQuickLootHud.getNonEmptyContainerSlots(container);
+                    int selectedIndex = LostTalesQuickLootHudRenderer.getIndexSelectedRow();
+                    List<Integer> visibleSlots = LostTalesQuickLootHudRenderer.getNonEmptyContainerSlots(container);
 
                     if (selectedIndex >= 0 && selectedIndex < visibleSlots.size()) {
                         int containerSlot = visibleSlots.get(selectedIndex);

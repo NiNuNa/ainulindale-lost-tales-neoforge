@@ -1,4 +1,4 @@
-package dev.ninuna.losttales.client.gui;
+package dev.ninuna.losttales.client.gui.hud;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
@@ -7,7 +7,7 @@ import dev.ninuna.losttales.common.config.LostTalesModConfigEvent;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
 import dev.ninuna.losttales.common.config.custom.LostTalesClientConfig;
 
-public class LostTalesGuiHelper {
+public class LostTalesHudHelper {
     public static void toggleLostTalesHud() {
         LostTalesClientConfig clientConfig = LostTalesConfigs.CLIENT;
 

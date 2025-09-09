@@ -15,8 +15,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.client.gui.hud.LostTalesCompassHud;
-import dev.ninuna.losttales.client.gui.hud.LostTalesQuickLootHud;
+import dev.ninuna.losttales.client.gui.hud.compass.LostTalesCompassHudRenderer;
+import dev.ninuna.losttales.client.gui.hud.loot.LostTalesQuickLootHudRenderer;
 import dev.ninuna.losttales.common.config.LostTalesConfigs;
 
 @EventBusSubscriber(modid = LostTales.MOD_ID, value = Dist.CLIENT)
@@ -43,13 +43,13 @@ public class LostTalesRegisterGuiLayersEvent {
             if (level != null && level.getBlockEntity(blockPos) != null && !mc.options.hideGui && LostTalesConfigs.CLIENT.showQuickLootHud.get()) {
                 if (level.getBlockEntity(blockPos) instanceof Container container) {
                     isCurrentlyLookingAtContainer = true;
-                    LostTalesQuickLootHud.renderHud(mc, guiGraphics, container);
+                    LostTalesQuickLootHudRenderer.renderHud(mc, guiGraphics, container);
                 }
             }
         }
 
         if (!isCurrentlyLookingAtContainer && WAS_LOOKING_AT_CONTAINER) {
-            LostTalesQuickLootHud.resetHud();
+            LostTalesQuickLootHudRenderer.resetHud();
         }
         WAS_LOOKING_AT_CONTAINER = isCurrentlyLookingAtContainer;
     }
@@ -59,7 +59,8 @@ public class LostTalesRegisterGuiLayersEvent {
         if (mc.player == null) return;
 
         if (!mc.options.hideGui && LostTalesConfigs.CLIENT.showCompassHud.get()) {
-            LostTalesCompassHud.renderHud(mc, guiGraphics);
+            LostTalesCompassHudRenderer compassHud = new LostTalesCompassHudRenderer();
+            compassHud.render(mc, guiGraphics);
         }
     }
 }

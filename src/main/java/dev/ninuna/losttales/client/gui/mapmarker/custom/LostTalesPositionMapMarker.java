@@ -1,6 +1,7 @@
-package dev.ninuna.losttales.client.gui.mapmarker;
+package dev.ninuna.losttales.client.gui.mapmarker.custom;
 
 import dev.ninuna.losttales.client.gui.LostTalesColor;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.common.LostTales;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;

@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import dev.ninuna.losttales.common.LostTales;
-import dev.ninuna.losttales.client.gui.hud.LostTalesQuickLootHud;
+import dev.ninuna.losttales.client.gui.hud.loot.LostTalesQuickLootHudRenderer;
 
 public record LostTalesQuickLootHudDropItemClientPacket(int x, int y, int z, int selectedIndex) implements CustomPacketPayload {
     public static final StreamCodec<ByteBuf, LostTalesQuickLootHudDropItemClientPacket> STREAM_CODEC;
@@ -34,9 +34,9 @@ public record LostTalesQuickLootHudDropItemClientPacket(int x, int y, int z, int
                     container.setItem(selectedIndex, ItemStack.EMPTY);
                     container.setChanged();
 
-                    int scrollIndex = LostTalesQuickLootHud.getIndexScrollOverflow();
+                    int scrollIndex = LostTalesQuickLootHudRenderer.getIndexScrollOverflow();
                     if (scrollIndex > 0) {
-                        LostTalesQuickLootHud.setIndexScrollOverflow(scrollIndex - 1);
+                        LostTalesQuickLootHudRenderer.setIndexScrollOverflow(scrollIndex - 1);
                     }
 
                     LostTales.LOGGER.info("UPDTED");

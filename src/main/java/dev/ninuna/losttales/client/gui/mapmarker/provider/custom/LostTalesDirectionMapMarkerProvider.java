@@ -1,12 +1,12 @@
 package dev.ninuna.losttales.client.gui.mapmarker.provider.custom;
 
 import dev.ninuna.losttales.client.gui.LostTalesColor;
-import dev.ninuna.losttales.client.gui.mapmarker.LostTalesBearingMapMarker;
+import dev.ninuna.losttales.client.gui.mapmarker.custom.LostTalesBearingMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
 import dev.ninuna.losttales.common.LostTales;
 import net.minecraft.client.Minecraft;
-import dev.ninuna.losttales.client.gui.mapmarker.LostTalesPositionMapMarker;
+import dev.ninuna.losttales.client.gui.mapmarker.custom.LostTalesPositionMapMarker;
 
 import java.util.ArrayList;
 import java.util.List;

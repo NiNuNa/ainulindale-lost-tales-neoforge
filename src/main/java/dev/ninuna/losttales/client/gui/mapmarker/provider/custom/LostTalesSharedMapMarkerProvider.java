@@ -1,6 +1,6 @@
 package dev.ninuna.losttales.client.gui.mapmarker.provider.custom;
 
-import dev.ninuna.losttales.client.gui.mapmarker.LostTalesPositionMapMarker;
+import dev.ninuna.losttales.client.gui.mapmarker.custom.LostTalesPositionMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.provider.LostTalesMapMarkerProvider;
 import dev.ninuna.losttales.common.mapmarker.LostTalesMapMarkerDataStore;
 import net.minecraft.client.Minecraft;
