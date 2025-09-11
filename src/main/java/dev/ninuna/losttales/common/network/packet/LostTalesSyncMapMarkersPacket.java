@@ -8,7 +8,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.ArrayList;
@@ -18,12 +17,11 @@ public record LostTalesSyncMapMarkersPacket(boolean isLevelMapMarker, Collection
     public static final CustomPacketPayload.Type<LostTalesSyncMapMarkersPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("sync_map_markers"));
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
-    private static final StreamCodec<ByteBuf, LostTalesMapMarkerData.Entry>
-            ENTRY_STREAM_CODEC = ByteBufCodecs.fromCodec(LostTalesMapMarkerData.Entry.CODEC);
+    private static final StreamCodec<ByteBuf, LostTalesMapMarkerData.Entry> ENTRY_STREAM_CODEC = ByteBufCodecs.fromCodec(LostTalesMapMarkerData.Entry.CODEC);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, LostTalesSyncMapMarkersPacket> STREAM_CODEC = StreamCodec.composite(
                     ByteBufCodecs.BOOL, LostTalesSyncMapMarkersPacket::isLevelMapMarker,

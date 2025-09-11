@@ -7,62 +7,60 @@ import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.custom.LostTalesPositionMapMarker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
 public class LostTalesMapMarkerRenderPass {
-
-    // Focus context (computed in batch builder)
-    private static LostTalesPositionMapMarker focused;
+    private static LostTalesPositionMapMarker focusedMapMarker;
     private static float focusEmphasis;
     private static float focusPx;
     private static double fdx, fdy, fdz;
 
-    public static void setFocusContext(LostTalesPositionMapMarker marker, float emphasis, float px, double dx, double dy, double dz) {
-        focused = marker;
+    public static void setFocusContext(LostTalesPositionMapMarker mapMarker, float emphasis, float px, double dx, double dy, double dz) {
+        focusedMapMarker = mapMarker;
         focusEmphasis = emphasis;
         focusPx = px;
         fdx = dx; fdy = dy; fdz = dz;
     }
 
-    static void drawIconsAndLabels(Minecraft mc, GuiGraphics gfx, List<LostTalesMapMarkerRenderItem> items, int compassY, int centerX) {
-        // pass 1: icons
-        for (LostTalesMapMarkerRenderItem it : items) {
-            var pose = gfx.pose();
+    static void drawMapMarkerIconsAndLabels(Minecraft minecraft, GuiGraphics guiGraphics, List<LostTalesMapMarkerRenderItem> mapMarkerRenderItems, int compassY, int centerX) {
+        for (LostTalesMapMarkerRenderItem mapMarkerRenderItem : mapMarkerRenderItems) {
+            var pose = guiGraphics.pose();
+            float scale = (focusedMapMarker != null && mapMarkerRenderItem.marker() == focusedMapMarker && mapMarkerRenderItem.marker().isScaleWithCenterFocus()) ? 1f + LostTalesCompassHudRenderer.MAP_MARKER_SCALE_MODIFIER * focusEmphasis : 1f;
+            var icon = mapMarkerRenderItem.activeQuest() ? LostTalesMapMarkerIcon.QUEST : mapMarkerRenderItem.marker().getIcon();
+            float iconShadowAlpha = Math.min(LostTalesCompassHudRenderer.MAP_MARKER_SHADOW_ALPHA, mapMarkerRenderItem.alpha());
+
             pose.pushMatrix();
-            pose.translate(it.x(), compassY + LostTalesCompassHudRenderer.MAP_MARKER_OFFSET_Y + LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT / 2f);
-            float scale = (focused != null && it.marker() == focused && it.marker().isScaleWithCenterFocus()) ? 1f + LostTalesCompassHudRenderer.MAP_MARKER_SCALE_MODIFIER * focusEmphasis : 1f;
+            pose.translate(mapMarkerRenderItem.x(), compassY + LostTalesCompassHudRenderer.MAP_MARKER_OFFSET_Y + LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT / 2f);
             pose.scale(scale, scale);
 
-            var icon = it.activeQuest() ? LostTalesMapMarkerIcon.QUEST : it.marker().getIcon();
-
-            gfx.blit(
-                    RenderPipelines.GUI_TEXTURED,
+            LostTalesCompassHudRenderHelper.drawBlitWithShadow(
+                    guiGraphics,
                     LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE,
-                    -LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2,
-                    -LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
+                    (float) -LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2, -LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
                     icon.getU(), icon.getV(),
                     LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_HEIGHT,
                     LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_WIDTH, LostTalesMapMarkerIcon.MAP_MARKER_ICON_TEXTURE_HEIGHT,
-                    it.color()
+                    mapMarkerRenderItem.color(), LostTalesColor.BLACK.getColorWithAlpha(iconShadowAlpha)
             );
             pose.popMatrix();
         }
 
-        // pass 2: label for focused marker
-        if (focused != null && focusEmphasis > 0f) {
+        if (focusedMapMarker != null && focusEmphasis > 0f) {
             int nameY = compassY + LostTalesCompassHudRenderer.COMPASS_HEIGHT + LostTalesCompassHudRenderer.MAP_MARKER_NAME_LABEL_OFFSET_Y;
-            int distY = compassY - mc.font.lineHeight - LostTalesCompassHudRenderer.MAP_MARKER_DISTANCE_LABEL_OFFSET_Y;
+            int distY = compassY - minecraft.font.lineHeight - LostTalesCompassHudRenderer.MAP_MARKER_DISTANCE_LABEL_OFFSET_Y;
             int labelColor = LostTalesColor.WHITE.getColorWithAlpha(focusEmphasis);
 
-            LostTalesCompassHudRenderHelper.drawStringCentered(gfx, mc, focused.getName(), focusPx, nameY, labelColor, true);
+            LostTalesCompassHudRenderHelper.drawCenteredString(guiGraphics, minecraft, focusedMapMarker.getName(), focusPx, nameY, labelColor, true);
 
-            if (focused.isShowDistanceLabel()) {
+            if (focusedMapMarker.isShowDistanceLabel()) {
                 double distBlocks = Math.sqrt(fdx*fdx + fdy*fdy + fdz*fdz);
                 Component label = Component.literal(Math.round(distBlocks) + "m");
-                LostTalesCompassHudRenderHelper.drawStringCentered(gfx, mc, label, focusPx, distY, labelColor, true);
+                float px = focusPx + (float) minecraft.font.width(label) / 2f + LostTalesCompassHudRenderer.MAP_MARKER_VERTICAL_ARROW_INDICATOR_OFFSET_X;
+                float arrowShadowAlpha = Math.min(LostTalesCompassHudRenderer.MAP_MARKER_SHADOW_ALPHA, focusEmphasis);
+
+                LostTalesCompassHudRenderHelper.drawCenteredString(guiGraphics, minecraft, label, focusPx, distY, labelColor, true);
 
                 double deltaY = fdy;
                 if (Math.abs(deltaY) >= 5) {
@@ -75,19 +73,19 @@ public class LostTalesMapMarkerRenderPass {
                         u = 6; // down-soft
                     }
 
-                    float px = focusPx + (float) mc.font.width(label) / 2f + LostTalesCompassHudRenderer.MAP_MARKER_VERTICAL_ARROW_INDICATOR_OFFSET_X;
-                    LostTalesCompassHudRenderHelper.drawBlit(gfx,
+                    LostTalesCompassHudRenderHelper.drawBlitWithShadow(guiGraphics,
                             LostTalesCompassHudRenderer.COMPASS_HUD_TEXTURE,
                             px, distY,
                             u, v, w, h,
                             LostTalesCompassHudRenderer.COMPASS_HUD_TEXTURE_WIDTH, LostTalesCompassHudRenderer.COMPASS_HUD_TEXTURE_HEIGHT,
-                            labelColor
+                            labelColor,
+                            LostTalesColor.BLACK.getColorWithAlpha(arrowShadowAlpha)
                     );
                 }
             }
         }
 
         // clear focus context for safety
-        focused = null;
+        focusedMapMarker = null;
     }
 }

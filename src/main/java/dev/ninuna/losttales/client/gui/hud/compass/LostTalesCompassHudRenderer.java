@@ -25,10 +25,12 @@ public class LostTalesCompassHudRenderer {
 
     public static final float MAP_MARKER_SCALE_MODIFIER = 0.18f;
     public static final float MAP_MARKER_DISTANCE_FADE_IN_FLOOR_ALPHA = 0.4f;
+    public static final float MAP_MARKER_SHADOW_ALPHA = 0.6f;
 
     public static final int MAP_MARKER_VERTICAL_ARROW_INDICATOR_OFFSET_X = 2;
     public static final int MAP_MARKER_BEGIN_EDGE_FADE_OUT_OFFSET = COMPASS_WIDTH / 4;
     public static final int MAP_MARKER_BEGIN_CENTER_FOCUS_OFFSET = 26;
+    public static final int MAP_MARKER_END_CENTER_FOCUS_OFFSET = 60;
 
     private final LostTalesMapMarkerRenderManager markerManager;
 
@@ -59,12 +61,12 @@ public class LostTalesCompassHudRenderer {
 
         float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(!minecraft.isPaused());
         float viewYaw = minecraft.player.getViewYRot(partialTick);
-        float viewYawNormalized = LostTalesCompassHudRenderHelper.normalizeDegrees(viewYaw);
+        float viewYawNormalized = LostTalesCompassHudRenderHelper.normalizeViewYaw(viewYaw);
 
         // Draw compass texture.
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, COMPASS_HUD_TEXTURE, compassX, compassY, 0, 0, COMPASS_WIDTH, COMPASS_HEIGHT, COMPASS_HUD_TEXTURE_WIDTH, COMPASS_HUD_TEXTURE_HEIGHT);
 
         // Draw map markers.
-        markerManager.renderMarkers(minecraft, guiGraphics, centerX, compassY, viewYawNormalized, pixelPerDegree, displayRadiusDeg, partialTick);
+        markerManager.renderCompassMapMarkers(minecraft, guiGraphics, centerX, compassY, viewYawNormalized, pixelPerDegree, displayRadiusDeg, partialTick);
     }
 }

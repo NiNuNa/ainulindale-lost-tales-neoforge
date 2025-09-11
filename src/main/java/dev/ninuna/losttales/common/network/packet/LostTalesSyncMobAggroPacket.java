@@ -15,7 +15,7 @@ public record LostTalesSyncMobAggroPacket(List<Integer> ids) implements CustomPa
     public static final CustomPacketPayload.Type<LostTalesSyncMobAggroPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("aggroed_mobs"));
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 

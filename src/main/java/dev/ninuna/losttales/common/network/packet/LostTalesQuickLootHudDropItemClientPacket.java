@@ -15,13 +15,20 @@ import dev.ninuna.losttales.common.LostTales;
 import dev.ninuna.losttales.client.gui.hud.loot.LostTalesQuickLootHudRenderer;
 
 public record LostTalesQuickLootHudDropItemClientPacket(int x, int y, int z, int selectedIndex) implements CustomPacketPayload {
-    public static final StreamCodec<ByteBuf, LostTalesQuickLootHudDropItemClientPacket> STREAM_CODEC;
-    public static final Type<LostTalesQuickLootHudDropItemClientPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "quick_loot_hud_client"));
+    public static final CustomPacketPayload.Type<LostTalesQuickLootHudDropItemClientPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("quick_loot_hud_client"));
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
+
+    public static final StreamCodec<ByteBuf, LostTalesQuickLootHudDropItemClientPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::x,
+            ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::y,
+            ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::z,
+            ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::selectedIndex,
+            LostTalesQuickLootHudDropItemClientPacket::new
+    );
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
@@ -43,15 +50,5 @@ public record LostTalesQuickLootHudDropItemClientPacket(int x, int y, int z, int
                 }
             }
         });
-    }
-
-    static {
-        STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::x,
-                ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::y,
-                ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::z,
-                ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemClientPacket::selectedIndex,
-                LostTalesQuickLootHudDropItemClientPacket::new
-        );
     }
 }

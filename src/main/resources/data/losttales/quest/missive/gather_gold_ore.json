@@ -1,0 +1,26 @@
+{
+  "id":"losttales:missive/gather_gold_ore",
+  "title":"Missive: Gather Gold Ore",
+  "description":"I'm looking for someone to collect a few chunks of Gold Ore to complete a project I'm working on. You can expect to be rewarded handsomely. ~Name",
+  "repeatable":true,
+  "journalLog":{
+    "10":"I've gathered the gold ore requested by name."
+  },
+  "stages":[
+    {
+      "id":"10",
+      "objectives":[
+        {
+          "id":"gather_gold_ore",
+          "type":"gather",
+          "description":"Gather 3 pieces of gold ore.",
+          "optional":false,
+          "params":{
+            "item": "minecraft:gold_ore",
+            "count": "3"
+          }
+        }
+      ]
+    }
+  ]
+}

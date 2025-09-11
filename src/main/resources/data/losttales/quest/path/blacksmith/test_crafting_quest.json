@@ -19,16 +19,6 @@
             "item": "minecraft:stick",
             "count": "5"
           }
-        },
-        {
-          "id": "gather_logs",
-          "type": "gather",
-          "description": "Pick up 8 Oak Logs",
-          "optional": false,
-          "params": {
-            "item": "minecraft:oak_log",
-            "count": "8"
-          }
         }
       ]
     }

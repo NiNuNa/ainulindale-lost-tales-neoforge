@@ -18,13 +18,13 @@ public enum LostTalesMapMarkerIcon implements StringRepresentable {
     NW              (133, 19),
     QUEST           (0, 0),
     HOSTILE         (19, 0),
-    FORT            (76, 38),
+    FORT            (0, 38),
     UNDISCOVERED    (38, 0),
     TAVERN          (19, 38);
 
     public static final Codec<LostTalesMapMarkerIcon> CODEC = StringRepresentable.fromEnum(LostTalesMapMarkerIcon::values);
 
-    public static final ResourceLocation MAP_MARKER_ICON_TEXTURE = ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "textures/gui/mapmarkericons.png");
+    public static final ResourceLocation MAP_MARKER_ICON_TEXTURE = LostTales.getResourceLocation("textures/gui/mapmarkericons.png");
 
     public static final int MAP_MARKER_ICON_TEXTURE_WIDTH  = 207;
     public static final int MAP_MARKER_ICON_TEXTURE_HEIGHT = 64;

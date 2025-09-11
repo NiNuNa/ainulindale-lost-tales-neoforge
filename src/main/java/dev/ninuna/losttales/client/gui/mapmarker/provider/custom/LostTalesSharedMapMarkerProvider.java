@@ -31,7 +31,7 @@ public class LostTalesSharedMapMarkerProvider implements LostTalesMapMarkerProvi
                     mapMarker.dimension,
                     true,
                     true,
-                    true,
+                    false,
                     mapMarker.fadeInRadius,
                     mapMarker.unlockRadius,
                     mapMarker.x,

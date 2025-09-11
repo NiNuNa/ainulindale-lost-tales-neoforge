@@ -20,8 +20,12 @@ import dev.ninuna.losttales.common.LostTales;
 
 public record LostTalesQuickLootHudDropItemPacket(int x, int y, int z, int selectedIndex) implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<LostTalesQuickLootHudDropItemPacket> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(LostTales.MOD_ID, "quick_loot_hud_drop_item_server_packet"));
+    public static final CustomPacketPayload.Type<LostTalesQuickLootHudDropItemPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("quick_loot_hud_drop_item_server_packet"));
+
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 
     public static final StreamCodec<ByteBuf, LostTalesQuickLootHudDropItemPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemPacket::x,
@@ -30,11 +34,6 @@ public record LostTalesQuickLootHudDropItemPacket(int x, int y, int z, int selec
             ByteBufCodecs.VAR_INT, LostTalesQuickLootHudDropItemPacket::selectedIndex,
             LostTalesQuickLootHudDropItemPacket::new
     );
-
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {

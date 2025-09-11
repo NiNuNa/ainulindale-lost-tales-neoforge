@@ -68,11 +68,10 @@ public class LostTalesQuestJournalScreen extends Screen {
 
     private void reloadQuestListEntries() {
         var entries = new ArrayList<LostTalesQuestListWidgetEntry>();
-        var active = LostTalesClientQuestCache.get().getActive();
+        var active = LostTalesClientQuestCache.getInstance().getActiveQuests();
 
         if (active == null || active.isEmpty()) {
             entries.add(new LostTalesQuestListWidgetEntry(Component.literal("No active quests").withStyle(ChatFormatting.GRAY)));
-            entries.add(new LostTalesQuestListWidgetEntry(Component.translatable("test")));
         } else {
             active.forEach((questId, progress) -> {
                 LostTalesQuest quest = LostTalesQuestDatapackLoader.getQuest(questId).get();

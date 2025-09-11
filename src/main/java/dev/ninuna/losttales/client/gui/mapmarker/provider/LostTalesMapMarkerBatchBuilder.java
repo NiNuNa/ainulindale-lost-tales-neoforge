@@ -28,16 +28,16 @@ public class LostTalesMapMarkerBatchBuilder {
         float focusedPx = 0f;
         double bestDx=0, bestDy=0, bestDz=0;
 
-        for (LostTalesPositionMapMarker m : markers) {
-            boolean isQuest = m.isHasActiveQuest();
+        for (LostTalesPositionMapMarker mapMarker : markers) {
+            boolean isQuest = mapMarker.isHasActiveQuest();
 
             // world deltas
-            double dx = m.getX() - playerPos.x();
-            double dy = m.getY() - playerPos.y();
-            double dz = m.getZ() - playerPos.z();
+            double dx = mapMarker.getX() - playerPos.x();
+            double dy = mapMarker.getY() - playerPos.y();
+            double dz = mapMarker.getZ() - playerPos.z();
 
             // angle to target (or bearing)
-            float targetDeg = (m instanceof LostTalesBearingMapMarker b) ? LostTalesCompassHudRenderHelper.normalizeDegrees(b.getBearingDegree()) : LostTalesCompassHudRenderHelper.angleDegToTarget(dx, dz);
+            float targetDeg = (mapMarker instanceof LostTalesBearingMapMarker b) ? LostTalesCompassHudRenderHelper.normalizeViewYaw(b.getBearingDegree()) : LostTalesCompassHudRenderHelper.angleDegToTarget(dx, dz);
 
             float delta = LostTalesCompassHudRenderHelper.shortestDeltaDegrees(targetDeg, yawDeg);
 
@@ -59,9 +59,9 @@ public class LostTalesMapMarkerBatchBuilder {
             // distance fade (not for quests)
             double distSq = dx*dx + dy*dy + dz*dz;
             float distT = 1f;
-            if (!isQuest && m.getFadeInRadius() > 0f) {
+            if (!isQuest && mapMarker.getFadeInRadius() > 0f) {
                 double dist = Math.sqrt(distSq);
-                double R = m.getFadeInRadius();
+                double R = mapMarker.getFadeInRadius();
                 if (dist > R) continue;
                 float t = (float)(dist / R);
                 // Hermite smoothstep
@@ -77,10 +77,10 @@ public class LostTalesMapMarkerBatchBuilder {
 
             if (alpha <= 0f) continue;
 
-            int argb = (isQuest ? LostTalesColor.WHITE : m.getColor()).getColorWithAlpha(alpha);
+            int argb = (isQuest ? LostTalesColor.WHITE : mapMarker.getColor()).getColorWithAlpha(alpha);
 
             renderItems.add(new LostTalesMapMarkerRenderItem(
-                    m,
+                    mapMarker,
                     px,
                     1f,
                     alpha,
@@ -91,12 +91,12 @@ public class LostTalesMapMarkerBatchBuilder {
                     emphasis
             ));
 
-            if (m.isScaleWithCenterFocus()) {
+            if (mapMarker.isScaleWithCenterFocus()) {
                 boolean better = emphasis > bestEmphasis
                         || (emphasis == bestEmphasis && Math.abs(px - centerX) < Math.abs(focusedPx - centerX));
                 if (better) {
                     bestEmphasis = emphasis;
-                    focused = m;
+                    focused = mapMarker;
                     focusedPx = px;
                     bestDx = dx; bestDy = dy; bestDz = dz;
                 }
@@ -105,7 +105,7 @@ public class LostTalesMapMarkerBatchBuilder {
 
         if (renderItems.isEmpty()) return renderItems;
 
-        // sort: distance DESC, alpha ASC, farther from center first (so centered ends on top when drawing later)
+        // Sort map markers by distance.
         renderItems.sort((a, b) -> {
             int c = Double.compare(b.distSq(), a.distSq());
             if (c != 0) return c;
@@ -116,8 +116,7 @@ public class LostTalesMapMarkerBatchBuilder {
             return Float.compare(bc, ac);
         });
 
-        // Ensure LostTalesBearingMapMarker always render behind everything else.
-        // Because List.sort is stable, the prior distance/alpha/center ordering is preserved within each group.
+        // Ensure LostTalesBearingMapMarkers always render behind all other map markers.
         renderItems.sort((a, b) -> {
             boolean aBearing = a.marker() instanceof LostTalesBearingMapMarker;
             boolean bBearing = b.marker() instanceof LostTalesBearingMapMarker;

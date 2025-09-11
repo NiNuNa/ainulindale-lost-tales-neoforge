@@ -17,7 +17,7 @@ public record LostTalesSyncQuestsPacket(List<LostTalesQuestPlayerData.QuestProgr
     public static final CustomPacketPayload.Type<LostTalesSyncQuestsPacket> TYPE = new CustomPacketPayload.Type<>(LostTales.getResourceLocation("quest_progress"));
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
@@ -33,7 +33,7 @@ public record LostTalesSyncQuestsPacket(List<LostTalesQuestPlayerData.QuestProgr
             for (var questProgress : lostTalesSyncQuestsPacket.questProgresses()) {
                 map.put(questProgress.questId, questProgress);
             }
-            LostTalesClientQuestCache.get().replaceAll(map);
+            LostTalesClientQuestCache.getInstance().replaceActiveQuests(map);
         });
     }
 }

@@ -25,22 +25,22 @@ public class LostTalesMapMarkerRenderManager {
         );
     }
 
-    public LostTalesMapMarkerRenderManager(List<LostTalesMapMarkerProvider> providers) {
-        this.mapMarkerProviders = providers;
+    public LostTalesMapMarkerRenderManager(List<LostTalesMapMarkerProvider> mapMarkerProviders) {
+        this.mapMarkerProviders = mapMarkerProviders;
     }
 
-    public void renderMarkers(Minecraft minecraft, GuiGraphics guiGraphics, int centerX, int compassY, float yawDeg, float pixelPerDegree, int visibleDeg, float partialTick) {
-        List<LostTalesPositionMapMarker> markers = collectMapMarkers(minecraft);
-        if (markers.isEmpty() || minecraft.player == null) return;
+    public void renderCompassMapMarkers(Minecraft minecraft, GuiGraphics guiGraphics, int centerX, int compassY, float yawDeg, float pixelPerDegree, int visibleDeg, float partialTick) {
+        List<LostTalesPositionMapMarker> mapMarkers = collectMapMarkers(minecraft);
+        if (mapMarkers.isEmpty() || minecraft.player == null) return;
 
         var playerPos = LostTalesCompassHudRenderHelper.lerpPlayerPos(minecraft.player, partialTick);
 
         List<LostTalesMapMarkerRenderItem> batch = LostTalesMapMarkerBatchBuilder.build(
-                markers, playerPos, yawDeg, pixelPerDegree, visibleDeg, centerX
+                mapMarkers, playerPos, yawDeg, pixelPerDegree, visibleDeg, centerX
         );
         if (batch.isEmpty()) return;
 
-        LostTalesMapMarkerRenderPass.drawIconsAndLabels(minecraft, guiGraphics, batch, compassY, centerX);
+        LostTalesMapMarkerRenderPass.drawMapMarkerIconsAndLabels(minecraft, guiGraphics, batch, compassY, centerX);
     }
 
     private List<LostTalesPositionMapMarker> collectMapMarkers(Minecraft minecraft) {

@@ -31,7 +31,7 @@ public class LostTalesHostileMapMarkerProvider implements LostTalesMapMarkerProv
         List<LostTalesPositionMapMarker> mapMarkers = new ArrayList<>(nearby.size());
         for (Entity entity : nearby) {
             // Only render if the server says this entity is "locked on" the player
-            if (!LostTalesClientMobAggroCache.isLocked(entity.getId())) continue;
+            if (!LostTalesClientMobAggroCache.mobIsAggro(entity.getId())) continue;
 
             // Build your marker (adjust args to match your constructor if it differs)
             LostTalesPositionMapMarker marker = new LostTalesPositionMapMarker(

@@ -7,8 +7,9 @@ import java.util.Locale;
 
 public enum LostTalesColor implements StringRepresentable {
     WHITE   (0xFFFBDE),
-    RED     (0xFF0000),
-    BLUE    (0x0000FF);
+    BLACK   (0x28242E),
+    RED     (0xBD516D),
+    BLUE    (0x5378A7);
 
     private static final int ALPHA_SHIFT = 24;
     public static final Codec<LostTalesColor> CODEC = StringRepresentable.fromEnum(LostTalesColor::values);

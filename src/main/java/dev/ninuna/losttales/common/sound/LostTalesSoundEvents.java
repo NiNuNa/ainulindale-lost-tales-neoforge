@@ -10,9 +10,7 @@ import dev.ninuna.losttales.common.LostTales;
 public class LostTalesSoundEvents {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, LostTales.MOD_ID);
 
-    public static final Holder<SoundEvent> PLUSHIE_SQUEAK = SOUND_EVENTS.register(
-            "plushie_squeak", SoundEvent::createVariableRangeEvent
-    );
+    public static final Holder<SoundEvent> PLUSHIE_SQUEAK = SOUND_EVENTS.register("plushie_squeak", SoundEvent::createVariableRangeEvent);
 
     public static void register (IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);
