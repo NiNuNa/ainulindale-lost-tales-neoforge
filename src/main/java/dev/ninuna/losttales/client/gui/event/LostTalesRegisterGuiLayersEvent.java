@@ -1,4 +1,4 @@
-package dev.ninuna.losttales.client.event;
+package dev.ninuna.losttales.client.gui.event;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;

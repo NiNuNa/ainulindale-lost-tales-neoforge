@@ -21,11 +21,11 @@ public class LostTalesClientQuestCache {
     }
 
     public synchronized void replaceActiveQuests(Map<ResourceLocation, LostTalesQuestPlayerData.QuestProgress> newActiveQuests) {
-        this.activeQuests.clear();
-        if (newActiveQuests != null) activeQuests.putAll(newActiveQuests);
+        this.clearActiveQuests();
+        if (newActiveQuests != null) this.activeQuests.putAll(newActiveQuests);
     }
 
-    public synchronized void clear() {
+    public synchronized void clearActiveQuests() {
         this.activeQuests.clear();
     }
 }

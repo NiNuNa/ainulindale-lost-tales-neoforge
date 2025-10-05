@@ -32,6 +32,11 @@ public enum LostTalesMapMarkerIcon implements StringRepresentable {
     public static final int MAP_MARKER_ICON_WIDTH = 17;
     public static final int MAP_MARKER_ICON_HEIGHT = 17;
 
+    public static final int MAP_MARKER_RENDER_MAX_RENDER_DISTANCE = 160;
+
+    public static final float VERTICAL_OFFSET = 1.6f;
+    public static final float BASE_SCALE = 0.025f;
+
     private final int u;
     private final int v;
 

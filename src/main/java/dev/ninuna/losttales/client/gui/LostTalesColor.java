@@ -11,8 +11,8 @@ public enum LostTalesColor implements StringRepresentable {
     RED     (0xBD516D),
     BLUE    (0x5378A7);
 
-    private static final int ALPHA_SHIFT = 24;
     public static final Codec<LostTalesColor> CODEC = StringRepresentable.fromEnum(LostTalesColor::values);
+    private static final int ALPHA_SHIFT = 24;
 
     private final int colorRgb;
 

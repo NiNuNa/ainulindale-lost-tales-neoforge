@@ -5,7 +5,7 @@ import dev.ninuna.losttales.common.LostTales;
 public class LostTalesKeyMappingHelper {
     private static boolean isModifierKeyDown = false;
 
-    public static void setIsModifierKeyDown(boolean isModifierKeyDown) {
+    public static void isModifierKeyDown(boolean isModifierKeyDown) {
         LostTalesKeyMappingHelper.isModifierKeyDown = isModifierKeyDown;
     }
 

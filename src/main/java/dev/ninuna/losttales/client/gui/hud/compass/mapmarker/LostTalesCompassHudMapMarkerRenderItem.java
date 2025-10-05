@@ -1,8 +1,8 @@
-package dev.ninuna.losttales.client.gui.mapmarker.render;
+package dev.ninuna.losttales.client.gui.hud.compass.mapmarker;
 
 import dev.ninuna.losttales.client.gui.mapmarker.custom.LostTalesPositionMapMarker;
 
-public record LostTalesMapMarkerRenderItem (
+public record LostTalesCompassHudMapMarkerRenderItem(
         LostTalesPositionMapMarker marker,
         float x,
         float scale,

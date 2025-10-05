@@ -1,4 +1,4 @@
-package dev.ninuna.losttales.client.gui.mapmarker.provider;
+package dev.ninuna.losttales.client.gui.hud.compass.mapmarker;
 
 import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.gui.hud.compass.LostTalesCompassHudRenderer;
@@ -6,22 +6,20 @@ import dev.ninuna.losttales.client.gui.hud.compass.LostTalesCompassHudRenderHelp
 import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerIcon;
 import dev.ninuna.losttales.client.gui.mapmarker.custom.LostTalesBearingMapMarker;
 import dev.ninuna.losttales.client.gui.mapmarker.custom.LostTalesPositionMapMarker;
-import dev.ninuna.losttales.client.gui.mapmarker.render.LostTalesMapMarkerRenderItem;
-import dev.ninuna.losttales.client.gui.mapmarker.render.LostTalesMapMarkerRenderPass;
 import net.minecraft.util.Mth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LostTalesMapMarkerBatchBuilder {
+public class LostTalesCompassHudMapMarkerBatchBuilder {
 
-    public static List<LostTalesMapMarkerRenderItem> build(List<LostTalesPositionMapMarker> markers, LostTalesCompassHudRenderHelper.PlayerPos playerPos, float yawDeg, float pxPerDeg, int visibleDeg, int centerX) {
+    public static List<LostTalesCompassHudMapMarkerRenderItem> build(List<LostTalesPositionMapMarker> markers, LostTalesCompassHudRenderHelper.PlayerPos playerPos, float yawDeg, float pxPerDeg, int visibleDeg, int centerX) {
 
         float halfWidth = LostTalesCompassHudRenderer.COMPASS_WIDTH / 2f;
         float minX = centerX - halfWidth + (float) LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2;
         float maxX = centerX + halfWidth - (float) LostTalesMapMarkerIcon.MAP_MARKER_ICON_WIDTH / 2;
 
-        List<LostTalesMapMarkerRenderItem> renderItems = new ArrayList<>(markers.size());
+        List<LostTalesCompassHudMapMarkerRenderItem> renderItems = new ArrayList<>(markers.size());
 
         LostTalesPositionMapMarker focused = null;
         float bestEmphasis = 0f;
@@ -79,7 +77,7 @@ public class LostTalesMapMarkerBatchBuilder {
 
             int argb = (isQuest ? LostTalesColor.WHITE : mapMarker.getColor()).getColorWithAlpha(alpha);
 
-            renderItems.add(new LostTalesMapMarkerRenderItem(
+            renderItems.add(new LostTalesCompassHudMapMarkerRenderItem(
                     mapMarker,
                     px,
                     1f,
@@ -125,7 +123,7 @@ public class LostTalesMapMarkerBatchBuilder {
         });
 
         // Tag the focused marker in the batch (optional, we infer by identity)
-        LostTalesMapMarkerRenderPass.setFocusContext(focused, bestEmphasis, focusedPx, bestDx, bestDy, bestDz);
+        LostTalesCompassHudMapMarkerRenderPass.setFocusContext(focused, bestEmphasis, focusedPx, bestDx, bestDy, bestDz);
 
         return renderItems;
     }

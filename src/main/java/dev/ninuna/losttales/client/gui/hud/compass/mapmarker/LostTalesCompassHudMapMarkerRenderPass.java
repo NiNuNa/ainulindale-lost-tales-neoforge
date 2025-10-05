@@ -1,4 +1,4 @@
-package dev.ninuna.losttales.client.gui.mapmarker.render;
+package dev.ninuna.losttales.client.gui.hud.compass.mapmarker;
 
 import dev.ninuna.losttales.client.gui.LostTalesColor;
 import dev.ninuna.losttales.client.gui.hud.compass.LostTalesCompassHudRenderer;
@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-public class LostTalesMapMarkerRenderPass {
+public class LostTalesCompassHudMapMarkerRenderPass {
     private static LostTalesPositionMapMarker focusedMapMarker;
     private static float focusEmphasis;
     private static float focusPx;
@@ -24,8 +24,8 @@ public class LostTalesMapMarkerRenderPass {
         fdx = dx; fdy = dy; fdz = dz;
     }
 
-    static void drawMapMarkerIconsAndLabels(Minecraft minecraft, GuiGraphics guiGraphics, List<LostTalesMapMarkerRenderItem> mapMarkerRenderItems, int compassY, int centerX) {
-        for (LostTalesMapMarkerRenderItem mapMarkerRenderItem : mapMarkerRenderItems) {
+    public static void drawMapMarkerIconsAndLabels(Minecraft minecraft, GuiGraphics guiGraphics, List<LostTalesCompassHudMapMarkerRenderItem> mapMarkerRenderItems, int compassY, int centerX) {
+        for (LostTalesCompassHudMapMarkerRenderItem mapMarkerRenderItem : mapMarkerRenderItems) {
             var pose = guiGraphics.pose();
             float scale = (focusedMapMarker != null && mapMarkerRenderItem.marker() == focusedMapMarker && mapMarkerRenderItem.marker().isScaleWithCenterFocus()) ? 1f + LostTalesCompassHudRenderer.MAP_MARKER_SCALE_MODIFIER * focusEmphasis : 1f;
             var icon = mapMarkerRenderItem.activeQuest() ? LostTalesMapMarkerIcon.QUEST : mapMarkerRenderItem.marker().getIcon();

@@ -1,7 +1,7 @@
 package dev.ninuna.losttales.client.gui.hud.compass;
 
 import com.mojang.blaze3d.platform.Window;
-import dev.ninuna.losttales.client.gui.mapmarker.render.LostTalesMapMarkerRenderManager;
+import dev.ninuna.losttales.client.gui.mapmarker.LostTalesMapMarkerRenderManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -67,6 +67,6 @@ public class LostTalesCompassHudRenderer {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, COMPASS_HUD_TEXTURE, compassX, compassY, 0, 0, COMPASS_WIDTH, COMPASS_HEIGHT, COMPASS_HUD_TEXTURE_WIDTH, COMPASS_HUD_TEXTURE_HEIGHT);
 
         // Draw map markers.
-        markerManager.renderCompassMapMarkers(minecraft, guiGraphics, centerX, compassY, viewYawNormalized, pixelPerDegree, displayRadiusDeg, partialTick);
+        markerManager.renderMapMarkersOnCompassHud(minecraft, guiGraphics, centerX, compassY, viewYawNormalized, pixelPerDegree, displayRadiusDeg, partialTick);
     }
 }

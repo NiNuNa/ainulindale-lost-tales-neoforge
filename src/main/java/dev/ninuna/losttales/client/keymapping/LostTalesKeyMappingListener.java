@@ -29,7 +29,7 @@ public class LostTalesKeyMappingListener {
             LostTalesQuickLootHudRenderer.dropSelectedItem();
         }
         else {
-            LostTalesKeyMappingHelper.setIsModifierKeyDown(LostTalesKeyMappingRegistry.MODIFIER_MAPPING.get().isDown());
+            LostTalesKeyMappingHelper.isModifierKeyDown(LostTalesKeyMappingRegistry.MODIFIER_MAPPING.get().isDown());
         }
     }
 }
